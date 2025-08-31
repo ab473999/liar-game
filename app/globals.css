@@ -44,10 +44,10 @@ body {
     background-color: #5b6578;
     padding: 0.8em 2em;
     border-radius: 5px;
-
-    &:hover {
-      opacity: 0.5;
-    }
+  }
+  
+  a:hover {
+    opacity: 0.5;
   }
 
   button {

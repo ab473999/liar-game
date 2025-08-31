@@ -10,8 +10,7 @@ export default function Settings() {
   const {
     playerNum,
     setPlayerNum,
-    timer,
-    setTimer,
+
     spyMode,
     setSpyMode,
     spyNumber,
@@ -147,23 +146,6 @@ export default function Settings() {
             <option value="18">18</option>
             <option value="19">19</option>
             <option value="20">20</option>
-          </select>
-        </label>
-        <label className="set-timer m-4 space-y-4">
-          <h2>{t("settings.timeLimit")}</h2>
-          <select
-            value={timer}
-            onChange={(event) => setTimer(event.target.value)}
-            className=""
-          >
-            <option value="60">{t("settings.time.60")}</option>
-            <option value="90">{t("settings.time.90")}</option>
-            <option value="120">{t("settings.time.120")}</option>
-            <option value="150">{t("settings.time.150")}</option>
-            <option value="180">{t("settings.time.180")}</option>
-            <option value="240">{t("settings.time.240")}</option>
-            <option value="300">{t("settings.time.300")}</option>
-            <option value="unlimited">{t("settings.time.unlimited")}</option>
           </select>
         </label>
         {playerNum >= 5 && (

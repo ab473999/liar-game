@@ -3,8 +3,6 @@ import { useGameContext } from "@/components/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
 
 const Select = (props) => {
-  console.log(`[Select] Component rendering...`);
-  
   const {
     playerNum,
     spyMode,

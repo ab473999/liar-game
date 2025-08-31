@@ -33,6 +33,11 @@ export default function Game() {
     setStage(stage);
   };
 
+  const resetToWordReveal = () => {
+    console.log(`[Game] Resetting to word reveal (stage 1)`);
+    setStage(1);
+  };
+
   const updateGlobalVocab = (vocab, selectData) => {
     console.log(`[Game] Vocab set to: "${vocab}"`);
     console.log(`[Game] SelectData contains ${selectData ? selectData.length : 0} words`);
@@ -60,7 +65,7 @@ export default function Game() {
       );
       break;
     case 2:
-      gameView = <Play nextStage={progressNextStage} />;
+      gameView = <Play nextStage={progressNextStage} resetToWordReveal={resetToWordReveal} />;
       break;
     case 3:
       gameView = (
