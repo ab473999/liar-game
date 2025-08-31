@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useGameContext } from "@/components/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
+import { PressHoldReveal } from "@/components/PressHoldReveal";
 
 const Select = (props) => {
   // Extract replay props
@@ -24,15 +25,10 @@ const Select = (props) => {
 
   const [vocab, setVocab] = useState(isReplay ? existingVocab : "");
   const [liar, setLiar] = useState(isReplay && existingGameSetup ? existingGameSetup.liar : 1);
-  const [buttonDisabled, setButtonDisabled] = useState([]);
-  const [displayStatus, setDisplayStatus] = useState("");
-  const [buttonDisabledText, setButtonDisabledText] = useState("");
-  const [beginGame, setBeginGame] = useState(false);
-  const [showCardStatus, setShowCardStatus] = useState(false);
-  // const [easterEgg, setEasterEgg] = useState("");
+  const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+  const [revealedPlayers, setRevealedPlayers] = useState([]);
   const [selectData, setSelectData] = useState(isReplay ? existingSelectData : null);
   const [isDataLoading, setIsDataLoading] = useState(!isReplay); // Not loading if replay
-  const [playerState, setPlayerState] = useState(false);
   const initRef = useRef(isReplay); // Mark as initialized if replay
 
   // Initialize the game once when component mounts
@@ -49,8 +45,8 @@ const Select = (props) => {
       console.log(`[Select] Reusing existing Liar: Player ${existingGameSetup?.liar + 1} (index ${existingGameSetup?.liar})`);
       
       // Reset only UI state for replay
-      setButtonDisabled([]);
-      setShowCardStatus(false);
+      setCurrentPlayerIndex(0);
+      setRevealedPlayers([]);
       return; // Stop here - don't fetch or generate anything new
     }
 
@@ -92,18 +88,6 @@ const Select = (props) => {
       fetchWords();
     }
   }, [theme, isReplay]); // Depend on theme and isReplay
-  
-  // Update display text when language changes or component mounts
-  useEffect(() => {
-    setDisplayStatus(t("game.select.choosePlayer"));
-    setButtonDisabledText(t("common.buttons.confirm"));
-    
-    // Reset UI for replay
-    if (vocab && buttonDisabled.length === playerNum) {
-      setButtonDisabled([]);
-      setShowCardStatus(false);
-    }
-  }, [t]);
 
   const generateRandomNumber = (data) => {
     if (!data || data.length === 0) {
@@ -136,147 +120,47 @@ const Select = (props) => {
     setLiar(chooseLiar);
   };
 
-  const showCard = (event) => {
-    let button = Number(event.target.id);
-    let card = event.target.className;
-
-    if (!buttonDisabled.includes(button)) {
-      setButtonDisabled([...buttonDisabled, button]);
-    }
-
-    // Determine player type based on actual game state
-    let playerType = "Regular Player";
-    let isLiar = button === liar;
+  const handleRevealComplete = () => {
+    const nextPlayerIndex = currentPlayerIndex + 1;
     
-    if (isLiar) {
-      playerType = "LIAR";
-    }
+    console.log(`[Select] Player ${currentPlayerIndex + 1} revealed`);
+    console.log(`  - Was liar: ${currentPlayerIndex === liar}`);
+    console.log(`  - Players revealed: ${nextPlayerIndex}/${playerNum}`);
     
-    console.log(`[Select] === PLAYER ${button + 1} REVEAL ===`);
-    console.log(`  - Player Type: ${playerType}`);
-    console.log(`  - Current word: "${vocab}"`);
-    console.log(`  - Liar is player index: ${liar} (Player ${liar + 1})`);
-    console.log(`  - This player index: ${button}`);
-    console.log(`  - Is this the liar? ${isLiar}`);
-    console.log(`  - Players revealed so far: ${buttonDisabled.length + 1}/${playerNum}`);
-
-    if (card.includes("no-liar")) {
-      setDisplayStatus(t("game.select.selectedWord"));
-      setPlayerState(false);
-    } else if (card.includes("liar")) {
-      setDisplayStatus(t("game.select.youAre"));
-      setPlayerState(true);
-    }
-
-    setShowCardStatus(true);
-  };
-
-  const resetDisplayStatus = () => {
-    if (buttonDisabled.length === playerNum) {
+    setRevealedPlayers([...revealedPlayers, currentPlayerIndex]);
+    
+    if (nextPlayerIndex >= playerNum) {
+      // All players have been revealed
       console.log(`[Select] All players revealed! Starting game...`);
       console.log(`  - Final word: "${vocab}"`);
       console.log(`  - Liar was: Player ${liar + 1}`);
-
-      setDisplayStatus(t("game.select.gameStarted"));
-      setBeginGame(true);
+      
       props.setVocab(vocab, selectData, { liar }); // Pass game setup
       props.nextStage(2);
     } else {
-      if (playerNum - buttonDisabled.length === 1) {
-        console.log(`[Select] One player left to reveal`);
-        setButtonDisabledText(t("common.buttons.startGame"));
-      } else {
-        console.log(`[Select] ${playerNum - buttonDisabled.length} players left to reveal`);
-      }
-      setDisplayStatus(t("game.select.choosePlayer"));
+      // Move to next player
+      setCurrentPlayerIndex(nextPlayerIndex);
     }
-
-    setShowCardStatus(false);
   };
 
   // Show loading state if data is not ready
   if (isDataLoading || !vocab) {
     return (
-      <div>
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
         <h2>{t("common.loading")}</h2>
         <p>{t("common.preparingGame")}</p>
       </div>
     );
   }
 
-  let defaultText = t("common.buttons.select");
-
-  let playersCard = [];
-  for (let i = 0; i < playerNum; i++) {
-    if (i === liar) {
-      playersCard.push(
-        <button
-          className={`border border-white cursor-pointer p-5 liar ${
-            buttonDisabled.includes(i)
-              ? "border border-white cursor-not-allowed opacity-50"
-              : ""
-          }`}
-          disabled={buttonDisabled.includes(i) ? true : false}
-          key={i}
-          id={i}
-          onClick={showCard}
-        >
-          {defaultText}
-        </button>
-      );
-    } else {
-      playersCard.push(
-        <button
-          className={`border border-white cursor-pointer p-5 no-liar ${
-            buttonDisabled.includes(i)
-              ? "border border-white cursor-not-allowed opacity-50"
-              : ""
-          }`}
-          disabled={buttonDisabled.includes(i) ? true : false}
-          key={i}
-          id={i}
-          onClick={showCard}
-        >
-          {defaultText}
-        </button>
-      );
-    }
-  }
-
-  let textView;
-  if (buttonDisabled.length > 0 && showCardStatus === true) {
-    if (playerState) {
-      textView = (
-        <span className="red">{t("game.select.liar")}</span>
-      );
-    } else {
-      textView = (
-        <span className="green">
-          <br />
-          {vocab}
-        </span>
-      );
-    }
-  } else {
-    textView = null;
-  }
-  let nextButton =
-    displayStatus === t("game.select.choosePlayer") ? (
-      ``
-    ) : (
-      <button onClick={resetDisplayStatus}>{buttonDisabledText}</button>
-    );
-
   return (
-    <div>
-      <div>
-        <h2>
-          {displayStatus} {textView}
-        </h2>
-        {nextButton}
-      </div>
-      {showCardStatus ? "" : playersCard}
-    </div>
+    <PressHoldReveal 
+      currentPlayer={currentPlayerIndex + 1}
+      totalPlayers={playerNum}
+      isLiar={currentPlayerIndex === liar}
+      word={{ text: vocab, theme }}
+      onRevealComplete={handleRevealComplete}
+    />
   );
 };
 

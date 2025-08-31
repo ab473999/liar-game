@@ -16,9 +16,9 @@
       "it": "Tu sei"
     },
     "liar": {
-      "ko": "라이어 입니다.",
-      "en": "the Liar.",
-      "it": "il Bugiardo."
+      "ko": "라이어",
+      "en": "the Liar",
+      "it": "il Bugiardo"
     },
     "allSelected": {
       "ko": "모든 플레이어가 선택 되었습니다",
@@ -34,6 +34,26 @@
       "ko": "One player left",
       "en": "One player left",
       "it": "Un giocatore rimasto"
+    },
+    "player": {
+      "ko": "플레이어",
+      "en": "Player",
+      "it": "Giocatore"
+    },
+    "pressAndHold": {
+      "ko": "길게 누르기",
+      "en": "Press and hold",
+      "it": "Premi e tieni premuto"
+    },
+    "holdToReveal": {
+      "ko": "단어를 확인하려면 버튼을 길게 누르세요",
+      "en": "Hold the button to reveal your word",
+      "it": "Tieni premuto il pulsante per rivelare la tua parola"
+    },
+    "passToNext": {
+      "ko": "다음 플레이어에게 전달하세요",
+      "en": "Pass to the next player",
+      "it": "Passa al prossimo giocatore"
     }
   },
   "play": {
