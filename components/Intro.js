@@ -31,13 +31,16 @@ const Intro = () => {
 
   return (
     <section className="text-center flex flex-col">
-      <h1 className="my-1 mx-0">
-        {t("intro.title.liar")}{" "}
-        <span className="text-[2.5rem]" onClick={easterEgg}>
-          {t("intro.title.game")}
+      <p className="mb-8 text-xl">{t("intro.subtitle")}</p>
+      {/* Hidden easter egg trigger - invisible text */}
+      <div className="mb-4 h-4">
+        <span 
+          className="cursor-pointer text-transparent hover:text-gray-500 select-none" 
+          onClick={easterEgg}
+        >
+          .
         </span>
-      </h1>
-      <p className="mb-8">{t("intro.subtitle")}</p>
+      </div>
       {easterEggMode ? (
         <input
           className="easterEggInput mb-6 rounded-md text-base p-2 text-black"

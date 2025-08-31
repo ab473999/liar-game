@@ -5,20 +5,18 @@ import translations from '@/translations';
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('ko');
+  const [language, setLanguage] = useState('en');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load saved language or detect browser language
+    // Load saved language or default to English
     const savedLang = localStorage.getItem('language');
     
     if (savedLang && (savedLang === 'ko' || savedLang === 'en' || savedLang === 'it')) {
       setLanguage(savedLang);
     } else {
-      const browserLang = navigator.language.substring(0, 2);
-      let defaultLang = 'en';
-      if (browserLang === 'ko') defaultLang = 'ko';
-      else if (browserLang === 'it') defaultLang = 'it';
+      // Default to English regardless of browser language
+      const defaultLang = 'en';
       setLanguage(defaultLang);
       localStorage.setItem('language', defaultLang);
     }
