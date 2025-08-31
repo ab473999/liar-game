@@ -21,17 +21,26 @@ export const PressHoldReveal = ({
   const PROGRESS_INTERVAL = 20; // Update every 20ms for smooth animation
 
   const startHold = () => {
+    console.log(`[PressHold] Started holding for Player ${currentPlayer}`);
     setIsHolding(true);
     setHoldProgress(0);
     
     const startTime = Date.now();
+    let lastLogTime = 0;
     
     progressIntervalRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min((elapsed / HOLD_DURATION) * 100, 100);
       setHoldProgress(progress);
       
+      // Log every 500ms
+      if (Math.floor(elapsed / 500) > lastLogTime) {
+        lastLogTime = Math.floor(elapsed / 500);
+        console.log(`[PressHold] Holding... ${(elapsed / 1000).toFixed(1)}s (${progress.toFixed(0)}%)`);
+      }
+      
       if (progress >= 100 && !showContent) {
+        console.log(`[PressHold] REVEAL! Player ${currentPlayer} - isLiar: ${isLiar}, word: "${word?.text}"`);
         setShowContent(true);
         setHasRevealed(true);
       }
@@ -39,6 +48,7 @@ export const PressHoldReveal = ({
   };
 
   const endHold = () => {
+    console.log(`[PressHold] Released - Player ${currentPlayer}, revealed: ${hasRevealed}`);
     setIsHolding(false);
     
     if (progressIntervalRef.current) {
@@ -46,16 +56,18 @@ export const PressHoldReveal = ({
       progressIntervalRef.current = null;
     }
     
-    // If successfully revealed, move to next player after a short delay
+    // Hide content immediately when released
+    setShowContent(false);
+    
+    // If successfully revealed, move to next player
     if (hasRevealed) {
-      setTimeout(() => {
-        setShowContent(false);
-        setHasRevealed(false);
-        setHoldProgress(0);
-        onRevealComplete();
-      }, 500);
+      console.log(`[PressHold] Moving to next player...`);
+      setHasRevealed(false);
+      setHoldProgress(0);
+      onRevealComplete();
     } else {
       // Reset if released too early
+      console.log(`[PressHold] Released too early, staying on Player ${currentPlayer}`);
       setHoldProgress(0);
     }
   };
@@ -68,6 +80,13 @@ export const PressHoldReveal = ({
       }
     };
   }, []);
+  
+  // Debug log when showContent changes
+  useEffect(() => {
+    if (showContent) {
+      console.log(`[PressHold] Content is now visible! isLiar: ${isLiar}, word: "${word?.text}"`);
+    }
+  }, [showContent, isLiar, word]);
 
   // Calculate circle size based on progress
   const circleSize = 200 + (holdProgress * 2); // Start at 200px, grow to 400px
@@ -75,36 +94,48 @@ export const PressHoldReveal = ({
   return (
     <div className="flex flex-col items-center justify-center min-h-[500px] relative">
       {/* Player counter */}
-      <div className="absolute top-0 text-2xl font-semibold" style={{ color: 'var(--color-textPrimary)' }}>
+      <div className="absolute top-8 text-2xl font-semibold" style={{ color: 'var(--color-textPrimary)' }}>
         {t("game.select.player")} {currentPlayer}/{totalPlayers}
       </div>
       
       {/* Word/Role display - positioned above the circle */}
-      <div className="absolute" style={{ top: '20%' }}>
-        {showContent && (
-          <div className="text-center animate-fadeIn">
+      {showContent && (
+        <div className="absolute" style={{ 
+          top: '25%', 
+          left: '50%', 
+          transform: 'translateX(-50%)',
+          zIndex: 100,
+          pointerEvents: 'none',
+          minWidth: '300px'
+        }}>
+          <div className="text-center animate-fadeIn" style={{ 
+            backgroundColor: 'var(--color-bgSecondary)', 
+            padding: '20px', 
+            borderRadius: '10px',
+            border: '2px solid var(--color-borderPrimary)'
+          }}>
             {isLiar ? (
               <div>
-                <p className="text-lg mb-2" style={{ color: 'var(--color-textSecondary)' }}>
+                <p className="text-lg mb-2" style={{ color: 'var(--color-textPrimary)' }}>
                   {t("game.select.youAre")}
                 </p>
-                <p className="text-3xl font-bold" style={{ color: 'var(--color-accentDanger)' }}>
+                <p className="text-4xl font-bold" style={{ color: 'var(--color-accentDanger)' }}>
                   {t("game.select.liar")}
                 </p>
               </div>
             ) : (
               <div>
-                <p className="text-lg mb-2" style={{ color: 'var(--color-textSecondary)' }}>
+                <p className="text-lg mb-2" style={{ color: 'var(--color-textPrimary)' }}>
                   {t("game.select.selectedWord")}
                 </p>
-                <p className="text-3xl font-bold" style={{ color: 'var(--color-accentSuccess)' }}>
-                  {word?.text}
+                <p className="text-4xl font-bold" style={{ color: 'var(--color-accentSuccess)' }}>
+                  {word?.text || "No word"}
                 </p>
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
       
       {/* Press and hold circle */}
       <button
@@ -113,9 +144,9 @@ export const PressHoldReveal = ({
           transition: 'all 0.1s ease-out',
           width: `${circleSize}px`,
           height: `${circleSize}px`,
-          backgroundColor: holdProgress < 100 
-            ? 'var(--color-bgTertiary)' 
-            : 'var(--color-accentPrimary)',
+          backgroundColor: showContent 
+            ? 'var(--color-accentPrimary)' 
+            : 'var(--color-bgTertiary)',
           border: `2px solid ${holdProgress > 0 ? 'var(--color-accentPrimary)' : 'var(--color-borderPrimary)'}`,
           transform: isHolding ? 'scale(1)' : 'scale(0.95)',
           opacity: isHolding ? 1 : 0.9,
@@ -136,18 +167,6 @@ export const PressHoldReveal = ({
         }}
         onTouchCancel={endHold}
       >
-        {/* Progress indicator */}
-        <div 
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: `conic-gradient(
-              var(--color-accentPrimary) ${holdProgress * 3.6}deg,
-              transparent ${holdProgress * 3.6}deg
-            )`,
-            opacity: 0.3
-          }}
-        />
-        
         {/* Button text */}
         {!showContent && (
           <span 
@@ -162,12 +181,9 @@ export const PressHoldReveal = ({
       </button>
       
       {/* Instructions */}
-      {!showContent && !isHolding && (
+      {!showContent && !isHolding && hasRevealed && (
         <p className="mt-8 text-sm" style={{ color: 'var(--color-textMuted)' }}>
-          {hasRevealed 
-            ? t("game.select.passToNext") 
-            : t("game.select.holdToReveal")
-          }
+          {t("game.select.passToNext")}
         </p>
       )}
     </div>
