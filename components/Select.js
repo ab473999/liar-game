@@ -3,6 +3,16 @@ import { useGameContext } from "@/components/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
 
 const Select = (props) => {
+  // Extract replay props
+  const {
+    isReplay = false,
+    existingVocab = null,
+    existingSelectData = null,
+    existingGameSetup = null
+  } = props;
+  
+  console.log('[Select] Component props - isReplay:', isReplay, 'existingVocab:', existingVocab, 'existingGameSetup:', existingGameSetup);
+  
   const {
     playerNum,
     spyMode,
@@ -14,20 +24,20 @@ const Select = (props) => {
   } = useGameContext();
   const { t, language } = useTranslation();
 
-  const [vocab, setVocab] = useState("");
-  const [liar, setLiar] = useState(1);
-  const [spy, setSpy] = useState([]);
+  const [vocab, setVocab] = useState(isReplay ? existingVocab : "");
+  const [liar, setLiar] = useState(isReplay && existingGameSetup ? existingGameSetup.liar : 1);
+  const [spy, setSpy] = useState(isReplay && existingGameSetup ? existingGameSetup.spy : []);
   const [buttonDisabled, setButtonDisabled] = useState([]);
   const [displayStatus, setDisplayStatus] = useState("");
   const [buttonDisabledText, setButtonDisabledText] = useState("");
   const [beginGame, setBeginGame] = useState(false);
   const [showCardStatus, setShowCardStatus] = useState(false);
   // const [easterEgg, setEasterEgg] = useState("");
-  const [selectData, setSelectData] = useState(null);
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [selectData, setSelectData] = useState(isReplay ? existingSelectData : null);
+  const [isDataLoading, setIsDataLoading] = useState(!isReplay); // Not loading if replay
   const [playerState, setPlayerState] = useState(false);
   const [spyState, setSpyState] = useState(false);
-  const initRef = useRef(false);
+  const initRef = useRef(isReplay); // Mark as initialized if replay
 
   // Initialize the game once when component mounts
   useEffect(() => {
@@ -36,12 +46,25 @@ const Select = (props) => {
       setEasterEgg(easterEgg);
     }
 
-    // Use ref to ensure single initialization even in StrictMode
-    if (theme && !initRef.current) {
+    if (isReplay) {
+      // We're replaying - DO NOT re-initialize game
+      console.log(`[Select] === REPLAY MODE ===`);
+      console.log(`[Select] Reusing existing word: "${existingVocab}"`);
+      console.log(`[Select] Reusing existing Liar: Player ${existingGameSetup?.liar + 1} (index ${existingGameSetup?.liar})`);
+      console.log(`[Select] Reusing existing Spies: ${existingGameSetup?.spy?.length || 0}`);
+      
+      // Reset only UI state for replay
+      setButtonDisabled([]);
+      setShowCardStatus(false);
+      return; // Stop here - don't fetch or generate anything new
+    }
+
+    // Only fetch words for NEW games (not replays)
+    if (!isReplay && theme && !vocab && !initRef.current) {
       initRef.current = true;
       
       const fetchWords = async () => {
-        console.log(`[Select] === GAME INITIALIZATION ===`);
+        console.log(`[Select] === NEW GAME INITIALIZATION ===`);
         console.log(`[Select] Theme: ${theme}, Language: ${language || "ko"}`);
         console.log(`[Select] Players: ${playerNum}, Spy Mode: ${spyMode}, Spies: ${spyNumber}`);
         setIsDataLoading(true);
@@ -73,17 +96,29 @@ const Select = (props) => {
       
       fetchWords();
     }
-  }, [theme]); // Only depend on theme
+  }, [theme, isReplay]); // Depend on theme and isReplay
   
-  // Update display text when language changes
+  // Update display text when language changes or component mounts
   useEffect(() => {
     setDisplayStatus(t("game.select.choosePlayer"));
     setButtonDisabledText(t("common.buttons.confirm"));
+    
+    // Reset UI for replay
+    if (vocab && buttonDisabled.length === playerNum) {
+      setButtonDisabled([]);
+      setShowCardStatus(false);
+    }
   }, [t]);
 
   const generateRandomNumber = (data) => {
     if (!data || data.length === 0) {
       console.error('[Select] No data available to generate random word');
+      return;
+    }
+    
+    // NEVER generate new positions on replay
+    if (isReplay) {
+      console.log(`[Select] REPLAY MODE - NOT generating new positions. Using existing.`);
       return;
     }
     
@@ -169,7 +204,7 @@ const Select = (props) => {
 
       setDisplayStatus(t("game.select.gameStarted"));
       setBeginGame(true);
-      props.setVocab(vocab, selectData);
+      props.setVocab(vocab, selectData, { liar, spy }); // Pass game setup
       props.nextStage(2);
     } else {
       if (playerNum - buttonDisabled.length === 1) {

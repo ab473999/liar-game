@@ -81,6 +81,26 @@
       "ko": "라이어를 찾지 못했습니다!",
       "en": "Couldn't find the liar!",
       "it": "Non sono riuscito a trovare il bugiardo!"
+    },
+    "backToSettings": {
+      "ko": "설정으로 돌아가기",
+      "en": "Back to Settings",
+      "it": "Torna alle Impostazioni"
+    },
+    "redoReveal": {
+      "ko": "단어 공개 다시하기",
+      "en": "Redo Word Reveal",
+      "it": "Ripeti Rivelazione Parola"
+    },
+    "wasLiarFound": {
+      "ko": "라이어를 찾았나요?",
+      "en": "Was the liar found?",
+      "it": "Avete trovato il bugiardo?"
+    },
+    "discussAndFindLiar": {
+      "ko": "토론하고 라이어를 찾아보세요!",
+      "en": "Discuss and find the liar!",
+      "it": "Discutete e trovate il bugiardo!"
     }
   },
   "finish": {

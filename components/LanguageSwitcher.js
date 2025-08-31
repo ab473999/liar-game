@@ -1,13 +1,18 @@
 "use client";
+import { useEffect, useState } from 'react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 export const LanguageSwitcher = ({ className = "" }) => {
+  const [mounted, setMounted] = useState(false);
   const { language, changeLanguage, isLoading } = useTranslation();
 
-  if (isLoading) {
-    return null; // Don't render until language is loaded to prevent flicker
-  }
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
+  if (!mounted || isLoading) {
+    return null; // Don't show anything while loading to prevent flicker
+  }
   return (
     <div className={`fixed top-4 right-4 z-50 ${className}`}>
       <select 

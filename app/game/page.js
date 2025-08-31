@@ -21,6 +21,8 @@ export default function Game() {
   const [stage, setStage] = useState(1);
   const [vocab, setVocab] = useState("");
   const [selectData, setSelectData] = useState(null);
+  const [isReplay, setIsReplay] = useState(false);
+  const [gameSetup, setGameSetup] = useState(null); // Store liar, spy positions
 
   useEffect(() => {
     if (easterEgg !== "") {
@@ -34,15 +36,20 @@ export default function Game() {
   };
 
   const resetToWordReveal = () => {
-    console.log(`[Game] Resetting to word reveal (stage 1)`);
+    console.log(`[Game] Resetting to word reveal (stage 1) with word: "${vocab}"`);
+    setIsReplay(true);
     setStage(1);
   };
 
-  const updateGlobalVocab = (vocab, selectData) => {
+  const updateGlobalVocab = (vocab, selectData, gameSetup = null) => {
     console.log(`[Game] Vocab set to: "${vocab}"`);
     console.log(`[Game] SelectData contains ${selectData ? selectData.length : 0} words`);
     setVocab(vocab);
     setSelectData(selectData);
+    if (gameSetup) {
+      setGameSetup(gameSetup);
+    }
+    setIsReplay(false); // Reset replay flag after setting up
   };
 
   let gameView;
@@ -61,6 +68,10 @@ export default function Game() {
           }}
           nextStage={progressNextStage}
           setVocab={updateGlobalVocab}
+          isReplay={isReplay}
+          existingVocab={vocab}
+          existingSelectData={selectData}
+          existingGameSetup={gameSetup}
         />
       );
       break;
@@ -102,6 +113,10 @@ export default function Game() {
           }}
           nextStage={progressNextStage}
           setVocab={updateGlobalVocab}
+          isReplay={isReplay}
+          existingVocab={vocab}
+          existingSelectData={selectData}
+          existingGameSetup={gameSetup}
         />
       );
       break;

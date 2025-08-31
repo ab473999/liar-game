@@ -11,6 +11,7 @@ export const LanguageProvider = ({ children }) => {
   useEffect(() => {
     // Load saved language or detect browser language
     const savedLang = localStorage.getItem('language');
+    
     if (savedLang && (savedLang === 'ko' || savedLang === 'en' || savedLang === 'it')) {
       setLanguage(savedLang);
     } else {

@@ -76,17 +76,18 @@ body {
     margin: auto 0.8rem;
     border: 1px solid white;
     border-radius: 4px;
-
-    &:checked {
-      background-color: red;
-    }
   }
+  
+  input[type="checkbox"]:checked {
+    background-color: red;
+  }
+  
   span {
     font-size: 1.8rem;
-
-    &.caption {
-      color: red;
-    }
+  }
+  
+  span.caption {
+    color: red;
   }
 }
 
