@@ -16,6 +16,7 @@ export const PressHoldReveal = ({
   const [hasRevealed, setHasRevealed] = useState(false);
   const holdTimerRef = useRef(null);
   const progressIntervalRef = useRef(null);
+  const hasLoggedReveal = useRef(false);
   
   const HOLD_DURATION = 1500; // 1.5 seconds to fully reveal
   const PROGRESS_INTERVAL = 20; // Update every 20ms for smooth animation
@@ -24,6 +25,7 @@ export const PressHoldReveal = ({
     console.log(`[PressHold] Started holding for Player ${currentPlayer}`);
     setIsHolding(true);
     setHoldProgress(0);
+    hasLoggedReveal.current = false; // Reset the flag when starting a new hold
     
     const startTime = Date.now();
     let lastLogTime = 0;
@@ -40,7 +42,11 @@ export const PressHoldReveal = ({
       }
       
       if (progress >= 100 && !showContent) {
-        console.log(`[PressHold] REVEAL! Player ${currentPlayer} - isLiar: ${isLiar}, word: "${word?.text}"`);
+        // Only log once when reveal happens
+        if (!hasLoggedReveal.current) {
+          console.log(`[PressHold] REVEAL! Player ${currentPlayer} - isLiar: ${isLiar}, word: "${word?.text}"`);
+          hasLoggedReveal.current = true;
+        }
         setShowContent(true);
         setHasRevealed(true);
       }
@@ -94,8 +100,11 @@ export const PressHoldReveal = ({
   return (
     <div className="flex flex-col items-center justify-center min-h-[500px] relative">
       {/* Player counter */}
-      <div className="absolute top-8 text-2xl font-semibold" style={{ color: 'var(--color-textPrimary)' }}>
-        {t("game.select.player")} {currentPlayer}/{totalPlayers}
+      <div className="absolute top-8 text-2xl" style={{ color: 'var(--color-textPrimary)' }}>
+        <span>{t("game.select.player")} </span>
+        <span className="font-bold">{currentPlayer}</span>
+        <span>/</span>
+        <span style={{ color: 'var(--color-textMuted)' }}>{totalPlayers}</span>
       </div>
       
       {/* Word/Role display - positioned above the circle */}
@@ -170,7 +179,7 @@ export const PressHoldReveal = ({
         {/* Button text */}
         {!showContent && (
           <span 
-            className="text-xl font-medium z-10 pointer-events-none"
+            className="text-xl z-10 pointer-events-none"
             style={{ 
               color: holdProgress > 0 ? 'var(--color-textPrimary)' : 'var(--color-textSecondary)' 
             }}

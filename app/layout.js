@@ -4,6 +4,7 @@ import { GameContextWrapper } from "@/components/GameContextWrapper";
 import { LanguageProvider } from "@/components/LanguageContext";
 import { ThemeProvider } from "@/components/ThemeContext";
 import { Header } from "@/components/Header";
+import { DocumentTitle } from "@/components/DocumentTitle";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -11,8 +12,8 @@ const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Liar | 라이어 게임",
-  description: "Play the Liar Game online! | 라이어 게임을 온라인으로 즐겨보세요!",
+  title: "Liar",
+  description: "Play the Liar Game online!",
 };
 
 export default function RootLayout({ children }) {
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
       >
         <ThemeProvider>
           <LanguageProvider>
+            <DocumentTitle />
             <Header />
             
             {/* Main content with padding to account for fixed header */}
