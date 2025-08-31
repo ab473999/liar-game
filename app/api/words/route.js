@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/prisma';
 
 export async function GET(request) {
   try {
@@ -28,9 +26,14 @@ export async function GET(request) {
       );
     }
     
-    // Get all words for this theme
+    // Get all words for this theme - optimized query
     const words = await prisma.word.findMany({
-      where: { themeId: theme.id }
+      where: { themeId: theme.id },
+      select: {
+        wordKo: true,
+        wordEn: true,
+        wordIt: true
+      }
     });
     
     // Format words based on language preference
@@ -59,7 +62,5 @@ export async function GET(request) {
       { success: false, error: 'Failed to fetch words' },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

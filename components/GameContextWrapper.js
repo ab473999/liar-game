@@ -5,7 +5,6 @@ const GameContext = createContext();
 
 export const GameContextWrapper = ({ children }) => {
   const [playerNum, setPlayerNum] = useState(3);
-  const [timer, setTimer] = useState(60);
   const [spyMode, setSpyMode] = useState(false);
   const [spyNumber, setSpyNumber] = useState(0);
   const [theme, setTheme] = useState("");
@@ -17,6 +16,8 @@ export const GameContextWrapper = ({ children }) => {
 
   useEffect(() => {
     const fetchThemes = async () => {
+
+      
       try {
         setLoading(true);
         setError(null);
@@ -33,7 +34,7 @@ export const GameContextWrapper = ({ children }) => {
         
         if (result.success) {
           setDbData(result.data);
-          console.log('Themes loaded:', result.data);
+          console.log('Themes loaded:', result.data.length, 'themes');
         } else {
           setError(result.error || 'Failed to load themes');
           console.error('Failed to load themes:', result.error);
@@ -54,8 +55,6 @@ export const GameContextWrapper = ({ children }) => {
       value={{
         playerNum,
         setPlayerNum,
-        timer,
-        setTimer,
         spyMode,
         setSpyMode,
         spyNumber,

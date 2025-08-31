@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PackageJson from "@/package.json";
 import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -8,6 +8,13 @@ const Intro = () => {
   const [easterEggMode, setEasterEggMode] = useState(false);
   const [code01] = useState("onnuri");
   const [codeActivated, setCodeActivated] = useState(false);
+  
+  // Prefetch themes when intro loads to make settings page instant
+  useEffect(() => {
+    fetch('/api/themes?easterEgg=false').catch(() => {
+      // Silently fail - this is just a prefetch
+    });
+  }, []);
 
   const easterEgg = () => {
     console.log("You have discovered an Easter Egg 🥚 !");

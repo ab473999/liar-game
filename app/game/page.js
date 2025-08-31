@@ -9,7 +9,6 @@ import Finish from "@/components/Finish";
 export default function Game() {
   const {
     playerNum,
-    timer,
     spyMode,
     spyNumber,
     theme,
@@ -60,7 +59,6 @@ export default function Game() {
         <Select
           globalState={{
             playerNum,
-            timer,
             spyMode,
             spyNumber,
             theme,
@@ -76,7 +74,7 @@ export default function Game() {
       );
       break;
     case 2:
-      gameView = <Play nextStage={progressNextStage} resetToWordReveal={resetToWordReveal} />;
+      gameView = <Play resetToWordReveal={resetToWordReveal} />;
       break;
     case 3:
       gameView = (
@@ -105,7 +103,6 @@ export default function Game() {
         <Select
           globalState={{
             playerNum,
-            timer,
             spyMode,
             spyNumber,
             theme,

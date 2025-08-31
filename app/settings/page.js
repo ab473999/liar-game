@@ -182,8 +182,13 @@ export default function Settings() {
       <div className="m-4">
         <h2>{t("settings.theme")} {theme ? (t(`themes.${theme}`, null) || themeKr || "") : ""}</h2>
         {loading ? (
-          <div className="mt-8 text-center">
-            <p className="text-gray-400">{t("common.loading")}</p>
+          <div className="grid grid-cols-2 gap-4 mt-8">
+            {/* Skeleton loader for themes */}
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="h-12 bg-gray-700 rounded"></div>
+              </div>
+            ))}
           </div>
         ) : error ? (
           <div className="mt-8 text-center">
