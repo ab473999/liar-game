@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import PackageJson from "@/package.json";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Intro = () => {
-  const [headlineText] = useState("Game");
+  const { t } = useTranslation();
   const [easterEggMode, setEasterEggMode] = useState(false);
   const [code01] = useState("onnuri");
   const [codeActivated, setCodeActivated] = useState(false);
-  const [codeActivatedText, setCodeActivatedText] = useState("");
 
   const easterEgg = () => {
     console.log("You have discovered an Easter Egg 🥚 !");
@@ -18,7 +18,6 @@ const Intro = () => {
     if (input.target.value === code01) {
       console.log("Activated");
       setCodeActivated(true);
-      setCodeActivatedText("온누리 모드 Activated");
       this.props.parentCallbackEasterEgg(code01);
     }
   };
@@ -26,16 +25,16 @@ const Intro = () => {
   return (
     <section className="text-center flex flex-col">
       <h1 className="my-1 mx-0">
-        Liar{" "}
+        {t("intro.title.liar")}{" "}
         <span className="text-[2.5rem]" onClick={easterEgg}>
-          {headlineText}
+          {t("intro.title.game")}
         </span>
       </h1>
-      <p className="mb-8">누가 거짓말을 하고 있을까요?</p>
+      <p className="mb-8">{t("intro.subtitle")}</p>
       {easterEggMode ? (
         <input
-          className="easterEggInput mb-6 rounded-md text-base p-2"
-          placeholder="코드를 입력하세요"
+          className="easterEggInput mb-6 rounded-md text-base p-2 text-black"
+          placeholder={t("intro.easterEgg.placeholder")}
           onChange={specialCode}
         ></input>
       ) : (
@@ -43,13 +42,13 @@ const Intro = () => {
       )}
       {codeActivated ? (
         <p className="mb-8 bg-transparent text-white text-lg p-4 border border-light-blue-300">
-          {codeActivatedText}
+          {t("intro.easterEgg.onnuriMode")}
         </p>
       ) : (
         ""
       )}
-      <Link href="/settings">게임하기</Link>
-      <p className="mt-20 text-base">version v{PackageJson.version}</p>
+      <Link href="/settings">{t("intro.playButton")}</Link>
+      <p className="mt-20 text-base">{t("common.version")} v{PackageJson.version}</p>
     </section>
   );
 };

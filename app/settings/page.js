@@ -2,9 +2,11 @@
 
 // import { useEffect } from "react";
 import { useGameContext } from "@/components/GameContextWrapper";
+import { useTranslation } from "@/hooks/useTranslation";
 import Link from "next/link";
 
 export default function Settings() {
+  const { t } = useTranslation();
   const {
     playerNum,
     setPlayerNum,
@@ -24,19 +26,57 @@ export default function Settings() {
   // After apiData state has value from the API
   if (dbData) {
     themeButton = dbData.map((theme) => {
+      // Skip corrupted or invalid theme data
+      if (!theme.type || typeof theme.type !== 'string') {
+        return null;
+      }
+      
+      // Get the translated theme name, fallback to typeKr, then type
+      const themeName = t(`themes.${theme.type}`, null) || theme.typeKr || theme.type;
+      
       return theme.easterEgg === false || theme.easterEgg === easterEgg ? (
         <Link
           href="/game"
-          onClick={() => setTheme(theme.type)}
+          onClick={() => {
+            setTheme(theme.type);
+            setThemeKr(theme.typeKr || themeName);
+          }}
           key={theme.type}
           className="inline-block border border-white text-lg hover:opacity-75"
         >
-          {theme.typeKr}
+          {themeName}
         </Link>
       ) : (
         "" // Empty string
       );
-    });
+    }).filter(Boolean); // Remove null entries
+  } else {
+    // Fallback to local themes when dbData is not available
+    const localThemes = [
+      { type: 'food', typeKr: '음식' },
+      { type: 'place', typeKr: '장소' },
+      { type: 'occupation', typeKr: '직업' },
+      { type: 'biblecharacter', typeKr: '성경인물' },
+      { type: 'onnurichanyangteammember', typeKr: '온누리 찬양팀' }
+    ];
+    
+    themeButton = localThemes.map((theme) => {
+      const themeName = t(`themes.${theme.type}`, null) || theme.typeKr || theme.type;
+      
+      return theme.type !== 'onnurichanyangteammember' || easterEgg === 'onnuri' ? (
+        <Link
+          href="/game"
+          onClick={() => {
+            setTheme(theme.type);
+            setThemeKr(themeName);
+          }}
+          key={theme.type}
+          className="inline-block border border-white text-lg hover:opacity-75"
+        >
+          {themeName}
+        </Link>
+      ) : null;
+    }).filter(Boolean);
   }
 
   let spyModeSelect =
@@ -63,11 +103,11 @@ export default function Settings() {
 
   return (
     <section className="text-center flex flex-col space-y-4">
-      <h1>설정 창</h1>
+      <h1>{t("settings.title")}</h1>
 
       <form className="flex flex-col items-center">
         <label className="m-4 space-y-4">
-          <h2>참여인원:</h2>
+          <h2>{t("settings.playerCount")}</h2>
           <select
             value={playerNum}
             onChange={(event) => setPlayerNum(Number(event.target.value))}
@@ -94,29 +134,29 @@ export default function Settings() {
           </select>
         </label>
         <label className="set-timer m-4 space-y-4">
-          <h2>제한시간:</h2>
+          <h2>{t("settings.timeLimit")}</h2>
           <select
             value={timer}
             onChange={(event) => setTimer(event.target.value)}
             className=""
           >
-            <option value="60">60 초</option>
-            <option value="90">90 초</option>
-            <option value="120">120 초 (2분)</option>
-            <option value="150">150 초 (2분 30초)</option>
-            <option value="180">180 초 (3분)</option>
-            <option value="240">240 초 (4분)</option>
-            <option value="300">300 초 (5분)</option>
-            <option value="unlimited">무제한</option>
+            <option value="60">{t("settings.time.60")}</option>
+            <option value="90">{t("settings.time.90")}</option>
+            <option value="120">{t("settings.time.120")}</option>
+            <option value="150">{t("settings.time.150")}</option>
+            <option value="180">{t("settings.time.180")}</option>
+            <option value="240">{t("settings.time.240")}</option>
+            <option value="300">{t("settings.time.300")}</option>
+            <option value="unlimited">{t("settings.time.unlimited")}</option>
           </select>
         </label>
         <label className="mt-16">
           <span className="caption" style={{ fontSize: 1 + "rem" }}>
-            **스파이 모드는 5명 이상일 경우 가능합니다!**
+            {t("settings.spyMode.note")}
           </span>
           <br />
           <div className={`spyNumSelect ${spyModeToggle}`}>
-            스파이 모드:
+            {t("settings.spyMode.label")}:
             <input
               name="spyMode"
               type="checkbox"
@@ -141,7 +181,7 @@ export default function Settings() {
       </form>
 
       <div className="m-4">
-        <h2>주제: {`${themeKr}`}</h2>
+        <h2>{t("settings.theme")} {theme ? (t(`themes.${theme}`, null) || themeKr || "") : ""}</h2>
         <div className="grid grid-cols-2 gap-4 mt-8">
           {themeButton.map((button) => {
             return button;

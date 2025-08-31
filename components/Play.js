@@ -1,32 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useGameContext } from "@/components/GameContextWrapper";
+import { useTranslation } from "@/hooks/useTranslation";
 import Timer from "@/components/Timer";
 
 const Play = ({ nextStage }) => {
   const { timer } = useGameContext();
+  const { t } = useTranslation();
 
-  const [displayStatus, setDisplayStatus] = useState("게임 시작!");
-  const [displayStatus02, setDisplayStatus02] = useState(
-    "게임이 시작되었습니다! 라이어를 찾아주세요!"
-  );
+  const [displayStatus, setDisplayStatus] = useState("");
+  const [displayStatus02, setDisplayStatus02] = useState("");
   const [findLiar, setFindLiar] = useState(false);
 
   useEffect(() => {
     if (timer === "unlimited") {
-      setDisplayStatus("시간은 무제한입니다.");
-      setDisplayStatus02("준비가 되면 아래의 버튼을 선택하여 진행해주세요.");
+      setDisplayStatus(t("game.play.timeUnlimited"));
+      setDisplayStatus02(t("game.play.whenReady"));
       setFindLiar(true);
     } else {
-      setDisplayStatus("게임 시작!");
-      setDisplayStatus02("게임이 시작되었습니다! 라이어를 찾아주세요!");
+      setDisplayStatus(t("game.play.gameStart"));
+      setDisplayStatus02(t("game.play.gameStartedFindLiar"));
       setFindLiar(false);
     }
-  }, []);
+  }, [timer, t]);
 
   const checkTimerEnds = (timer) => {
-    let text = "시간이 다 되었습니다! 라이어를 지목해주세요!";
-
-    setDisplayStatus(text);
+    setDisplayStatus(t("game.play.timeUp"));
     setDisplayStatus02("");
     setFindLiar(true);
   };
@@ -47,12 +45,12 @@ const Play = ({ nextStage }) => {
 
   let findLiarButton01 = (
     <button key="1" value="liar-found" onClick={liarStatus}>
-      라이어를 찾았습니다!
+      {t("game.play.foundLiar")}
     </button>
   );
   let findLiarButton02 = (
     <button key="2" value="liar-not-found" onClick={liarStatus}>
-      라이어를 찾지 못했습니다!
+      {t("game.play.notFoundLiar")}
     </button>
   );
   let findLiarButton = [findLiarButton01, findLiarButton02];

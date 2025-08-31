@@ -1,0 +1,34 @@
+{
+  "buttons": {
+    "newGame": {
+      "ko": "새 게임하기",
+      "en": "New Game",
+      "it": "Nuova Partita"
+    },
+    "confirm": {
+      "ko": "확인했습니다!",
+      "en": "Confirmed!",
+      "it": "Confermato!"
+    },
+    "select": {
+      "ko": "선택하세요",
+      "en": "Select",
+      "it": "Seleziona"
+    },
+    "startGame": {
+      "ko": "게임 시작!",
+      "en": "Start Game!",
+      "it": "Inizia il Gioco!"
+    },
+    "gameStart": {
+      "ko": "게임시작!",
+      "en": "Start Game!",
+      "it": "Inizia!"
+    }
+  },
+  "version": {
+    "ko": "버전",
+    "en": "version",
+    "it": "versione"
+  }
+}

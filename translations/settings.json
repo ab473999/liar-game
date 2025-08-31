@@ -1,0 +1,76 @@
+{
+  "title": {
+    "ko": "설정 창",
+    "en": "Settings",
+    "it": "Impostazioni"
+  },
+  "playerCount": {
+    "ko": "참여인원:",
+    "en": "Number of Players:",
+    "it": "Numero di Giocatori:"
+  },
+  "timeLimit": {
+    "ko": "제한시간:",
+    "en": "Time Limit:",
+    "it": "Limite di Tempo:"
+  },
+  "spyMode": {
+    "label": {
+      "ko": "스파이 모드",
+      "en": "Spy Mode",
+      "it": "Modalità Spia"
+    },
+    "note": {
+      "ko": "**스파이 모드는 5명 이상일 경우 가능합니다!**",
+      "en": "**Spy mode requires 5 or more players!**",
+      "it": "**La modalità spia richiede 5 o più giocatori!**"
+    }
+  },
+  "theme": {
+    "ko": "주제:",
+    "en": "Theme:",
+    "it": "Tema:"
+  },
+  "time": {
+    "60": {
+      "ko": "60 초",
+      "en": "60 seconds",
+      "it": "60 secondi"
+    },
+    "90": {
+      "ko": "90 초",
+      "en": "90 seconds",
+      "it": "90 secondi"
+    },
+    "120": {
+      "ko": "120 초 (2분)",
+      "en": "120 seconds (2 min)",
+      "it": "120 secondi (2 min)"
+    },
+    "150": {
+      "ko": "150 초 (2분 30초)",
+      "en": "150 seconds (2 min 30 sec)",
+      "it": "150 secondi (2 min 30 sec)"
+    },
+    "180": {
+      "ko": "180 초 (3분)",
+      "en": "180 seconds (3 min)",
+      "it": "180 secondi (3 min)"
+    },
+    "240": {
+      "ko": "240 초 (4분)",
+      "en": "240 seconds (4 min)",
+      "it": "240 secondi (4 min)"
+    },
+    "300": {
+      "ko": "300 초 (5분)",
+      "en": "300 seconds (5 min)",
+      "it": "300 secondi (5 min)"
+    },
+    "unlimited": {
+      "ko": "무제한",
+      "en": "Unlimited",
+      "it": "Illimitato"
+    }
+  }
+}

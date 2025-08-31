@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGameContext } from "@/components/GameContextWrapper";
+import { useTranslation } from "@/hooks/useTranslation";
 import foodData from "@/data/food.json";
 import placeData from "@/data/place.json";
 import occupationData from "@/data/occupation.json";
@@ -16,13 +17,14 @@ const Select = (props) => {
     easterEgg,
     setEasterEgg,
   } = useGameContext();
+  const { t } = useTranslation();
 
   const [vocab, setVocab] = useState("");
   const [liar, setLiar] = useState(1);
   const [spy, setSpy] = useState([]);
   const [buttonDisabled, setButtonDisabled] = useState([]);
-  const [displayStatus, setDisplayStatus] = useState("플레이어를 선택해주세요");
-  const [buttonDisabledText, setButtonDisabledText] = useState("확인했습니다!");
+  const [displayStatus, setDisplayStatus] = useState("");
+  const [buttonDisabledText, setButtonDisabledText] = useState("");
   const [beginGame, setBeginGame] = useState(false);
   const [showCardStatus, setShowCardStatus] = useState(false);
   // const [easterEgg, setEasterEgg] = useState("");
@@ -31,6 +33,10 @@ const Select = (props) => {
   const [spyState, setSpyState] = useState(false);
 
   useEffect(() => {
+    // Initialize display text
+    setDisplayStatus(t("game.select.choosePlayer"));
+    setButtonDisabledText(t("common.buttons.confirm"));
+    
     // Set Easter Egg
     if (easterEgg !== "") {
       setEasterEgg(easterEgg);
@@ -90,14 +96,14 @@ const Select = (props) => {
     let card = event.target.className;
 
     if (card.includes("no-liar")) {
-      setDisplayStatus(`이번에 선택된 단어는:`);
+      setDisplayStatus(t("game.select.selectedWord"));
       setPlayerState(false);
     } else if (card.includes("spy")) {
-      setDisplayStatus(`당신은`);
+      setDisplayStatus(t("game.select.youAre"));
       setPlayerState(true);
       setSpyState(true);
     } else {
-      setDisplayStatus(`당신은`);
+      setDisplayStatus(t("game.select.youAre"));
       setPlayerState(true);
       setSpyState(false);
     }
@@ -107,24 +113,24 @@ const Select = (props) => {
 
   const resetDisplayStatus = () => {
     if (buttonDisabled.length === playerNum) {
-      console.log("모든 플레이어가 선택 되었습니다");
+      console.log(t("game.select.allSelected"));
 
-      setDisplayStatus("게임이 시작되었습니다!");
+      setDisplayStatus(t("game.select.gameStarted"));
       setBeginGame(true);
       props.nextStage(2);
       props.setVocab(vocab, selectData);
     } else {
       if (playerNum - buttonDisabled.length === 1) {
-        console.log("One player left");
-        setButtonDisabledText("게임 시작!");
+        console.log(t("game.select.onePlayerLeft"));
+        setButtonDisabledText(t("common.buttons.startGame"));
       }
-      setDisplayStatus("플레이어를 선택해주세요");
+      setDisplayStatus(t("game.select.choosePlayer"));
     }
 
     setShowCardStatus(false);
   };
 
-  let defaultText = "선택하세요";
+  let defaultText = t("common.buttons.select");
 
   let playersCard = [];
   for (let i = 0; i < playerNum; i++) {
@@ -184,12 +190,12 @@ const Select = (props) => {
     if (playerState) {
       textView = spyState ? (
         <span>
-          <span className="red">스파이</span> 입니다. 이번에 선택된 단어는:
+          <span className="red">{t("game.select.spy")}</span>{t("game.select.spyWord")}
           <br />
           <span className="green">{vocab}</span>
         </span>
       ) : (
-        <span className="red">라이어 입니다.</span>
+        <span className="red">{t("game.select.liar")}</span>
       );
     } else {
       textView = (
@@ -203,7 +209,7 @@ const Select = (props) => {
     textView = null;
   }
   let nextButton =
-    displayStatus === "플레이어를 선택해주세요" ? (
+    displayStatus === t("game.select.choosePlayer") ? (
       ``
     ) : (
       <button onClick={resetDisplayStatus}>{buttonDisabledText}</button>

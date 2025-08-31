@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useGameContext } from "@/components/GameContextWrapper";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Timer = ({ timerCheck }) => {
   const { timer } = useGameContext();
+  const { t } = useTranslation();
   const [seconds, setSeconds] = useState(60);
   const [unlimited, setUnlimited] = useState(false);
 
@@ -33,7 +35,7 @@ const Timer = ({ timerCheck }) => {
   return (
     <div>
       <p>
-        <span className={timerColor}>{seconds}</span> {unlimited ? "" : "초"}
+        <span className={timerColor}>{seconds}</span> {unlimited ? "" : ` ${t("game.timer.seconds")}`}
       </p>
     </div>
   );

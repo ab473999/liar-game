@@ -1,0 +1,132 @@
+{
+  "select": {
+    "choosePlayer": {
+      "ko": "플레이어를 선택해주세요",
+      "en": "Please select a player",
+      "it": "Seleziona un giocatore"
+    },
+    "selectedWord": {
+      "ko": "이번에 선택된 단어는:",
+      "en": "The selected word is:",
+      "it": "La parola selezionata è:"
+    },
+    "youAre": {
+      "ko": "당신은",
+      "en": "You are",
+      "it": "Tu sei"
+    },
+    "spy": {
+      "ko": "스파이",
+      "en": "a Spy",
+      "it": "una Spia"
+    },
+    "spyWord": {
+      "ko": "입니다. 이번에 선택된 단어는:",
+      "en": ". The selected word is:",
+      "it": ". La parola selezionata è:"
+    },
+    "liar": {
+      "ko": "라이어 입니다.",
+      "en": "the Liar.",
+      "it": "il Bugiardo."
+    },
+    "allSelected": {
+      "ko": "모든 플레이어가 선택 되었습니다",
+      "en": "All players have been selected",
+      "it": "Tutti i giocatori sono stati selezionati"
+    },
+    "gameStarted": {
+      "ko": "게임이 시작되었습니다!",
+      "en": "Game has started!",
+      "it": "Il gioco è iniziato!"
+    },
+    "onePlayerLeft": {
+      "ko": "One player left",
+      "en": "One player left",
+      "it": "Un giocatore rimasto"
+    }
+  },
+  "play": {
+    "gameStart": {
+      "ko": "게임 시작!",
+      "en": "Game Start!",
+      "it": "Inizia il Gioco!"
+    },
+    "gameStartedFindLiar": {
+      "ko": "게임이 시작되었습니다! 라이어를 찾아주세요!",
+      "en": "Game has started! Find the liar!",
+      "it": "Il gioco è iniziato! Trova il bugiardo!"
+    },
+    "timeUnlimited": {
+      "ko": "시간은 무제한입니다.",
+      "en": "Time is unlimited.",
+      "it": "Il tempo è illimitato."
+    },
+    "whenReady": {
+      "ko": "준비가 되면 아래의 버튼을 선택하여 진행해주세요.",
+      "en": "When ready, select the button below to proceed.",
+      "it": "Quando sei pronto, seleziona il pulsante qui sotto per procedere."
+    },
+    "timeUp": {
+      "ko": "시간이 다 되었습니다! 라이어를 지목해주세요!",
+      "en": "Time's up! Point out the liar!",
+      "it": "Tempo scaduto! Indica il bugiardo!"
+    },
+    "foundLiar": {
+      "ko": "라이어를 찾았습니다!",
+      "en": "Found the liar!",
+      "it": "Trovato il bugiardo!"
+    },
+    "notFoundLiar": {
+      "ko": "라이어를 찾지 못했습니다!",
+      "en": "Couldn't find the liar!",
+      "it": "Non sono riuscito a trovare il bugiardo!"
+    }
+  },
+  "finish": {
+    "selectWord": {
+      "ko": "라이어는 단어를 선택해주세요:",
+      "en": "Liar, please select the word:",
+      "it": "Bugiardo, seleziona la parola:"
+    },
+    "liarWins": {
+      "ko": "라이어가 승리하였습니다!",
+      "en": "The liar wins!",
+      "it": "Il bugiardo vince!"
+    },
+    "liarLoses": {
+      "ko": "라이어가 패하였습니다!",
+      "en": "The liar loses!",
+      "it": "Il bugiardo perde!"
+    },
+    "correctGuess": {
+      "ko": "라이어가 선택한 단어가 맞습니다!",
+      "en": "The liar guessed correctly!",
+      "it": "Il bugiardo ha indovinato!"
+    },
+    "notFound": {
+      "ko": "라이어를 찾지 못하였습니다!",
+      "en": "Couldn't find the liar!",
+      "it": "Non sono riuscito a trovare il bugiardo!"
+    },
+    "selectedWord": {
+      "ko": "선택된 단어는:",
+      "en": "The selected word was:",
+      "it": "La parola selezionata era:"
+    }
+  },
+  "timer": {
+    "seconds": {
+      "ko": "초",
+      "en": "seconds",
+      "it": "secondi"
+    }
+  },
+  "console": {
+    "couldNotFindLiar": {
+      "ko": "Could not find liar",
+      "en": "Could not find liar",
+      "it": "Could not find liar"
+    }
+  }
+}

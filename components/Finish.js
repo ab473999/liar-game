@@ -2,30 +2,34 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Finish = ({ liarStatus, vocab, theme, selectData }) => {
+  const { t } = useTranslation();
   const [liarGuess, setLiarGuess] = useState(false);
   const [liarGuessText, setLiarGuessText] = useState("");
-  const [headerText, setHeaderText] = useState("라이어는 단어를 선택해주세요:");
+  const [headerText, setHeaderText] = useState("");
   const [liarWin, setLiarWin] = useState(true);
 
   useEffect(() => {
     if (liarStatus !== "found") {
-      console.log("Could not find liar");
-      setHeaderText("라이어가 승리하였습니다!");
-      setLiarGuessText(`라이어를 찾지 못하였습니다!`);
+      console.log(t("game.console.couldNotFindLiar"));
+      setHeaderText(t("game.finish.liarWins"));
+      setLiarGuessText(t("game.finish.notFound"));
       setLiarGuess(true);
+    } else {
+      setHeaderText(t("game.finish.selectWord"));
     }
-  }, [liarStatus]);
+  }, [liarStatus, t]);
 
   const handleLiarGuess = (guess) => {
     console.log(guess.target.value, vocab);
     if (guess.target.value === vocab) {
-      setHeaderText("라이어가 승리하였습니다!");
-      setLiarGuessText(`라이어가 선택한 단어가 맞습니다!`);
+      setHeaderText(t("game.finish.liarWins"));
+      setLiarGuessText(t("game.finish.correctGuess"));
       setLiarWin(true);
     } else {
-      setHeaderText("라이어가 패하였습니다!");
+      setHeaderText(t("game.finish.liarLoses"));
       setLiarGuessText(``);
       setLiarWin(false);
     }
@@ -51,7 +55,7 @@ const Finish = ({ liarStatus, vocab, theme, selectData }) => {
 
   let newGame = (
     <Link href="/settings" className="col-span-3">
-      새 게임하기
+      {t("common.buttons.newGame")}
     </Link>
   );
 
@@ -66,7 +70,7 @@ const Finish = ({ liarStatus, vocab, theme, selectData }) => {
       <p className="mt-6">{liarGuessText}</p>
       {liarGuess ? (
         <p>
-          선택된 단어는:<span className="green ml-2">{vocab}</span>
+          {t("game.finish.selectedWord")}<span className="green ml-2">{vocab}</span>
         </p>
       ) : (
         <></>
