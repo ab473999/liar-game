@@ -1,14 +1,14 @@
-# Liar Game
+# 라이어 게임
 
-A website where you can play the Liar Game.
+라이어 게임을 할 수 있는 사이트입니다.
 
-## Motivation for Creating This
+## 만들게 된 동기
 
-In the past, I played a game called "Liar Game" with close friends. It was really fun, and when I wanted to play it again with other friends, the apps that helped facilitate the Liar Game were only available for Android. Since most of us were iPhone users, it was difficult for us to play. To address this issue, I created this web-based game so that many users can easily access and play the game.
+예전에 친한 친구들과 함께 라이어 게임이라는 것을 해보았습니다. 정말 재밌었고 다음번에 또 다른 친구들과 같이 하려고 했을 때, 라이어게임을 할 수 있도록 도와주는 어플은 안드로이드만 다운이 가능했고, 아이폰 유저가 대부분인 저희로선 플레이를 하기가 힘들었습니다. 그레서 이 부분을 보안하고자 많은 사용자들이 쉽게 접속할 수 있도록 웹에서 게임을 진행 할 수 있도록 만들었습니다.
 
-When I originally created this game, it was purely for study purposes and for enjoying it with my friends. Creating it was a great learning experience, and even after 5 years, many users still visit the site. Now, I've decided to update this precious memory from the past to develop it further. Please enjoy and visit often. Thank you.
+과거에 이 게임을 만들때는 순수히 공부와 제가 저의 친구들과 함께 즐기기 위함이었고 만들면서 정말 많은 공부가 되었었고 5년이 지난 지금 아직도 많은 사용자들이 방문하고 계십니다. 이제 과거에 만든 이 소중한 추억도 발전을 하고자 새롭게 업데이트를 진행해 보았습니다. 많이 즐겨주시고 방문해주세요. 감사합니다.
 
-## License
+## 저작권
 
 The MIT License
 
@@ -34,15 +34,15 @@ THE SOFTWARE.
 
 ---
 
-## Development
+## 개발
 
-### Update on February 25, 2024
+### 2024년 2월 25일 업데이트
 
-Originally using React.js, I've now updated the project to Next.js. I've simplified the tech stack to improve efficiency and eliminate unnecessary server usage during development. The backend uses Firebase (Next.js + Firebase).
+본래 React.js를 사용하다 이번에 Next.js로 새롭게 업데이트를 진행하였습니다. 테크 스택도 간소화하여 개발할때 불필요한 서버 이용과 효율성을 높였습니다. 백앤드로는 Firebase를 사용합니다 (Next.js + Firebase).
 
-### Previous Updates
+### 이전 업데이트
 
-This project was built with React.js. I personally use `yarn` when working with it.
+이 프로젝트는 React.js를 사용했습니다. 저는 개인적으로 사용할때 `yarn`을 사용합니다.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
