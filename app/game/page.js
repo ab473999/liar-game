@@ -29,10 +29,13 @@ export default function Game() {
   }, [easterEgg]);
 
   const progressNextStage = (stage) => {
+    console.log(`[Game] Moving to stage ${stage}`);
     setStage(stage);
   };
 
   const updateGlobalVocab = (vocab, selectData) => {
+    console.log(`[Game] Vocab set to: "${vocab}"`);
+    console.log(`[Game] SelectData contains ${selectData ? selectData.length : 0} words`);
     setVocab(vocab);
     setSelectData(selectData);
   };

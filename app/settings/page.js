@@ -16,10 +16,14 @@ export default function Settings() {
     setSpyMode,
     spyNumber,
     setSpyNumber,
+    theme,
     setTheme,
+    setThemeKr,
     themeKr,
     easterEgg,
     dbData,
+    loading,
+    error,
   } = useGameContext();
 
   let themeButton = [];
@@ -38,6 +42,7 @@ export default function Settings() {
         <Link
           href="/game"
           onClick={() => {
+            console.log(`[Settings] Theme selected: ${theme.type}`);
             setTheme(theme.type);
             setThemeKr(theme.typeKr || themeName);
           }}
@@ -98,8 +103,11 @@ export default function Settings() {
       "" // Empty string
     );
 
-  let spyModeToggle =
-    playerNum >= 5 ? "" : "opacity-50 cursor-not-allowed pointer-events-none";
+  // Auto-disable spy mode if player count drops below 5
+  if (playerNum < 5 && spyMode) {
+    setSpyMode(false);
+    setSpyNumber(0);
+  }
 
   return (
     <section className="text-center flex flex-col space-y-4">
@@ -110,7 +118,15 @@ export default function Settings() {
           <h2>{t("settings.playerCount")}</h2>
           <select
             value={playerNum}
-            onChange={(event) => setPlayerNum(Number(event.target.value))}
+            onChange={(event) => {
+              const newPlayerNum = Number(event.target.value);
+              setPlayerNum(newPlayerNum);
+              // Auto-disable spy mode if dropping below 5 players
+              if (newPlayerNum < 5 && spyMode) {
+                setSpyMode(false);
+                setSpyNumber(0);
+              }
+            }}
             className=""
           >
             <option value="3">3</option>
@@ -150,43 +166,60 @@ export default function Settings() {
             <option value="unlimited">{t("settings.time.unlimited")}</option>
           </select>
         </label>
-        <label className="mt-16">
-          <span className="caption" style={{ fontSize: 1 + "rem" }}>
-            {t("settings.spyMode.note")}
-          </span>
-          <br />
-          <div className={`spyNumSelect ${spyModeToggle}`}>
-            {t("settings.spyMode.label")}:
-            <input
-              name="spyMode"
-              type="checkbox"
-              checked={spyMode}
-              onChange={(event) => {
-                let value =
-                  event.target.type === "checkbox"
-                    ? event.target.checked
-                    : event.target.value;
-                if (!value) {
-                  setSpyNumber(0);
-                }
-                setSpyMode(value);
-                setSpyNumber(1);
-              }}
-              disabled={spyModeToggle}
-            />
-          </div>
-          <br />
-          {spyModeSelect}
-        </label>
+        {playerNum >= 5 && (
+          <label className="mt-16">
+            <span className="caption" style={{ fontSize: 1 + "rem" }}>
+              {t("settings.spyMode.note")}
+            </span>
+            <br />
+            <div className="spyNumSelect">
+              {t("settings.spyMode.label")}:
+              <input
+                name="spyMode"
+                type="checkbox"
+                checked={spyMode}
+                onChange={(event) => {
+                  let value =
+                    event.target.type === "checkbox"
+                      ? event.target.checked
+                      : event.target.value;
+                  if (!value) {
+                    setSpyNumber(0);
+                  }
+                  setSpyMode(value);
+                  setSpyNumber(1);
+                }}
+              />
+            </div>
+            <br />
+            {spyModeSelect}
+          </label>
+        )}
       </form>
 
       <div className="m-4">
         <h2>{t("settings.theme")} {theme ? (t(`themes.${theme}`, null) || themeKr || "") : ""}</h2>
-        <div className="grid grid-cols-2 gap-4 mt-8">
-          {themeButton.map((button) => {
-            return button;
-          })}
-        </div>
+        {loading ? (
+          <div className="mt-8 text-center">
+            <p className="text-gray-400">{t("common.loading")}</p>
+          </div>
+        ) : error ? (
+          <div className="mt-8 text-center">
+            <p className="text-red-400">Error: {error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="mt-4 px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
+            >
+              Refresh Page
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 mt-8">
+            {themeButton.map((button) => {
+              return button;
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

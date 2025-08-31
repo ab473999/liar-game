@@ -1,21 +1,7 @@
 "use client";
 import { createContext, useEffect, useState, useContext } from "react";
-import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 
 const GameContext = createContext();
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCVaCt88HHIpwktXRD7yvp-ocmhwOm_sks",
-  authDomain: "liar-game-15738.firebaseapp.com",
-  projectId: "liar-game-15738",
-  storageBucket: "liar-game-15738.appspot.com",
-  messagingSenderId: "604644848255",
-  appId: "1:604644848255:web:418478bd5426c19c09854a",
-  measurementId: "G-4JGZ8JGX1V",
-};
 
 export const GameContextWrapper = ({ children }) => {
   const [playerNum, setPlayerNum] = useState(3);
@@ -25,25 +11,43 @@ export const GameContextWrapper = ({ children }) => {
   const [theme, setTheme] = useState("");
   const [themeKr, setThemeKr] = useState("");
   const [easterEgg, setEasterEgg] = useState("false");
-  // const [apiData, setApiData] = useState(null);
   const [dbData, setDbData] = useState(null);
-
-  const app = initializeApp(firebaseConfig);
-  // const analytics = getAnalytics(app);
-  const db = getFirestore(app);
-
-  // console.log("db", db);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await getDocs(collection(db, "words"));
-      const data = querySnapshot.docs.map((doc) => doc.data());
-      setDbData(data);
-      console.log(data);
+    const fetchThemes = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch themes from our new API
+        const includeEasterEgg = easterEgg === "onnuri";
+        const response = await fetch(`/api/themes?easterEgg=${includeEasterEgg}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch themes');
+        }
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          setDbData(result.data);
+          console.log('Themes loaded:', result.data);
+        } else {
+          setError(result.error || 'Failed to load themes');
+          console.error('Failed to load themes:', result.error);
+        }
+      } catch (err) {
+        console.error('Error fetching themes:', err);
+        setError('Failed to load themes. Please refresh the page.');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchData();
-  }, [db]);
+    fetchThemes();
+  }, [easterEgg]);
 
   return (
     <GameContext.Provider
@@ -62,9 +66,9 @@ export const GameContextWrapper = ({ children }) => {
         setThemeKr,
         easterEgg,
         setEasterEgg,
-        // apiData,
-        // setApiData,
         dbData,
+        loading,
+        error,
       }}
     >
       {children}

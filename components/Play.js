@@ -24,20 +24,27 @@ const Play = ({ nextStage }) => {
   }, [timer, t]);
 
   const checkTimerEnds = (timer) => {
+    console.log(`[Play] Timer ended - showing liar decision buttons`);
     setDisplayStatus(t("game.play.timeUp"));
     setDisplayStatus02("");
     setFindLiar(true);
   };
 
   const liarStatus = (status) => {
-    switch (status.target.value) {
+    const decision = status.target.value;
+    console.log(`[Play] Liar decision: ${decision}`);
+    
+    switch (decision) {
       case "liar-found":
+        console.log(`[Play] Moving to stage 3 - Liar was found`);
         nextStage(3);
         break;
       case "liar-not-found":
+        console.log(`[Play] Moving to stage 4 - Liar was NOT found`);
         nextStage(4);
         break;
       default:
+        console.log(`[Play] Moving to stage 4 - Default (Liar NOT found)`);
         nextStage(4);
         break;
     }

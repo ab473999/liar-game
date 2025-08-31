@@ -30,5 +30,15 @@
     "ko": "버전",
     "en": "version",
     "it": "versione"
+  },
+  "loading": {
+    "ko": "로딩 중...",
+    "en": "Loading...",
+    "it": "Caricamento..."
+  },
+  "preparingGame": {
+    "ko": "게임 준비 중...",
+    "en": "Preparing game...",
+    "it": "Preparazione del gioco..."
   }
 }

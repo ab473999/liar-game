@@ -12,23 +12,34 @@ const Finish = ({ liarStatus, vocab, theme, selectData }) => {
   const [liarWin, setLiarWin] = useState(true);
 
   useEffect(() => {
+    console.log(`[Finish] Component loaded with:`);
+    console.log(`  - liarStatus: ${liarStatus}`);
+    console.log(`  - vocab: "${vocab}"`);
+    console.log(`  - selectData: ${selectData ? selectData.length + ' words' : 'null'}`);
+    
     if (liarStatus !== "found") {
-      console.log(t("game.console.couldNotFindLiar"));
+      console.log(`[Finish] Liar was NOT found - Liar wins automatically`);
       setHeaderText(t("game.finish.liarWins"));
       setLiarGuessText(t("game.finish.notFound"));
       setLiarGuess(true);
     } else {
+      console.log(`[Finish] Liar was found - Now liar must guess the word`);
       setHeaderText(t("game.finish.selectWord"));
     }
   }, [liarStatus, t]);
 
   const handleLiarGuess = (guess) => {
-    console.log(guess.target.value, vocab);
-    if (guess.target.value === vocab) {
+    const guessedWord = guess.target.value;
+    console.log(`[Finish] Liar guessed: "${guessedWord}"`);
+    console.log(`[Finish] Correct word was: "${vocab}"`);
+    
+    if (guessedWord === vocab) {
+      console.log(`[Finish] CORRECT! Liar wins!`);
       setHeaderText(t("game.finish.liarWins"));
       setLiarGuessText(t("game.finish.correctGuess"));
       setLiarWin(true);
     } else {
+      console.log(`[Finish] WRONG! Liar loses!`);
       setHeaderText(t("game.finish.liarLoses"));
       setLiarGuessText(``);
       setLiarWin(false);
@@ -36,16 +47,7 @@ const Finish = ({ liarStatus, vocab, theme, selectData }) => {
     setLiarGuess(true);
   };
 
-  console.log({
-    liarStatus,
-    vocab,
-    theme,
-    liarGuess,
-    liarGuessText,
-    headerText,
-    liarWin,
-    selectData,
-  });
+  // Remove redundant console.log since we're logging more specific info now
 
   let guessCards = selectData.map((word) => (
     <button key={word} value={word} onClick={handleLiarGuess}>
