@@ -9,6 +9,11 @@
     "en": "Number of Players:",
     "it": "Numero di Giocatori:"
   },
+  "players": {
+    "ko": "명",
+    "en": "players",
+    "it": "giocatori"
+  },
   "timeLimit": {
     "ko": "제한시간:",
     "en": "Time Limit:",

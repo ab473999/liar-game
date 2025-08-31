@@ -4,6 +4,7 @@
 import { useGameContext } from "@/components/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
 import Link from "next/link";
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -110,44 +111,57 @@ export default function Settings() {
 
   return (
     <section className="text-center flex flex-col space-y-4">
-      <h1>{t("settings.title")}</h1>
-
       <form className="flex flex-col items-center">
-        <label className="m-4 space-y-4">
-          <h2>{t("settings.playerCount")}</h2>
-          <select
-            value={playerNum}
-            onChange={(event) => {
-              const newPlayerNum = Number(event.target.value);
-              setPlayerNum(newPlayerNum);
-              // Auto-disable spy mode if dropping below 5 players
-              if (newPlayerNum < 5 && spyMode) {
-                setSpyMode(false);
-                setSpyNumber(0);
-              }
-            }}
-            className=""
-          >
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-          </select>
-        </label>
+        <div className="m-4 flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <div className="flex flex-col items-center">
+              <button
+                type="button"
+                onClick={() => {
+                  const newPlayerNum = Math.min(20, playerNum + 1);
+                  setPlayerNum(newPlayerNum);
+                }}
+                className={`p-1 transition-colors ${
+                  playerNum >= 20 
+                    ? 'text-gray-600 cursor-not-allowed' 
+                    : 'text-white hover:bg-gray-700 rounded'
+                }`}
+                disabled={playerNum >= 20}
+                aria-label="Increase players"
+              >
+                <ChevronUp size={24} />
+              </button>
+              
+              <div className="text-4xl px-2 py-0 min-w-[60px] text-center">
+                {playerNum}
+              </div>
+              
+              <button
+                type="button"
+                onClick={() => {
+                  const newPlayerNum = Math.max(3, playerNum - 1);
+                  setPlayerNum(newPlayerNum);
+                  // Auto-disable spy mode if dropping below 5 players
+                  if (newPlayerNum < 5 && spyMode) {
+                    setSpyMode(false);
+                    setSpyNumber(0);
+                  }
+                }}
+                className={`p-1 transition-colors ${
+                  playerNum <= 3 
+                    ? 'text-gray-600 cursor-not-allowed' 
+                    : 'text-white hover:bg-gray-700 rounded'
+                }`}
+                disabled={playerNum <= 3}
+                aria-label="Decrease players"
+              >
+                <ChevronDown size={24} />
+              </button>
+            </div>
+            
+            <span className="text-2xl">{t("settings.players", null) || "players"}</span>
+          </div>
+        </div>
         {playerNum >= 5 && (
           <label className="mt-16">
             <span className="caption" style={{ fontSize: 1 + "rem" }}>
