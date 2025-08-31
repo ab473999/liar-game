@@ -46,8 +46,6 @@ model GameSession {
   id            Int      @id @default(autoincrement())
   themeId       Int?     @map("theme_id")
   playerCount   Int      @map("player_count")
-  spyMode       Boolean  @default(false) @map("spy_mode")
-  spyCount      Int      @default(0) @map("spy_count")
   timeLimit     Int?     @map("time_limit")
   selectedWordId Int?    @map("selected_word_id")
   language      String   @default("ko") @db.VarChar(5)

@@ -15,16 +15,6 @@
       "en": "You are",
       "it": "Tu sei"
     },
-    "spy": {
-      "ko": "스파이",
-      "en": "a Spy",
-      "it": "una Spia"
-    },
-    "spyWord": {
-      "ko": "입니다. 이번에 선택된 단어는:",
-      "en": ". The selected word is:",
-      "it": ". La parola selezionata è:"
-    },
     "liar": {
       "ko": "라이어 입니다.",
       "en": "the Liar.",

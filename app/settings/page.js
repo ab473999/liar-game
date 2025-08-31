@@ -11,11 +11,6 @@ export default function Settings() {
   const {
     playerNum,
     setPlayerNum,
-
-    spyMode,
-    setSpyMode,
-    spyNumber,
-    setSpyNumber,
     theme,
     setTheme,
     setThemeKr,
@@ -84,30 +79,9 @@ export default function Settings() {
     }).filter(Boolean);
   }
 
-  let spyModeSelect =
-    spyMode && playerNum >= 5 ? (
-      <label className="mt-8">
-        <select
-          value={spyNumber}
-          onChange={(event) => setSpyNumber(event.target.value)}
-          className="w-24"
-        >
-          <option value="1">1</option>
-          {playerNum >= 8 ? <option value="2">2</option> : ""}
-          {playerNum >= 12 ? <option value="3">3</option> : ""}
-          {playerNum >= 15 ? <option value="4">4</option> : ""}
-          {playerNum >= 18 ? <option value="5">5</option> : ""}
-        </select>
-      </label>
-    ) : (
-      "" // Empty string
-    );
 
-  // Auto-disable spy mode if player count drops below 5
-  if (playerNum < 5 && spyMode) {
-    setSpyMode(false);
-    setSpyNumber(0);
-  }
+
+
 
   return (
     <section className="text-center flex flex-col space-y-4">
@@ -123,9 +97,14 @@ export default function Settings() {
                 }}
                 className={`p-1 transition-colors ${
                   playerNum >= 20 
-                    ? 'text-gray-600 cursor-not-allowed' 
-                    : 'text-white hover:bg-gray-700 rounded'
+                    ? 'cursor-not-allowed opacity-40' 
+                    : 'hover:opacity-75'
                 }`}
+                style={{ 
+                  color: playerNum >= 20 ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
+                  border: 'none',
+                  background: 'transparent'
+                }}
                 disabled={playerNum >= 20}
                 aria-label="Increase players"
               >
@@ -141,17 +120,17 @@ export default function Settings() {
                 onClick={() => {
                   const newPlayerNum = Math.max(3, playerNum - 1);
                   setPlayerNum(newPlayerNum);
-                  // Auto-disable spy mode if dropping below 5 players
-                  if (newPlayerNum < 5 && spyMode) {
-                    setSpyMode(false);
-                    setSpyNumber(0);
-                  }
                 }}
                 className={`p-1 transition-colors ${
                   playerNum <= 3 
-                    ? 'text-gray-600 cursor-not-allowed' 
-                    : 'text-white hover:bg-gray-700 rounded'
+                    ? 'cursor-not-allowed opacity-40' 
+                    : 'hover:opacity-75'
                 }`}
+                style={{ 
+                  color: playerNum <= 3 ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
+                  border: 'none',
+                  background: 'transparent'
+                }}
                 disabled={playerNum <= 3}
                 aria-label="Decrease players"
               >
@@ -162,35 +141,7 @@ export default function Settings() {
             <span className="text-2xl">{t("settings.players", null) || "players"}</span>
           </div>
         </div>
-        {playerNum >= 5 && (
-          <label className="mt-16">
-            <span className="caption" style={{ fontSize: 1 + "rem" }}>
-              {t("settings.spyMode.note")}
-            </span>
-            <br />
-            <div className="spyNumSelect">
-              {t("settings.spyMode.label")}:
-              <input
-                name="spyMode"
-                type="checkbox"
-                checked={spyMode}
-                onChange={(event) => {
-                  let value =
-                    event.target.type === "checkbox"
-                      ? event.target.checked
-                      : event.target.value;
-                  if (!value) {
-                    setSpyNumber(0);
-                  }
-                  setSpyMode(value);
-                  setSpyNumber(1);
-                }}
-              />
-            </div>
-            <br />
-            {spyModeSelect}
-          </label>
-        )}
+
       </form>
 
       <div className="m-4">

@@ -5,8 +5,6 @@ const GameContext = createContext();
 
 export const GameContextWrapper = ({ children }) => {
   const [playerNum, setPlayerNum] = useState(3);
-  const [spyMode, setSpyMode] = useState(false);
-  const [spyNumber, setSpyNumber] = useState(0);
   const [theme, setTheme] = useState("");
   const [themeKr, setThemeKr] = useState("");
   const [easterEgg, setEasterEgg] = useState("false");
@@ -55,10 +53,6 @@ export const GameContextWrapper = ({ children }) => {
       value={{
         playerNum,
         setPlayerNum,
-        spyMode,
-        setSpyMode,
-        spyNumber,
-        setSpyNumber,
         theme,
         setTheme,
         themeKr,

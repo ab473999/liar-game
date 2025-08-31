@@ -35,20 +35,20 @@ export const themes = {
   light: {
     name: 'Light',
     colors: {
-      // Background colors
-      bgPrimary: '#ffffff',
-      bgSecondary: '#f9fafb', // gray-50
-      bgTertiary: '#f3f4f6', // gray-100
-      bgHover: '#e5e7eb', // gray-200
+      // Background colors - softer, warmer tones
+      bgPrimary: '#faf9f7', // warm off-white
+      bgSecondary: '#f5f3f0', // warm gray-50
+      bgTertiary: '#ede9e3', // warm gray-100
+      bgHover: '#e2ddd5', // warm gray-200
       
       // Text colors
-      textPrimary: '#111827', // gray-900
-      textSecondary: '#4b5563', // gray-600
-      textMuted: '#6b7280', // gray-500
+      textPrimary: '#2c2825', // softer black
+      textSecondary: '#5c564f', // warm gray-600
+      textMuted: '#78716c', // warm gray-500
       
       // Border colors
-      borderPrimary: '#d1d5db', // gray-300
-      borderSecondary: '#e5e7eb', // gray-200
+      borderPrimary: '#d6d3d1', // warm gray-300
+      borderSecondary: '#e7e5e4', // warm gray-200
       
       // Accent colors
       accentPrimary: '#3b82f6', // blue-500
@@ -57,11 +57,11 @@ export const themes = {
       accentDanger: '#ef4444', // red-500
       
       // Component specific
-      headerBg: '#ffffff',
-      cardBg: '#f9fafb', // gray-50
-      inputBg: '#f3f4f6', // gray-100
-      buttonBg: '#e5e7eb', // gray-200
-      buttonHoverBg: '#d1d5db', // gray-300
+      headerBg: '#f5f3f0', // warm gray-50
+      cardBg: '#faf9f7', // warm off-white
+      inputBg: '#ede9e3', // warm gray-100
+      buttonBg: '#e2ddd5', // warm gray-200
+      buttonHoverBg: '#d6d3d1', // warm gray-300
     }
   },
   midnight: {
@@ -126,6 +126,38 @@ export const themes = {
       inputBg: '#075985', // sky-800
       buttonBg: '#075985', // sky-800
       buttonHoverBg: '#0369a1', // sky-700
+    }
+  },
+  pink: {
+    name: 'Pink',
+    colors: {
+      // Background colors - light pink/rose tones
+      bgPrimary: '#fce7f3', // pink-100
+      bgSecondary: '#fbcfe8', // pink-200
+      bgTertiary: '#f9a8d4', // pink-300
+      bgHover: '#f472b6', // pink-400
+      
+      // Text colors
+      textPrimary: '#500724', // rose-950
+      textSecondary: '#881337', // rose-800
+      textMuted: '#be185d', // rose-700
+      
+      // Border colors
+      borderPrimary: '#f9a8d4', // pink-300
+      borderSecondary: '#fbcfe8', // pink-200
+      
+      // Accent colors
+      accentPrimary: '#ec4899', // pink-500
+      accentHover: '#db2777', // pink-600
+      accentSuccess: '#059669', // emerald-600
+      accentDanger: '#dc2626', // red-600
+      
+      // Component specific
+      headerBg: '#fbcfe8', // pink-200
+      cardBg: '#fce7f3', // pink-100
+      inputBg: '#fdf2f8', // pink-50
+      buttonBg: '#f9a8d4', // pink-300
+      buttonHoverBg: '#f472b6', // pink-400
     }
   }
 };

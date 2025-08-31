@@ -19,18 +19,6 @@
     "en": "Time Limit:",
     "it": "Limite di Tempo:"
   },
-  "spyMode": {
-    "label": {
-      "ko": "스파이 모드",
-      "en": "Spy Mode",
-      "it": "Modalità Spia"
-    },
-    "note": {
-      "ko": "**스파이 모드는 5명 이상일 경우 가능합니다!**",
-      "en": "**Spy mode requires 5 or more players!**",
-      "it": "**La modalità spia richiede 5 o più giocatori!**"
-    }
-  },
   "theme": {
     "ko": "주제:",
     "en": "Theme:",

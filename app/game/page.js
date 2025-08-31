@@ -9,8 +9,6 @@ import Finish from "@/components/Finish";
 export default function Game() {
   const {
     playerNum,
-    spyMode,
-    spyNumber,
     theme,
     easterEgg,
     setEasterEgg,
@@ -21,7 +19,7 @@ export default function Game() {
   const [vocab, setVocab] = useState("");
   const [selectData, setSelectData] = useState(null);
   const [isReplay, setIsReplay] = useState(false);
-  const [gameSetup, setGameSetup] = useState(null); // Store liar, spy positions
+  const [gameSetup, setGameSetup] = useState(null); // Store liar position
 
   useEffect(() => {
     if (easterEgg !== "") {
@@ -59,8 +57,6 @@ export default function Game() {
         <Select
           globalState={{
             playerNum,
-            spyMode,
-            spyNumber,
             theme,
             dbData,
           }}
@@ -103,8 +99,6 @@ export default function Game() {
         <Select
           globalState={{
             playerNum,
-            spyMode,
-            spyNumber,
             theme,
             dbData,
           }}

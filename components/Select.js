@@ -15,8 +15,6 @@ const Select = (props) => {
   
   const {
     playerNum,
-    spyMode,
-    spyNumber,
     dbData,
     theme,
     easterEgg,
@@ -26,7 +24,6 @@ const Select = (props) => {
 
   const [vocab, setVocab] = useState(isReplay ? existingVocab : "");
   const [liar, setLiar] = useState(isReplay && existingGameSetup ? existingGameSetup.liar : 1);
-  const [spy, setSpy] = useState(isReplay && existingGameSetup ? existingGameSetup.spy : []);
   const [buttonDisabled, setButtonDisabled] = useState([]);
   const [displayStatus, setDisplayStatus] = useState("");
   const [buttonDisabledText, setButtonDisabledText] = useState("");
@@ -36,7 +33,6 @@ const Select = (props) => {
   const [selectData, setSelectData] = useState(isReplay ? existingSelectData : null);
   const [isDataLoading, setIsDataLoading] = useState(!isReplay); // Not loading if replay
   const [playerState, setPlayerState] = useState(false);
-  const [spyState, setSpyState] = useState(false);
   const initRef = useRef(isReplay); // Mark as initialized if replay
 
   // Initialize the game once when component mounts
@@ -51,7 +47,6 @@ const Select = (props) => {
       console.log(`[Select] === REPLAY MODE ===`);
       console.log(`[Select] Reusing existing word: "${existingVocab}"`);
       console.log(`[Select] Reusing existing Liar: Player ${existingGameSetup?.liar + 1} (index ${existingGameSetup?.liar})`);
-      console.log(`[Select] Reusing existing Spies: ${existingGameSetup?.spy?.length || 0}`);
       
       // Reset only UI state for replay
       setButtonDisabled([]);
@@ -66,7 +61,7 @@ const Select = (props) => {
       const fetchWords = async () => {
         console.log(`[Select] === NEW GAME INITIALIZATION ===`);
         console.log(`[Select] Theme: ${theme}, Language: ${language || "ko"}`);
-        console.log(`[Select] Players: ${playerNum}, Spy Mode: ${spyMode}, Spies: ${spyNumber}`);
+        console.log(`[Select] Players: ${playerNum}`);
         setIsDataLoading(true);
         
         try {
@@ -130,26 +125,15 @@ const Select = (props) => {
     
     let randomIndex = Math.floor(Math.random() * data.length);
     let chooseLiar = Math.floor(Math.random() * playerNum);
-    let chooseSpies = [];
-
-    while (chooseSpies.length !== spyNumber) {
-      let spyIndex = Math.floor(Math.random() * playerNum);
-
-      if (spyIndex !== chooseLiar && chooseSpies.indexOf(spyIndex) === -1) {
-        chooseSpies.push(spyIndex);
-      }
-    }
 
     const selectedWord = data[randomIndex];
     console.log(`[Select] === GAME SETUP COMPLETE ===`);
     console.log(`  - Selected word: "${selectedWord}" (index ${randomIndex} of ${data.length})`);
     console.log(`  - Liar: Player ${chooseLiar + 1} (index ${chooseLiar})`);
-    console.log(`  - Spies: ${chooseSpies.length > 0 ? chooseSpies.map(s => `Player ${s + 1}`).join(', ') : 'None'}`);
     console.log(`  - Total players: ${playerNum}`);
     
     setVocab(selectedWord);
     setLiar(chooseLiar);
-    setSpy(chooseSpies);
   };
 
   const showCard = (event) => {
@@ -163,12 +147,9 @@ const Select = (props) => {
     // Determine player type based on actual game state
     let playerType = "Regular Player";
     let isLiar = button === liar;
-    let isSpy = spy.includes(button);
     
     if (isLiar) {
       playerType = "LIAR";
-    } else if (isSpy) {
-      playerType = "SPY";
     }
     
     console.log(`[Select] === PLAYER ${button + 1} REVEAL ===`);
@@ -182,14 +163,9 @@ const Select = (props) => {
     if (card.includes("no-liar")) {
       setDisplayStatus(t("game.select.selectedWord"));
       setPlayerState(false);
-    } else if (card.includes("spy")) {
-      setDisplayStatus(t("game.select.youAre"));
-      setPlayerState(true);
-      setSpyState(true);
     } else if (card.includes("liar")) {
       setDisplayStatus(t("game.select.youAre"));
       setPlayerState(true);
-      setSpyState(false);
     }
 
     setShowCardStatus(true);
@@ -200,11 +176,10 @@ const Select = (props) => {
       console.log(`[Select] All players revealed! Starting game...`);
       console.log(`  - Final word: "${vocab}"`);
       console.log(`  - Liar was: Player ${liar + 1}`);
-      console.log(`  - Spies were: ${spy.length > 0 ? spy.map(s => `Player ${s + 1}`).join(', ') : 'None'}`);
 
       setDisplayStatus(t("game.select.gameStarted"));
       setBeginGame(true);
-      props.setVocab(vocab, selectData, { liar, spy }); // Pass game setup
+      props.setVocab(vocab, selectData, { liar }); // Pass game setup
       props.nextStage(2);
     } else {
       if (playerNum - buttonDisabled.length === 1) {
@@ -249,22 +224,6 @@ const Select = (props) => {
           {defaultText}
         </button>
       );
-    } else if (spy.indexOf(i) !== -1) {
-      playersCard.push(
-        <button
-          className={`border border-white cursor-pointer p-5 spy ${
-            buttonDisabled.includes(i)
-              ? "border border-white cursor-not-allowed opacity-50"
-              : ""
-          }`}
-          disabled={buttonDisabled.includes(i) ? true : false}
-          key={i}
-          id={i}
-          onClick={showCard}
-        >
-          {defaultText}
-        </button>
-      );
     } else {
       playersCard.push(
         <button
@@ -287,13 +246,7 @@ const Select = (props) => {
   let textView;
   if (buttonDisabled.length > 0 && showCardStatus === true) {
     if (playerState) {
-      textView = spyState ? (
-        <span>
-          <span className="red">{t("game.select.spy")}</span>{t("game.select.spyWord")}
-          <br />
-          <span className="green">{vocab}</span>
-        </span>
-      ) : (
+      textView = (
         <span className="red">{t("game.select.liar")}</span>
       );
     } else {
