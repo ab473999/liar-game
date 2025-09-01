@@ -29,8 +29,8 @@ export default function Home() {
         return null;
       }
       
-      // Get the translated theme name, fallback to typeKr, then type
-      const themeName = t(`themes.${theme.type}`, null) || theme.typeKr || theme.type;
+      // Get the theme name from the database, fallback to type
+      const themeName = theme.typeEn || theme.type;
       
       return theme.easterEgg === false || theme.easterEgg === easterEgg ? (
         <Link
@@ -41,7 +41,7 @@ export default function Home() {
             setThemeKr(theme.typeKr || themeName);
           }}
           key={theme.type}
-          className="inline-block border border-white text-lg hover:opacity-75"
+          className="inline-block border border-white text-xs hover:opacity-75 h-16 flex items-center justify-center rounded-2xl px-2"
         >
           {themeName}
         </Link>
@@ -60,7 +60,7 @@ export default function Home() {
     ];
     
     themeButton = localThemes.map((theme) => {
-      const themeName = t(`themes.${theme.type}`, null) || theme.typeKr || theme.type;
+      const themeName = theme.typeKr || theme.type;
       
       return theme.type !== 'onnurichanyangteammember' || easterEgg === 'onnuri' ? (
         <Link
@@ -70,7 +70,7 @@ export default function Home() {
             setThemeKr(themeName);
           }}
           key={theme.type}
-          className="inline-block border border-white text-lg hover:opacity-75"
+          className="inline-block border border-white text-xs hover:opacity-75 h-16 flex items-center justify-center rounded-2xl px-2"
         >
           {themeName}
         </Link>
@@ -79,7 +79,7 @@ export default function Home() {
   }
 
   return (
-    <section className="text-center flex flex-col space-y-4">
+    <section className="text-center flex flex-col space-y-2">
         <form className="flex flex-col items-center">
           <div className="m-4 flex flex-col items-center">
             <div className="flex items-center gap-2">
@@ -106,7 +106,7 @@ export default function Home() {
                   <ChevronUp size={24} />
                 </button>
                 
-                <div className="text-4xl px-2 py-0 min-w-[60px] text-center">
+                <div className="text-3xl px-2 py-0 min-w-[60px] text-center">
                   {playerNum}
                 </div>
                 
@@ -133,15 +133,17 @@ export default function Home() {
                 </button>
               </div>
               
-              <span className="text-2xl">{t("settings.players", null) || "players"}</span>
+              <span className="text-xl">{t("settings.players", null) || "players"}</span>
             </div>
           </div>
         </form>
 
         <div className="m-4">
-          <h2>{t("settings.theme")} {theme ? (t(`themes.${theme}`, null) || themeKr || "") : ""}</h2>
+          {theme && (
+            <h2>{t("settings.theme")} {themeKr || theme}</h2>
+          )}
           {loading ? (
-            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-3 gap-4 mt-4">
               {/* Skeleton loader for themes */}
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="animate-pulse">
@@ -160,7 +162,7 @@ export default function Home() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-3 gap-4 mt-4">
               {themeButton.map((button) => {
                 return button;
               })}

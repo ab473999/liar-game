@@ -55,22 +55,21 @@ export default function Settings() {
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: 'var(--color-background)' }}>
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold" style={{ color: 'var(--color-textPrimary)' }}>
-            Themes
-          </h1>
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
-            style={{ 
-              backgroundColor: 'var(--color-primary)', 
-              color: 'var(--color-textOnPrimary)' 
-            }}
-          >
-            <Plus size={20} />
-            Add Theme
-          </button>
-        </div>
+        {!showCreateForm && (
+          <div className="flex items-center justify-center mb-6">
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg transition-colors"
+              style={{ 
+                backgroundColor: 'var(--color-primary)', 
+                color: 'var(--color-textOnPrimary)' 
+              }}
+            >
+              <Plus size={20} />
+              Add Theme
+            </button>
+          </div>
+        )}
 
         {error && (
           <div className="px-4 py-3 rounded mb-4" style={{ 
@@ -91,10 +90,9 @@ export default function Settings() {
         {/* Create Theme Form */}
         {showCreateForm && (
           <div className="p-6 rounded-lg shadow mb-6" style={{ backgroundColor: 'var(--color-cardBg)' }}>
-            <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--color-textPrimary)' }}>Create New Theme</h2>
             <form onSubmit={handleCreateTheme}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
+              <div className="flex justify-center mb-4">
+                <div className="w-full max-w-md">
                   <label className="block text-sm font-medium mb-1" style={{ color: 'var(--color-textPrimary)' }}>Theme Name (required)</label>
                   <input
                     type="text"
@@ -110,7 +108,7 @@ export default function Settings() {
                   />
                 </div>
               </div>
-              <div className="flex gap-2">
+              <div className="flex justify-end gap-2 mt-2">
                 <button
                   type="submit"
                   className="px-4 py-2 rounded hover:opacity-90 transition-opacity"
@@ -119,7 +117,7 @@ export default function Settings() {
                     color: 'var(--color-textOnPrimary)'
                   }}
                 >
-                  Create Theme
+                  Add
                 </button>
                 <button
                   type="button"
@@ -138,15 +136,14 @@ export default function Settings() {
         )}
 
         {/* Themes List */}
-        <div className="rounded-lg shadow" style={{ backgroundColor: 'var(--color-cardBg)' }}>
+        <div className="rounded-lg" style={{ backgroundColor: 'var(--color-cardBg)' }}>
           <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--color-textPrimary)' }}>All Themes</h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               {themes.map((theme) => (
                 <Link
                   key={theme.id}
                   href={`/settings/${theme.type}`}
-                  className="inline-block border border-white text-lg hover:opacity-75"
+                  className="inline-block border border-white text-xs hover:opacity-75 h-16 flex items-center justify-center rounded-2xl px-2"
                 >
                   {theme.nameEn}
                 </Link>

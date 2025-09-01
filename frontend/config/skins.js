@@ -159,6 +159,38 @@ export const skins = {
       buttonBg: '#f9a8d4', // pink-300
       buttonHoverBg: '#f472b6', // pink-400
     }
+  },
+  og: {
+    name: 'OG',
+    colors: {
+      // Background colors
+      bgPrimary: '#FFEFEB', // main page background
+      bgSecondary: '#FFEFEB', // secondary background
+      bgTertiary: '#E8DBDA', // tertiary background
+      bgHover: '#E8DBDA', // hover background
+      
+      // Text colors
+      textPrimary: '#181738', // main text color
+      textSecondary: '#545067', // secondary text
+      textMuted: '#545067', // muted text
+      
+      // Border colors
+      borderPrimary: '#E8DBDA', // primary border
+      borderSecondary: '#E8DBDA', // secondary border
+      
+      // Accent colors
+      accentPrimary: '#593C8F', // primary accent
+      accentHover: '#593C8F', // hover accent
+      accentSuccess: '#10b981', // success green
+      accentDanger: '#ef4444', // danger red
+      
+      // Component specific
+      headerBg: '#FFEFEB', // header background
+      cardBg: '#FFEFEB', // card/container background
+      inputBg: '#FFFFFF', // input background
+      buttonBg: '#E8DBDA', // button background
+      buttonHoverBg: '#E8DBDA', // button hover background
+    }
   }
 };
 
