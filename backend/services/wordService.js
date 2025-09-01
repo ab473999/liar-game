@@ -25,17 +25,17 @@ async function getWordsByTheme(themeType, language = 'en') {
 
     // Transform words based on language
     const transformedWords = words.map(word => {
-      let wordText = word.wordEn || word.wordKo; // Default to English
+      let wordText = word.wordEn || word.wordKo || ''; // Default to English, then Korean, then empty
       
       switch (language) {
         case 'en':
-          wordText = word.wordEn || word.wordKo;
+          wordText = word.wordEn || word.wordKo || '';
           break;
         case 'it':
-          wordText = word.wordIt || word.wordKo;
+          wordText = word.wordIt || word.wordKo || '';
           break;
         default:
-          wordText = word.wordEn || word.wordKo; // Default to English
+          wordText = word.wordEn || word.wordKo || ''; // Default to English, then Korean
       }
 
       return {
@@ -106,17 +106,17 @@ async function getRandomWordByTheme(themeType, language = 'en') {
     const randomWord = words[Math.floor(Math.random() * words.length)];
 
     // Transform word based on language
-    let wordText = randomWord.wordEn || randomWord.wordKo; // Default to English
+    let wordText = randomWord.wordEn || randomWord.wordKo || ''; // Default to English, then Korean, then empty
     
     switch (language) {
       case 'en':
-        wordText = randomWord.wordEn || randomWord.wordKo;
+        wordText = randomWord.wordEn || randomWord.wordKo || '';
         break;
       case 'it':
-        wordText = randomWord.wordIt || randomWord.wordKo;
+        wordText = randomWord.wordIt || randomWord.wordKo || '';
         break;
       default:
-        wordText = randomWord.wordEn || randomWord.wordKo; // Default to English
+        wordText = randomWord.wordEn || randomWord.wordKo || ''; // Default to English, then Korean
     }
 
     return {
@@ -133,8 +133,77 @@ async function getRandomWordByTheme(themeType, language = 'en') {
   }
 }
 
+/**
+ * Create a new word
+ * @param {Object} wordData - Word data object
+ * @param {number} wordData.themeId - Theme ID
+ * @param {string} wordData.wordKo - Korean word (optional)
+ * @param {string} wordData.wordEn - English word (optional)
+ * @param {string} wordData.wordIt - Italian word (optional)
+ * @returns {Promise<Object>} Created word object
+ */
+async function createWord(wordData) {
+  try {
+    const word = await prisma.word.create({
+      data: wordData
+    });
+    
+    return word;
+  } catch (error) {
+    console.error('Error creating word:', error);
+    throw new Error('Failed to create word in database');
+  }
+}
+
+/**
+ * Update a word by ID
+ * @param {number} id - Word ID
+ * @param {Object} updateData - Data to update
+ * @returns {Promise<Object|null>} Updated word object or null if not found
+ */
+async function updateWord(id, updateData) {
+  try {
+    const word = await prisma.word.update({
+      where: { id: parseInt(id) },
+      data: updateData
+    });
+    
+    return word;
+  } catch (error) {
+    console.error('Error updating word:', error);
+    if (error.code === 'P2025') {
+      return null; // Record not found
+    }
+    throw new Error('Failed to update word in database');
+  }
+}
+
+/**
+ * Delete a word by ID
+ * @param {number} id - Word ID
+ * @returns {Promise<boolean>} True if deleted, false if not found
+ */
+async function deleteWord(id) {
+  try {
+    await prisma.word.delete({
+      where: { id: parseInt(id) }
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error deleting word:', error);
+    if (error.code === 'P2025') {
+      return false; // Record not found
+    }
+    throw new Error('Failed to delete word from database');
+  }
+}
+
 module.exports = {
   getWordsByTheme,
   getWordById,
-  getRandomWordByTheme
+  getRandomWordByTheme,
+  createWord,
+  updateWord,
+  deleteWord
 };

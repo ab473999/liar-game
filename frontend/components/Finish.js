@@ -56,7 +56,7 @@ const Finish = ({ liarStatus, vocab, theme, selectData }) => {
   ));
 
   let newGame = (
-    <Link href="/settings" className="col-span-3">
+    <Link href="/" className="col-span-3">
       {t("common.buttons.newGame")}
     </Link>
   );

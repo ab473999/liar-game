@@ -27,9 +27,9 @@ const Play = ({ resetToWordReveal }) => {
       {/* Navigation buttons - Icons only */}
       <div className="flex justify-center gap-4 mt-12">
         <Link 
-          href="/settings" 
+          href="/" 
           className="p-4 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
-          aria-label="Back to settings"
+          aria-label="Back to home"
         >
           <ArrowLeft size={24} />
         </Link>

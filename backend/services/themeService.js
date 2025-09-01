@@ -64,8 +64,56 @@ async function getThemeByType(type) {
   }
 }
 
+/**
+ * Create a new theme
+ * @param {Object} themeData - Theme data object
+ * @param {string} themeData.type - Theme type identifier
+ * @param {string} themeData.nameKo - Korean name (optional)
+ * @param {string} themeData.nameEn - English name
+ * @param {string} themeData.nameIt - Italian name (optional)
+ * @param {boolean} themeData.easterEgg - Easter egg status
+ * @returns {Promise<Object>} Created theme object
+ */
+async function createTheme(themeData) {
+  try {
+    const theme = await prisma.theme.create({
+      data: themeData
+    });
+    
+    return theme;
+  } catch (error) {
+    console.error('Error creating theme:', error);
+    throw new Error('Failed to create theme in database');
+  }
+}
+
+/**
+ * Update a theme by ID
+ * @param {number} id - Theme ID
+ * @param {Object} updateData - Data to update
+ * @returns {Promise<Object|null>} Updated theme object or null if not found
+ */
+async function updateTheme(id, updateData) {
+  try {
+    const theme = await prisma.theme.update({
+      where: { id: parseInt(id) },
+      data: updateData
+    });
+    
+    return theme;
+  } catch (error) {
+    console.error('Error updating theme:', error);
+    if (error.code === 'P2025') {
+      return null; // Record not found
+    }
+    throw new Error('Failed to update theme in database');
+  }
+}
+
 module.exports = {
   getThemes,
   getThemeById,
-  getThemeByType
+  getThemeByType,
+  createTheme,
+  updateTheme
 };

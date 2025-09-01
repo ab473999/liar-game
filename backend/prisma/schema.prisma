@@ -13,9 +13,9 @@ datasource db {
 model Theme {
   id         Int      @id @default(autoincrement())
   type       String   @unique @db.VarChar(50)
-  nameKo     String   @map("name_ko") @db.VarChar(100)
+  nameKo     String?  @map("name_ko") @db.VarChar(100)
   nameEn     String   @map("name_en") @db.VarChar(100)
-  nameIt     String   @map("name_it") @db.VarChar(100)
+  nameIt     String?  @map("name_it") @db.VarChar(100)
   easterEgg  Boolean  @default(false) @map("easter_egg")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
@@ -28,7 +28,7 @@ model Theme {
 model Word {
   id         Int      @id @default(autoincrement())
   themeId    Int      @map("theme_id")
-  wordKo     String   @map("word_ko") @db.VarChar(100)
+  wordKo     String?  @map("word_ko") @db.VarChar(100)
   wordEn     String?  @map("word_en") @db.VarChar(100)
   wordIt     String?  @map("word_it") @db.VarChar(100)
   createdAt  DateTime @default(now()) @map("created_at")
