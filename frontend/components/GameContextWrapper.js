@@ -14,15 +14,13 @@ export const GameContextWrapper = ({ children }) => {
 
   useEffect(() => {
     const fetchThemes = async () => {
-
-      
       try {
         setLoading(true);
         setError(null);
         
-        // Fetch themes from our new API
+        // Fetch themes from our backend API
         const includeEasterEgg = easterEgg === "onnuri";
-        const response = await fetch(`/api/themes?easterEgg=${includeEasterEgg}`);
+        const response = await fetch(`http://localhost:3001/api/themes?easterEgg=${includeEasterEgg}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch themes');
@@ -31,14 +29,24 @@ export const GameContextWrapper = ({ children }) => {
         const result = await response.json();
         
         if (result.success) {
-          setDbData(result.data);
-          console.log('Themes loaded:', result.data.length, 'themes');
+          // Transform the backend data to match the expected format
+          const transformedThemes = result.data.map(theme => ({
+            id: theme.id,
+            type: theme.type,
+            typeKr: theme.nameKo,
+            typeEn: theme.nameEn,
+            typeIt: theme.nameIt,
+            easterEgg: theme.easterEgg
+          }));
+          
+          setDbData(transformedThemes);
+          console.log('Themes loaded from backend:', transformedThemes.length, 'themes');
         } else {
           setError(result.error || 'Failed to load themes');
           console.error('Failed to load themes:', result.error);
         }
       } catch (err) {
-        console.error('Error fetching themes:', err);
+        console.error('Error fetching themes from backend:', err);
         setError('Failed to load themes. Please refresh the page.');
       } finally {
         setLoading(false);

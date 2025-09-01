@@ -61,12 +61,12 @@ const Select = (props) => {
         setIsDataLoading(true);
         
         try {
-          const response = await fetch(`/api/words?theme=${theme}&lang=${language || "ko"}`);
+          const response = await fetch(`http://localhost:3001/api/words?theme=${theme}&lang=${language || "ko"}`);
           const result = await response.json();
           
           if (result.success) {
-            // Use the language-specific words returned by the API
-            const data = result.data.words || result.data.kr;
+            // Extract the word text from the backend response
+            const data = result.data.map(word => word.word);
             console.log(`[Select] Fetched ${data.length} words for game`);
             console.log(`[Select] Word list sample: ${data.slice(0, 5).join(', ')}...`);
             setSelectData(data);
