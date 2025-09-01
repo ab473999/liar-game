@@ -7,11 +7,11 @@ const wordService = require('../services/wordService');
  * Get words by theme and language
  * Query parameters:
  * - theme: string (required) - Theme type (e.g., 'food', 'place')
- * - lang: string (optional) - Language code ('ko', 'en', 'it'), defaults to 'ko'
+ * - lang: string (optional) - Language code ('ko', 'en', 'it'), defaults to 'en'
  */
 router.get('/', async (req, res) => {
   try {
-    const { theme, lang = 'ko' } = req.query;
+    const { theme, lang = 'en' } = req.query;
     
     if (!theme) {
       return res.status(400).json({
@@ -44,11 +44,11 @@ router.get('/', async (req, res) => {
  * Get a random word from a theme
  * Query parameters:
  * - theme: string (required) - Theme type
- * - lang: string (optional) - Language code, defaults to 'ko'
+ * - lang: string (optional) - Language code, defaults to 'en'
  */
 router.get('/random', async (req, res) => {
   try {
-    const { theme, lang = 'ko' } = req.query;
+    const { theme, lang = 'en' } = req.query;
     
     if (!theme) {
       return res.status(400).json({

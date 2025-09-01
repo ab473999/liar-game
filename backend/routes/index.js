@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
   res.json({
     message: 'Liar Game API',
     version: '1.0.0',
-    note: 'Routes and services to be implemented't
+    note: 'Routes and services to be implemented'k
   });
 });
 

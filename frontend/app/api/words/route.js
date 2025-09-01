@@ -5,7 +5,7 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const themeType = searchParams.get('theme');
-    const language = searchParams.get('lang') || 'ko';
+    const language = searchParams.get('lang') || 'en';
     
     if (!themeType) {
       return NextResponse.json(
@@ -36,14 +36,14 @@ export async function GET(request) {
       }
     });
     
-    // Format words based on language preference
+    // Format words based on language preference - always use English
     let formattedWords;
     if (language === 'en') {
       formattedWords = words.map(w => w.wordEn || w.wordKo);
     } else if (language === 'it') {
       formattedWords = words.map(w => w.wordIt || w.wordKo);
     } else {
-      formattedWords = words.map(w => w.wordKo);
+      formattedWords = words.map(w => w.wordEn || w.wordKo); // Default to English
     }
     
     return NextResponse.json({

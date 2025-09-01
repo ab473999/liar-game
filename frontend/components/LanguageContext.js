@@ -1,34 +1,11 @@
 "use client";
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useContext } from 'react';
 import translations from '@/translations';
 
 const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('en');
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Load saved language or default to English
-    const savedLang = localStorage.getItem('language');
-    
-    if (savedLang && (savedLang === 'ko' || savedLang === 'en' || savedLang === 'it')) {
-      setLanguage(savedLang);
-    } else {
-      // Default to English regardless of browser language
-      const defaultLang = 'en';
-      setLanguage(defaultLang);
-      localStorage.setItem('language', defaultLang);
-    }
-    setIsLoading(false);
-  }, []);
-
-  const changeLanguage = (lang) => {
-    if (lang === 'ko' || lang === 'en' || lang === 'it') {
-      setLanguage(lang);
-      localStorage.setItem('language', lang);
-    }
-  };
+  const language = 'en'; // Always use English
 
   const t = (key, fallback = null) => {
     if (!key) return fallback || key;
@@ -45,8 +22,8 @@ export const LanguageProvider = ({ children }) => {
       }
     }
     
-    // Get the translation for the current language
-    const translation = value?.[language] || value?.['ko'];
+    // Get the English translation
+    const translation = value?.[language] || value?.['en'];
     
     if (translation === undefined) {
       console.warn(`Translation not found for key: ${key}, language: ${language}`);
@@ -59,10 +36,9 @@ export const LanguageProvider = ({ children }) => {
   return (
     <LanguageContext.Provider value={{ 
       language, 
-      changeLanguage, 
       t, 
-      isLoading,
-      availableLanguages: ['ko', 'en', 'it']
+      isLoading: false,
+      availableLanguages: ['en']
     }}>
       {children}
     </LanguageContext.Provider>

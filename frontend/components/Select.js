@@ -21,7 +21,7 @@ const Select = (props) => {
     easterEgg,
     setEasterEgg,
   } = useGameContext();
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
 
   const [vocab, setVocab] = useState(isReplay ? existingVocab : "");
   const [liar, setLiar] = useState(isReplay && existingGameSetup ? existingGameSetup.liar : 1);
@@ -56,12 +56,12 @@ const Select = (props) => {
       
       const fetchWords = async () => {
         console.log(`[Select] === NEW GAME INITIALIZATION ===`);
-        console.log(`[Select] Theme: ${theme}, Language: ${language || "ko"}`);
+        console.log(`[Select] Theme: ${theme}, Language: en`);
         console.log(`[Select] Players: ${playerNum}`);
         setIsDataLoading(true);
         
         try {
-          const response = await fetch(`http://localhost:3001/api/words?theme=${theme}&lang=${language || "ko"}`);
+          const response = await fetch(`http://localhost:3001/api/words?theme=${theme}&lang=en`);
           const result = await response.json();
           
           if (result.success) {

@@ -6,7 +6,7 @@ const prisma = require('../lib/prisma');
  * @param {string} language - The language code ('ko', 'en', 'it')
  * @returns {Promise<Array>} Array of word objects
  */
-async function getWordsByTheme(themeType, language = 'ko') {
+async function getWordsByTheme(themeType, language = 'en') {
   try {
     // First get the theme by type
     const theme = await prisma.theme.findUnique({
@@ -25,7 +25,7 @@ async function getWordsByTheme(themeType, language = 'ko') {
 
     // Transform words based on language
     const transformedWords = words.map(word => {
-      let wordText = word.wordKo; // Default to Korean
+      let wordText = word.wordEn || word.wordKo; // Default to English
       
       switch (language) {
         case 'en':
@@ -35,7 +35,7 @@ async function getWordsByTheme(themeType, language = 'ko') {
           wordText = word.wordIt || word.wordKo;
           break;
         default:
-          wordText = word.wordKo;
+          wordText = word.wordEn || word.wordKo; // Default to English
       }
 
       return {
@@ -82,7 +82,7 @@ async function getWordById(id) {
  * @param {string} language - The language code
  * @returns {Promise<Object|null>} Random word object or null if no words found
  */
-async function getRandomWordByTheme(themeType, language = 'ko') {
+async function getRandomWordByTheme(themeType, language = 'en') {
   try {
     // First get the theme by type
     const theme = await prisma.theme.findUnique({
@@ -106,7 +106,7 @@ async function getRandomWordByTheme(themeType, language = 'ko') {
     const randomWord = words[Math.floor(Math.random() * words.length)];
 
     // Transform word based on language
-    let wordText = randomWord.wordKo; // Default to Korean
+    let wordText = randomWord.wordEn || randomWord.wordKo; // Default to English
     
     switch (language) {
       case 'en':
@@ -116,7 +116,7 @@ async function getRandomWordByTheme(themeType, language = 'ko') {
         wordText = randomWord.wordIt || randomWord.wordKo;
         break;
       default:
-        wordText = randomWord.wordKo;
+        wordText = randomWord.wordEn || randomWord.wordKo; // Default to English
     }
 
     return {
