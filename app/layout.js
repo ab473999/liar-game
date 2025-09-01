@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { GameContextWrapper } from "@/components/GameContextWrapper";
 import { LanguageProvider } from "@/components/LanguageContext";
-import { ThemeProvider } from "@/components/ThemeContext";
+import { SkinProvider } from "@/components/SkinContext";
 import { Header } from "@/components/Header";
 import { DocumentTitle } from "@/components/DocumentTitle";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
           color: 'var(--color-textPrimary)' 
         }}
       >
-        <ThemeProvider>
+        <SkinProvider>
           <LanguageProvider>
             <DocumentTitle />
             <Header />
@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
             
             <Analytics />
           </LanguageProvider>
-        </ThemeProvider>
+        </SkinProvider>
       </body>
       <GoogleAnalytics gaId={GOOGLE_ANALYTICS_ID} />
     </html>

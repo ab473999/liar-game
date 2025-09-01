@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useTheme } from '@/components/ThemeContext';
+import { useSkin } from '@/components/SkinContext';
 
-export const ThemeSwitcher = ({ inHeader = false }) => {
+export const SkinSwitcher = ({ inHeader = false }) => {
   const [mounted, setMounted] = useState(false);
-  const { theme, changeTheme, themes, isLoading } = useTheme();
+  const { skin, changeSkin, skins, isLoading } = useSkin();
 
   useEffect(() => {
     setMounted(true);
@@ -18,19 +18,19 @@ export const ThemeSwitcher = ({ inHeader = false }) => {
   if (inHeader) {
     return (
       <select 
-        value={theme} 
-        onChange={(e) => changeTheme(e.target.value)}
+        value={skin} 
+        onChange={(e) => changeSkin(e.target.value)}
         className="px-3 py-2 rounded transition-colors cursor-pointer w-32"
         style={{ 
           backgroundColor: 'var(--color-inputBg)', 
           color: 'var(--color-textPrimary)',
           border: '1px solid var(--color-borderSecondary)'
         }}
-        aria-label="Theme selector"
+        aria-label="Skin selector"
       >
-        {Object.entries(themes).map(([key, themeData]) => (
+        {Object.entries(skins).map(([key, skinData]) => (
           <option key={key} value={key}>
-            {themeData.name}
+            {skinData.name}
           </option>
         ))}
       </select>
@@ -41,19 +41,19 @@ export const ThemeSwitcher = ({ inHeader = false }) => {
   return (
     <div className="fixed top-4 left-4 z-50">
       <select 
-        value={theme} 
-        onChange={(e) => changeTheme(e.target.value)}
+        value={skin} 
+        onChange={(e) => changeSkin(e.target.value)}
         className="px-3 py-2 rounded transition-colors cursor-pointer w-32"
         style={{ 
           backgroundColor: 'var(--color-inputBg)', 
           color: 'var(--color-textPrimary)',
           border: '1px solid var(--color-borderSecondary)'
         }}
-        aria-label="Theme selector"
+        aria-label="Skin selector"
       >
-        {Object.entries(themes).map(([key, themeData]) => (
+        {Object.entries(skins).map(([key, skinData]) => (
           <option key={key} value={key}>
-            {themeData.name}
+            {skinData.name}
           </option>
         ))}
       </select>

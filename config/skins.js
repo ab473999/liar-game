@@ -1,5 +1,5 @@
-// Theme configuration with all color definitions
-export const themes = {
+// Skin configuration with all color definitions
+export const skins = {
   dark: {
     name: 'Dark',
     colors: {
@@ -162,4 +162,4 @@ export const themes = {
   }
 };
 
-export const defaultTheme = 'dark';
+export const defaultSkin = 'dark';

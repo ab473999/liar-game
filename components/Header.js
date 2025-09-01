@@ -1,7 +1,7 @@
 "use client";
 import { useLanguage } from '@/components/LanguageContext';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { SkinSwitcher } from '@/components/SkinSwitcher';
 
 export const Header = () => {
   const { language } = useLanguage();
@@ -14,7 +14,7 @@ export const Header = () => {
       <div className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-left" style={{ color: 'var(--color-textPrimary)' }}>{title}</h1>
         <div className="flex items-center gap-4">
-          <ThemeSwitcher inHeader={true} />
+          <SkinSwitcher inHeader={true} />
           <LanguageSwitcher inHeader={true} />
         </div>
       </div>
