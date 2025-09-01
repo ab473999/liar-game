@@ -13,7 +13,7 @@ export const Header = () => {
       <div className="max-w-6xl mx-auto px-4 h-16 flex justify-between items-center">
         <h1 className="text-2xl font-bold text-left" style={{ color: 'var(--color-textPrimary)' }}>Liar</h1>
         <div className="flex items-center gap-4">
-          <SkinSwitcher inHeader={true} />
+          {isSettingsPage && <SkinSwitcher inHeader={true} />}
           {isSettingsPage ? (
             <Link
               href="/"
