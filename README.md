@@ -1,76 +1,54 @@
 # Liar Game
 
-A website where you can play the Liar Game.
+A monorepo containing the frontend and backend for the Liar Game application.
 
-## Motivation for Creating This
+## Structure
 
-In the past, I played a game called "Liar Game" with close friends. It was really fun, and when I wanted to play it again with other friends, the apps that helped facilitate the Liar Game were only available for Android. Since most of us were iPhone users, it was difficult for us to play. To address this issue, I created this web-based game so that many users can easily access and play the game.
+```
+liar-game/
+├── frontend/          # Next.js frontend application
+├── backend/           # Node.js Express backend
+├── package.json       # Monorepo configuration
+└── README.md          # This file
+```
 
-When I originally created this game, it was purely for study purposes and for enjoying it with my friends. Creating it was a great learning experience, and even after 5 years, many users still visit the site. Now, I've decided to update this precious memory from the past to develop it further. Please enjoy and visit often. Thank you.
+## Quick Start
 
-## License
+1. Install all dependencies:
+   ```bash
+   npm run install:all
+   ```
 
-The MIT License
+2. Start both frontend and backend in development mode:
+   ```bash
+   npm run dev
+   ```
 
-Copyright (c) 2024 Will Kim.
+   This will start:
+   - Frontend on http://localhost:3000
+   - Backend on http://localhost:3001
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+## Individual Commands
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+### Frontend
+- `npm run dev:frontend` - Start frontend development server
+- `npm run build:frontend` - Build frontend for production
+- `npm run start:frontend` - Start frontend production server
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
----
+### Backend
+- `npm run dev:backend` - Start backend development server
+- `npm run build:backend` - Build backend for production
+- `npm run start:backend` - Start backend production server
 
 ## Development
 
-### Update on February 25, 2024
+The frontend and backend are designed to work together:
+- Frontend: Next.js application with game logic
+- Backend: Express server for API endpoints, database operations, and AI services
 
-Originally using React.js, I've now updated the project to Next.js. I've simplified the tech stack to improve efficiency and eliminate unnecessary server usage during development. The backend uses Firebase (Next.js + Firebase).
+## Notes
 
-### Previous Updates
-
-This project was built with React.js. I personally use `yarn` when working with it.
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.  
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.  
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.  
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.  
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.  
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-Old project URL: https://withoutwax.github.io/Liar-Game/
+- Frontend contains the current game implementation
+- Backend is set up with basic structure for future API endpoints and services
+- Database configuration will be moved from frontend to backend
+- AI logic will be implemented in the backend services
