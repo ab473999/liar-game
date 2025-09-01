@@ -2,9 +2,6 @@
   "name": "liar-game-next-js",
   "version": "2.0.3",
   "private": true,
-  "prisma": {
-    "seed": "node prisma/seed.js"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,11 +10,9 @@
   },
   "dependencies": {
     "@next/third-parties": "^14.1.0",
-    "@prisma/client": "^6.15.0",
     "@vercel/analytics": "^1.4.1",
     "lucide-react": "^0.542.0",
     "next": "14.2.32",
-    "prisma": "^6.15.0",
     "react": "^18",
     "react-dom": "^18"
   },
