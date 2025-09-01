@@ -1,7 +1,7 @@
 generated_at: '2025-09-01T23:40:20.004Z'
-total_themes: 19
+total_themes: 20
 successful_themes: 17
-failed_themes: 2
+failed_themes: 3
 themes:
   - type: fashion-brands
     name: Fashion Brands
@@ -457,3 +457,9 @@ themes:
       - fertility
       - pregnancy
       - reproduction
+  - type: subcultures
+    name: Subcultures
+    success: false
+    word_count: 0
+    error: No message content found in response
+    words: null

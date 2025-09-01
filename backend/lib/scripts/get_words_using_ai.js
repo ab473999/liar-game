@@ -388,8 +388,8 @@ async function generateWordsForAllEmptyThemes() {
         
         // Add a small delay between requests to be respectful to the API
         if (i < emptyThemes.length - 1) {
-          console.log('⏳ Waiting 2 seconds before next request...');
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          console.log('⏳ Waiting 3 seconds before next request...');
+          await new Promise(resolve => setTimeout(resolve, 3000));
         }
         
       } catch (error) {
@@ -413,8 +413,8 @@ async function generateWordsForAllEmptyThemes() {
         
         // Add a small delay before continuing
         if (i < emptyThemes.length - 1) {
-          console.log('⏳ Waiting 2 seconds before next request...');
-          await new Promise(resolve => setTimeout(resolve, 2000));
+          console.log('⏳ Waiting 3 seconds before next request...');
+          await new Promise(resolve => setTimeout(resolve, 3000));
         }
       }
     }
