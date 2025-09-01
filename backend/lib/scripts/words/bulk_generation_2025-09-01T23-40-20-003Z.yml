@@ -1,0 +1,459 @@
+generated_at: '2025-09-01T23:40:20.004Z'
+total_themes: 19
+successful_themes: 17
+failed_themes: 2
+themes:
+  - type: fashion-brands
+    name: Fashion Brands
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Chanel
+      - Gucci
+      - Prada
+      - Dior
+      - Versace
+      - Fendi
+      - Burberry
+      - Valentino
+      - Hermes
+      - Celine
+      - Balenciaga
+      - Givenchy
+      - Bottega Veneta
+      - Louis Vuitton
+      - Saint Laurent
+      - Alexander McQueen
+      - Maison Margiela
+      - Ralph Lauren
+      - Calvin Klein
+      - Michael Kors
+  - type: jobs
+    name: Jobs
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - teacher
+      - doctor
+      - nurse
+      - engineer
+      - lawyer
+      - chef
+      - farmer
+      - pilot
+      - mechanic
+      - plumber
+      - electrician
+      - carpenter
+      - firefighter
+      - police officer
+      - scientist
+      - librarian
+      - journalist
+      - artist
+      - accountant
+      - programmer
+  - type: food
+    name: Food
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - bread
+      - cheese
+      - apple
+      - banana
+      - broccoli
+      - carrot
+      - pasta
+      - rice
+      - yogurt
+      - steak
+      - taco
+      - soup
+      - salad
+      - omelet
+      - sushi
+      - pancake
+      - ice cream
+      - peanut butter
+      - olive oil
+      - mashed potatoes
+  - type: music
+    name: Music
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - melody
+      - rhythm
+      - harmony
+      - tempo
+      - pitch
+      - chord
+      - scale
+      - octave
+      - note
+      - beat
+      - chorus
+      - verse
+      - bridge
+      - lyrics
+      - tune
+      - singer
+      - drummer
+      - guitar
+      - piano
+      - orchestra
+  - type: europe
+    name: Europe
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Eiffel Tower
+      - Colosseum
+      - Parthenon
+      - Stonehenge
+      - Acropolis
+      - Sagrada Familia
+      - Louvre
+      - Big Ben
+      - Alps
+      - Pyrenees
+      - Danube
+      - Rhine
+      - Mediterranean Sea
+      - Baltic Sea
+      - Vatican City
+      - United Kingdom
+      - European Union
+      - Schengen
+      - Eurozone
+      - Renaissance
+  - type: harry-potter
+    name: Harry Potter
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Harry Potter
+      - Hermione Granger
+      - Ron Weasley
+      - Hogwarts
+      - Gryffindor
+      - Slytherin
+      - Hufflepuff
+      - Ravenclaw
+      - Quidditch
+      - Golden Snitch
+      - Firebolt
+      - Sorting Hat
+      - Invisibility Cloak
+      - Elder Wand
+      - Deathly Hallows
+      - Polyjuice Potion
+      - Patronus
+      - Dementor
+      - Azkaban
+      - Diagon Alley
+  - type: animals
+    name: Animals
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Lion
+      - Tiger
+      - Elephant
+      - Giraffe
+      - Zebra
+      - Hippopotamus
+      - Rhinoceros
+      - Gorilla
+      - Chimpanzee
+      - Koala
+      - Kangaroo
+      - Red panda
+      - Bald eagle
+      - Butterfly
+      - Blue whale
+      - Dolphin
+      - Sea otter
+      - Octopus
+      - King cobra
+      - Komodo dragon
+  - type: technology
+    name: Technology
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Algorithm
+      - Binary
+      - Circuit
+      - Database
+      - Network
+      - Firewall
+      - Encryption
+      - Cloud computing
+      - Server
+      - Router
+      - Compiler
+      - Debugging
+      - Interface
+      - Protocol
+      - Robotics
+      - Microchip
+      - Smartphone
+      - Virtual reality
+      - Artificial intelligence
+      - Machine learning
+  - type: fields-of-study
+    name: Fields of Study
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Physics
+      - Chemistry
+      - Biology
+      - Mathematics
+      - Computer Science
+      - Linguistics
+      - Anthropology
+      - Sociology
+      - Psychology
+      - Economics
+      - Political Science
+      - Philosophy
+      - History
+      - Geology
+      - Astronomy
+      - Neuroscience
+      - Ecology
+      - Genetics
+      - Microbiology
+      - Art History
+  - type: netflix
+    name: Netflix
+    success: false
+    word_count: 0
+    error: No message content found in response
+    words: null
+  - type: countries
+    name: Countries
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - France
+      - Brazil
+      - Canada
+      - Germany
+      - Japan
+      - Kenya
+      - Norway
+      - Morocco
+      - Portugal
+      - Nigeria
+      - Turkey
+      - Greece
+      - United Kingdom
+      - Saudi Arabia
+      - South Africa
+      - New Zealand
+      - Costa Rica
+      - Czech Republic
+      - United States
+      - Papua New Guinea
+  - type: history
+    name: History
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Empire
+      - Revolution
+      - Artifact
+      - Chronicle
+      - Dynasty
+      - Renaissance
+      - Archaeology
+      - Timeline
+      - Pharaoh
+      - Hieroglyph
+      - Monarchy
+      - Treaty
+      - Colony
+      - Conquest
+      - Constitution
+      - Siege
+      - Crusade
+      - Antiquity
+      - Feudalism
+      - Industrial Revolution
+  - type: sports
+    name: Sports
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - soccer
+      - basketball
+      - tennis
+      - baseball
+      - football
+      - hockey
+      - golf
+      - cricket
+      - volleyball
+      - rugby
+      - swimming
+      - boxing
+      - marathon
+      - sprint
+      - referee
+      - stadium
+      - coach
+      - whistle
+      - penalty kick
+      - free throw
+  - type: anatomy
+    name: Anatomy
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - heart
+      - lung
+      - brain
+      - liver
+      - kidney
+      - stomach
+      - intestine
+      - spleen
+      - pancreas
+      - skull
+      - femur
+      - rib
+      - spine
+      - pelvis
+      - clavicle
+      - scapula
+      - tendon
+      - ligament
+      - muscle
+      - nerve
+  - type: car-brands
+    name: Car Brands
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Toyota
+      - Ford
+      - Honda
+      - Nissan
+      - Chevrolet
+      - BMW
+      - Mercedes Benz
+      - Audi
+      - Volkswagen
+      - Hyundai
+      - Kia
+      - Subaru
+      - Mazda
+      - Porsche
+      - Volvo
+      - Jaguar
+      - Land Rover
+      - Alfa Romeo
+      - Aston Martin
+      - Tesla
+  - type: disney
+    name: Disney
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - Mickey Mouse
+      - Minnie Mouse
+      - Donald Duck
+      - Goofy
+      - Pluto
+      - Cinderella
+      - Snow White
+      - Sleeping Beauty
+      - Rapunzel
+      - Ariel
+      - Belle
+      - Aladdin
+      - Jasmine
+      - Mulan
+      - Pocahontas
+      - Simba
+      - Lion King
+      - Magic Kingdom
+      - Disneyland
+      - Pixar
+  - type: clothes
+    name: Clothes
+    success: false
+    word_count: 0
+    error: No message content found in response
+    words: null
+  - type: psychology
+    name: Psychology
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - cognition
+      - memory
+      - perception
+      - emotion
+      - behavior
+      - learning
+      - motivation
+      - personality
+      - empathy
+      - attention
+      - bias
+      - conditioning
+      - reinforcement
+      - therapy
+      - stress
+      - resilience
+      - unconscious
+      - mindfulness
+      - neuroplasticity
+      - social influence
+  - type: sex
+    name: Sex
+    success: true
+    word_count: 20
+    error: null
+    words:
+      - consent
+      - intimacy
+      - romance
+      - love
+      - partner
+      - sexuality
+      - gender
+      - sexual orientation
+      - asexual
+      - bisexual
+      - gay
+      - lesbian
+      - safe sex
+      - condom
+      - contraception
+      - birth control
+      - STI
+      - fertility
+      - pregnancy
+      - reproduction

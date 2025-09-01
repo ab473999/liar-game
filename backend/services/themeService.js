@@ -110,10 +110,29 @@ async function updateTheme(id, updateData) {
   }
 }
 
+/**
+ * Get word count for a theme
+ * @param {number} id - Theme ID
+ * @returns {Promise<number>} Number of words for the theme
+ */
+async function getWordCount(id) {
+  try {
+    const count = await prisma.word.count({
+      where: { themeId: parseInt(id) }
+    });
+    
+    return count;
+  } catch (error) {
+    console.error('Error getting word count for theme:', error);
+    throw new Error('Failed to get word count from database');
+  }
+}
+
 module.exports = {
   getThemes,
   getThemeById,
   getThemeByType,
   createTheme,
-  updateTheme
+  updateTheme,
+  getWordCount
 };
