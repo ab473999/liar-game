@@ -5,12 +5,19 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8001;
 
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: [
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+    'https://liar.nyc',
+    'https://www.liar.nyc',
+    'http://liar.nyc',
+    'http://www.liar.nyc'
+  ],
   credentials: true
 }));
 app.use(morgan('combined'));

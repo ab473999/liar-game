@@ -1,5 +1,7 @@
 // API service for database operations
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://liar.nyc:3001/api' 
+  : 'http://localhost:3001/api';
 
 class DatabaseAPI {
   // Theme operations
