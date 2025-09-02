@@ -13,7 +13,9 @@ const Select = (props) => {
     existingGameSetup = null
   } = props;
   
-  console.log('[Select] Component props - isReplay:', isReplay, 'existingVocab:', existingVocab, 'existingGameSetup:', existingGameSetup);
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+  console.log(`[Select] Render #${renderCount.current} - isReplay:`, isReplay, 'existingVocab:', existingVocab, 'existingGameSetup:', existingGameSetup);
   
   const {
     playerNum,
@@ -29,6 +31,11 @@ const Select = (props) => {
   const [selectData, setSelectData] = useState(isReplay ? existingSelectData : null);
   const [isDataLoading, setIsDataLoading] = useState(!isReplay); // Not loading if replay
   const initRef = useRef(isReplay); // Mark as initialized if replay
+  
+  // Log vocab changes
+  useEffect(() => {
+    console.log(`[Select] vocab state changed to: "${vocab}"`);
+  }, [vocab]);
 
   // Initialize the game once when component mounts
   useEffect(() => {
@@ -64,7 +71,9 @@ const Select = (props) => {
             console.log(`[Select] Fetched ${data.length} words for game`);
             console.log(`[Select] Word list sample: ${data.slice(0, 5).join(', ')}...`);
             setSelectData(data);
+            console.log(`[Select] About to call generateRandomNumber`);
             generateRandomNumber(data);
+            console.log(`[Select] generateRandomNumber called`);
           } else {
             console.error('[Select] Failed to fetch words:', result.error);
             setSelectData([]);
@@ -75,6 +84,7 @@ const Select = (props) => {
           setSelectData([]);
           initRef.current = false; // Reset on error
         } finally {
+          console.log(`[Select] Setting isDataLoading to false in finally block`);
           setIsDataLoading(false);
         }
       };
@@ -138,7 +148,18 @@ const Select = (props) => {
   };
 
   // Show loading state if data is not ready
+  if (!theme) {
+    console.log(`[Select] No theme selected!`);
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <h2>No theme selected</h2>
+        <p>Redirecting to home...</p>
+      </div>
+    );
+  }
+  
   if (isDataLoading || !vocab) {
+    console.log(`[Select] Showing loading state - isDataLoading: ${isDataLoading}, vocab: "${vocab}", theme: "${theme}"`);
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px]">
         <h2>{t("common.loading")}</h2>
@@ -146,6 +167,8 @@ const Select = (props) => {
       </div>
     );
   }
+  
+  console.log(`[Select] Ready to show PlayerWordReveal - vocab: "${vocab}", currentPlayerIndex: ${currentPlayerIndex}`);
 
   return (
     <PlayerWordReveal 

@@ -26,6 +26,11 @@
   --color-buttonHoverBg: #4b5563;
 }
 
+html, body {
+  overflow-x: visible;
+  overflow-y: auto;
+}
+
 body {
   color: var(--color-textPrimary);
   background: var(--color-bgPrimary);

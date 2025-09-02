@@ -123,7 +123,7 @@ This document tracks the implementation of multi-language support for the Liar G
   "select.gameStarted": { "ko": "게임이 시작되었습니다!", "en": "Game has started!" },
   "select.onePlayerLeft": { "ko": "One player left", "en": "One player left" },
   
-  "play.gameStart": { "ko": "게임 시작!", "en": "Game Start!" },
+  "play.gameStart": { "ko": "게임 시작!", "en": "Who's the liar?" },
   "play.gameStarted": { "ko": "게임이 시작되었습니다! 라이어를 찾아주세요!", "en": "Game has started! Find the liar!" },
   "play.timeUnlimited": { "ko": "시간은 무제한입니다.", "en": "Time is unlimited." },
   "play.whenReady": { "ko": "준비가 되면 아래의 버튼을 선택하여 진행해주세요.", "en": "When ready, select the button below to proceed." },

@@ -59,7 +59,7 @@
   "play": {
     "gameStart": {
       "ko": "게임 시작!",
-      "en": "Game Start!",
+      "en": "Who's the Liar?",
       "it": "Inizia il Gioco!"
     },
     "gameStartedFindLiar": {

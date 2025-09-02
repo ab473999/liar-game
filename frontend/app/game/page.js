@@ -1,16 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useGameContext } from "@/components/contexts/GameContextWrapper";
 import Select from "@/components/functional/game/Select";
 import Play from "@/components/functional/game/Play";
 
 export default function Game() {
+  const router = useRouter();
   const {
     playerNum,
     theme,
     dbData,
   } = useGameContext();
+  
+  console.log(`[Game] Page loaded - theme: "${theme}", playerNum: ${playerNum}`);
 
   const [stage, setStage] = useState(1);
   const [vocab, setVocab] = useState("");
@@ -39,6 +43,14 @@ export default function Game() {
     }
     setIsReplay(false); // Reset replay flag after setting up
   };
+  
+  // Redirect to home if no theme is selected
+  useEffect(() => {
+    if (!theme) {
+      console.log('[Game] No theme selected, redirecting to home...');
+      router.push('/');
+    }
+  }, [theme, router]);
 
   let gameView;
 

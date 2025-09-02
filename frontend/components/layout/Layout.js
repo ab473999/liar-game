@@ -20,7 +20,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const Layout = ({ children }) => {
   return (
     <div
-      className={`${inter.className} text-center min-h-screen font-sans`}
+      className={`${inter.className} text-center min-h-screen font-sans overflow-visible`}
       style={{ 
         backgroundColor: 'var(--color-bgPrimary)', 
         color: 'var(--color-textPrimary)' 

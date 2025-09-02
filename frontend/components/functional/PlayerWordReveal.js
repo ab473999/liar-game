@@ -9,6 +9,7 @@ export const PlayerWordReveal = ({
   word,
   onRevealComplete 
 }) => {
+  console.log(`[PlayerWordReveal] Props - currentPlayer: ${currentPlayer}, totalPlayers: ${totalPlayers}, isLiar: ${isLiar}, word:`, word);
   const { t } = useTranslation();
   const [isHolding, setIsHolding] = useState(false);
   const [holdProgress, setHoldProgress] = useState(0);
@@ -99,9 +100,9 @@ export const PlayerWordReveal = ({
   const circleSize = 200 + (holdProgress * 4); // Start at 200px, grow to 600px
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-visible" style={{ border: '1px solid red' }}>
       {/* Player counter */}
-      <div className="absolute top-8 text-2xl" style={{ color: 'var(--color-textPrimary)' }}>
+      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-2xl z-10" style={{ color: 'var(--color-textPrimary)' }}>
         <span>{t("game.select.player")} </span>
         <span className="font-bold">{currentPlayer}</span>
         <span>/</span>
@@ -164,7 +165,8 @@ export const PlayerWordReveal = ({
           position: 'absolute',
           top: '50%',
           left: '50%',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          zIndex: 20
         }}
         onMouseDown={startHold}
         onMouseUp={endHold}

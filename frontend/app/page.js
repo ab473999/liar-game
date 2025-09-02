@@ -7,6 +7,7 @@ import { ThemeGrid } from "@/components/functional/ThemeGrid";
 import { LoadingState } from "@/components/functional/LoadingState";
 
 export default function Home() {
+  console.log('[Home] Component rendering...');
   const { t } = useTranslation();
   const {
     playerNum,
@@ -17,6 +18,8 @@ export default function Home() {
     loading,
     error,
   } = useGameContext();
+  
+  console.log('[Home] Loading state:', loading, 'Themes:', dbData?.length || 0);
 
   // Prepare themes data - use local themes as fallback
   const themes = dbData || [

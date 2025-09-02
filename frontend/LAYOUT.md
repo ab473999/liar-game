@@ -302,7 +302,7 @@ export default function Game() {
 
 | Component        | Parent Chain                     | Width              | Height               | Key Features                       |
 |------------------|----------------------------------|--------------------|----------------------|------------------------------------|
-| PlayerWordReveal | Game → Select → PlayerWordReveal | Inherits max-w-lg  | Sets min-h-[500px]   | Absolute circle, overflow-hidden   |
+| PlayerWordReveal | Game → Select → PlayerWordReveal | Inherits max-w-lg  | Sets min-h-[500px]   | Absolute circle, overflow-visible  |
 | Play             | Game → Play                      | Inherits max-w-lg  | Auto (no min-height) | Simple layout with mt-12 buttons   |
 
 ### Visual Comparison: Inheritance vs Override
@@ -681,7 +681,7 @@ When held:
 
 #### PlayerWordReveal Component (The "Press and Hold" Component)
 ```jsx
-<div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden">
+<div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-visible">
   <div className="absolute top-8 text-2xl">
     Player {currentPlayer} of {totalPlayers}
   </div>
@@ -697,13 +697,13 @@ When held:
 </div>
 ```
 - **Lives in**: Game page → Select component → PlayerWordReveal
-- **Container**: Sets own `min-h-[500px]` with `overflow-hidden`
+- **Container**: Sets own `min-h-[500px]` with `overflow-visible`
 - **Circle Button**: 
   - Absolutely positioned at center with transform translate
   - Grows from 200px to 600px when held
   - Can overflow equally left and right due to absolute positioning
 - **Layout**: Container uses flexbox but button is absolutely positioned
-- **Overflow**: Container has `overflow-hidden` to clip the expanding circle
+- **Overflow**: Container and all parent elements have `overflow-visible` to allow symmetric expansion
 
 ### Stage 2: Play Component (components/functional/game/Play.js)
 
