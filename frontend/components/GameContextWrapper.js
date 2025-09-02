@@ -15,18 +15,27 @@ export const GameContextWrapper = ({ children }) => {
 
   useEffect(() => {
     const fetchThemes = async () => {
+      const startTime = performance.now();
+      console.log('[GameContext] Starting theme fetch...');
+      
       try {
         setLoading(true);
         setError(null);
         
         // Fetch themes from our backend API
+        const fetchStart = performance.now();
         const response = await fetch(getApiUrl('themes'));
+        const fetchEnd = performance.now();
+        console.log(`[GameContext] API fetch completed in ${(fetchEnd - fetchStart).toFixed(2)}ms`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch themes');
         }
         
+        const parseStart = performance.now();
         const result = await response.json();
+        const parseEnd = performance.now();
+        console.log(`[GameContext] JSON parsing completed in ${(parseEnd - parseStart).toFixed(2)}ms`);
         
         if (result.success) {
           // Transform the backend data to match the expected format
@@ -39,7 +48,8 @@ export const GameContextWrapper = ({ children }) => {
           }));
           
           setDbData(transformedThemes);
-          console.log('Themes loaded from backend:', transformedThemes.length, 'themes');
+          const totalTime = performance.now() - startTime;
+          console.log(`[GameContext] Themes loaded successfully: ${transformedThemes.length} themes in ${totalTime.toFixed(2)}ms`);
         } else {
           setError(result.error || 'Failed to load themes');
           console.error('Failed to load themes:', result.error);

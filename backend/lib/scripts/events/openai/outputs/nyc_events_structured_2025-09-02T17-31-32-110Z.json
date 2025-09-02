@@ -1,0 +1,75 @@
+{
+  "events": [
+    {
+      "eventName": "4th of July",
+      "eventType": "seasonal tradition",
+      "date": "2025-07-04",
+      "location": "East River, Coney Island",
+      "description": "Macy’s Fireworks spectacular and Nathan’s Hot Dog Eating Contest, both major Independence Day traditions drawing huge crowds and national media."
+    },
+    {
+      "eventName": "SummerStage",
+      "eventType": "music festival",
+      "date": "2025-07-02 to 2025-08-31",
+      "location": "Parks across NYC",
+      "description": "Citywide series of free outdoor concerts offering a mix of genres; programming across July and August in parks throughout all boroughs."
+    },
+    {
+      "eventName": "Shakespeare Park",
+      "eventType": "theater festival",
+      "date": "2025-07-01 to 2025-08-31",
+      "location": "Delacorte Theatre, Central Park",
+      "description": "Free performances of Shakespeare’s Othello (July) and Twelfth Night (August onward), drawing major crowds after renovations to the iconic open-air stage."
+    },
+    {
+      "eventName": "Summer Streets",
+      "eventType": "seasonal city festival",
+      "date": "2025-07-26 to 2025-08-23",
+      "location": "400+ city blocks, all boroughs",
+      "description": "NYC’s 400th anniversary expanded this car-free festival citywide for five consecutive Saturdays, closing streets to traffic for art, performances, and recreation."
+    },
+    {
+      "eventName": "Jazz Age Party",
+      "eventType": "cultural festival",
+      "date": "2025-08-09 to 2025-08-10",
+      "location": "Governors Island",
+      "description": "20th anniversary of the Roaring ‘20s celebration with jazz, vintage dancing, period costumes, cocktails, and vintage cars."
+    },
+    {
+      "eventName": "Van Gogh Nights",
+      "eventType": "art exhibition",
+      "date": "2025-08-01 to 2025-10-31",
+      "location": "New York Botanical Garden",
+      "description": "Immersive exhibition pairing Van Gogh’s floral-inspired art installations by day with drone ‘Starry Night’ light shows at dusk."
+    },
+    {
+      "eventName": "Cultural Festivals",
+      "eventType": "cultural festival",
+      "date": "2025-08-01 to 2025-08-31",
+      "location": "Harlem, Flushing Meadows, Sixth Ave, Commodore Barry Park",
+      "description": "Includes Harlem Week, Hong Kong Dragon Boat Festival, Dominican Day Parade, and Afropunk—all large-scale August celebrations of heritage and arts."
+    },
+    {
+      "eventName": "US Open",
+      "eventType": "sports tournament",
+      "date": "2025-08-24 to 2025-09-07",
+      "location": "USTA Billie Jean King National Tennis Center, Flushing Meadows",
+      "description": "The annual Grand Slam tennis championship brings international athletes and fans, dominating NYC’s late August and Labor Day sporting scene."
+    },
+    {
+      "eventName": "Lady Gaga MSG",
+      "eventType": "major concert",
+      "date": "2025-08-22 to 2025-09-07",
+      "location": "Madison Square Garden",
+      "description": "Lady Gaga's high-profile residency, ‘Mayhem Ball Tour,’ played six blockbuster shows with viral social media buzz."
+    },
+    {
+      "eventName": "Climate Week",
+      "eventType": "convention",
+      "date": "2025-08-26 to 2025-09-01",
+      "location": "Multiple venues, Manhattan",
+      "description": "Week of global climate, energy, and sustainability events in tandem with the UN General Assembly, drawing international attention."
+    }
+  ],
+  "extractionDate": "2025-09-02"
+}

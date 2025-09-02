@@ -1,0 +1,7 @@
+Extract a structured list of major NYC events that happened or are happening in the period between {START_DATE} and {END_DATE} (today).
+Focus only on events that gained at least regional interest - events that tourists would plan trips around or locals mark on calendars.
+Or went really Viral on social media.
+
+IMPORTANT: 
+- Keep event names to 1-3 words only (e.g., "US Open", "Summer Streets", "Fashion Week")
+- Quality over quantity - if there are only 3-7 truly notable events, that's perfect. Do not pad the list

@@ -3,7 +3,7 @@
 import { useGameContext } from "@/components/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
 import Link from "next/link";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, Loader2 } from "lucide-react";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -72,6 +72,40 @@ export default function Home() {
     }).filter(Boolean);
   }
 
+  // Show loading state for entire page
+  if (loading) {
+    return (
+      <section className="text-center flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin" style={{ color: 'var(--color-accentPrimary)' }} />
+        <div>
+          <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-textPrimary)' }}>
+            {t("common.loading") || "Loading..."}
+          </h2>
+          <p className="text-sm" style={{ color: 'var(--color-textMuted)' }}>
+            {t("common.preparingGame") || "Getting things ready for you..."}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <section className="text-center flex flex-col items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <p className="text-red-400 mb-4">Error: {error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors"
+          >
+            Refresh Page
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="text-center flex flex-col space-y-2">
         <form className="flex flex-col items-center">
@@ -133,32 +167,11 @@ export default function Home() {
         </form>
 
         <div className="m-4">
-          {loading ? (
-            <div className="grid grid-cols-3 gap-4 mt-4">
-              {/* Skeleton loader for themes */}
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="h-12 bg-gray-700 rounded"></div>
-                </div>
-              ))}
-            </div>
-          ) : error ? (
-            <div className="mt-8 text-center">
-              <p className="text-red-400">Error: {error}</p>
-              <button 
-                onClick={() => window.location.reload()} 
-                className="mt-4 px-4 py-2 bg-gray-700 rounded hover:bg-gray-600"
-              >
-                Refresh Page
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-3 gap-4 mt-4">
-              {themeButton.map((button) => {
-                return button;
-              })}
-            </div>
-          )}
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            {themeButton.map((button) => {
+              return button;
+            })}
+          </div>
         </div>
       </section>
     );

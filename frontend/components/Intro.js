@@ -8,9 +8,18 @@ const Intro = () => {
   
   // Prefetch themes when intro loads to make settings page instant
   useEffect(() => {
-    fetch('/api/themes').catch(() => {
-      // Silently fail - this is just a prefetch
-    });
+    const prefetchStart = performance.now();
+    console.log('[Intro] Starting theme prefetch...');
+    
+    fetch('/api/themes')
+      .then(() => {
+        const prefetchTime = performance.now() - prefetchStart;
+        console.log(`[Intro] Theme prefetch completed in ${prefetchTime.toFixed(2)}ms`);
+      })
+      .catch(() => {
+        const prefetchTime = performance.now() - prefetchStart;
+        console.log(`[Intro] Theme prefetch failed after ${prefetchTime.toFixed(2)}ms (this is okay, just a prefetch)`);
+      });
   }, []);
 
   return (

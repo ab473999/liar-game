@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "properties": {
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "eventName": {
+            "type": "string",
+            "description": "Name of the event (1-3 words maximum, e.g., 'US Open', 'Summer Streets')"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "Type of event (e.g., sports tournament, fashion week, music festival, seasonal tradition, major concert, convention, cultural festival, etc.)"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date when the event occurred (ISO format if possible)"
+          },
+          "location": {
+            "type": "string",
+            "description": "Specific location in NYC where the event took place"
+          },
+          "description": {
+            "type": "string",
+            "description": "Brief description of the event"
+          }
+        },
+        "required": ["eventName", "eventType", "date", "location", "description"],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 10
+    },
+    "extractionDate": {
+      "type": "string",
+      "description": "Date when this data was extracted"
+    }
+  },
+  "required": ["events", "extractionDate"],
+  "additionalProperties": false
+}

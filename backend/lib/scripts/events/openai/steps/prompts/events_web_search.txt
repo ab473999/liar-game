@@ -1,0 +1,8 @@
+What were recent major events in New York City (NYC)? Between {START_DATE} and {END_DATE}. Use queries such as:
+- "events in NYC"
+- "what happened this month in NYC"
+- "NYC events {MONTH} {YEAR}" (for all relevant months)
+
+Think of events that tourists would plan trips around or that New Yorkers mark on their calendars, or that created a surprisingly high level of media interest.
+
+IMPORTANT: Quality over quantity - only include truly notable events. If there are only 3-5 events that meet these criteria, that's perfectly fine. Do not force it to 10.

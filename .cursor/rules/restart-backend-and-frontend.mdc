@@ -1,0 +1,10 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+Use tmux-based scripts to manage Liar Game services:
+
+- `./restart.sh` - Stops existing services and restarts both backend (port 8001) and frontend (port 3000) in separate tmux sessions
+- `./status.sh` - Shows service health, port status, HTTP endpoint checks, and recent logs
+- `./stop.sh` - Gracefully stops all services and cleans up ports

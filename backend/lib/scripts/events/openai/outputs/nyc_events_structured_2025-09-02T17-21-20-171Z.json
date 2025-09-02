@@ -1,0 +1,40 @@
+{
+  "events": [
+    {
+      "eventName": "Macy’s Fireworks",
+      "eventType": "holiday celebration",
+      "date": "2025-07-04",
+      "location": "East River, New York City (Manhattan, Brooklyn, Queens)",
+      "description": "Iconic Independence Day fireworks show drawing huge crowds every year; a signature summer event for locals and tourists."
+    },
+    {
+      "eventName": "Governors Ball",
+      "eventType": "music festival",
+      "date": "2025-07-11",
+      "location": "Randall’s Island Park",
+      "description": "Major multi-day music festival featuring top-tier artists across genres; a must-see summer highlight for music fans."
+    },
+    {
+      "eventName": "Summer Streets",
+      "eventType": "public initiative / seasonal tradition",
+      "date": "2025-07-26",
+      "location": "multiple locations across all five boroughs",
+      "description": "NYC’s signature car-free street event expanded to 400+ blocks citywide for the 400th anniversary; includes fitness, arts, and entertainment."
+    },
+    {
+      "eventName": "Jazz Age Party",
+      "eventType": "cultural festival",
+      "date": "2025-08-09",
+      "location": "Governors Island",
+      "description": "Vintage-themed outdoor celebration with live jazz, dancing, classic cars, and 1920s-style dress; marked the event’s 20th anniversary."
+    },
+    {
+      "eventName": "US Open",
+      "eventType": "sports tournament",
+      "date": "2025-08-26",
+      "location": "USTA Billie Jean King National Tennis Center, Queens",
+      "description": "The annual Grand Slam tennis tournament, drawing global attention with elite players, ceremonies, and celebrity appearances."
+    }
+  ],
+  "extractionDate": "2025-09-02"
+}
