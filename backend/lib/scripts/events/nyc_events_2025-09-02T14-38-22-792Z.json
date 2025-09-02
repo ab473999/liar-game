@@ -1,0 +1,47 @@
+{
+  "events": [
+    {
+      "eventName": "Sean “Diddy” Combs Verdict",
+      "eventType": "Celebrity Event",
+      "date": "2025-07-02",
+      "location": "Manhattan, NYC",
+      "description": "Sean “Diddy” Combs was acquitted of racketeering and sex trafficking charges but found guilty on two lesser counts related to transportation of women for prostitution."
+    },
+    {
+      "eventName": "Nathan’s Hot Dog Eating Contest",
+      "eventType": "Seasonal Tradition",
+      "date": "2025-07-04",
+      "location": "Coney Island, NYC",
+      "description": "Joey Chestnut reclaimed his title in the men's division, and Miki Sudo won the women's division for the third consecutive year."
+    },
+    {
+      "eventName": "Macy’s 4th of July Fireworks",
+      "eventType": "Seasonal Tradition",
+      "date": "2025-07-04",
+      "location": "East River, NYC",
+      "description": "NYC’s most-watched fireworks display, a beloved Independence Day tradition."
+    },
+    {
+      "eventName": "Summer Streets Expanded for NYC’s 400th Anniversary",
+      "eventType": "Cultural Event",
+      "date": "2025-07-26 to 2025-08-23",
+      "location": "All five boroughs, NYC",
+      "description": "Summer Streets event expanded to 400 blocks, transforming streets into car-free zones filled with entertainment."
+    },
+    {
+      "eventName": "Jazz Age Lawn Party on Governors Island",
+      "eventType": "Cultural Event",
+      "date": "2025-08-09 to 2025-08-10",
+      "location": "Governors Island, NYC",
+      "description": "20th anniversary of the Prohibition-era–themed party with live jazz and vintage cars."
+    },
+    {
+      "eventName": "US Open Tennis Championships",
+      "eventType": "Sports Event",
+      "date": "2025-08-25 to 2025-09-02",
+      "location": "USTA Billie Jean King National Tennis Center, Queens, NYC",
+      "description": "One of the four Grand Slam tournaments, drawing global attention with top athletes and celebrities."
+    }
+  ],
+  "extractionDate": "2023-10-07"
+}

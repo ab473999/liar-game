@@ -1,0 +1,82 @@
+{
+  "events": [
+    {
+      "eventName": "Sean “Diddy” Combs Trial Verdict",
+      "eventType": "Legal",
+      "date": "2025-07-02",
+      "location": "Manhattan Federal Court",
+      "description": "Sean “Diddy” Combs was acquitted of racketeering and sex trafficking charges but found guilty on two lesser charges."
+    },
+    {
+      "eventName": "Nathan’s Hot Dog Eating Contest",
+      "eventType": "Festival",
+      "date": "2025-07-04",
+      "location": "Coney Island",
+      "description": "Joey Chestnut and Miki Sudo won their respective divisions in the annual hot dog eating contest."
+    },
+    {
+      "eventName": "SummerStage Concert Series",
+      "eventType": "Concert",
+      "date": "July 2025",
+      "location": "Central Park and neighborhood parks",
+      "description": "Free concerts featuring various genres from jazz to hip-hop."
+    },
+    {
+      "eventName": "Shakespeare in the Park - Twelfth Night",
+      "eventType": "Theater",
+      "date": "2025-08-07 to 2025-09-14",
+      "location": "Delacorte Theatre, Central Park",
+      "description": "Production of Twelfth Night as part of the Shakespeare in the Park series."
+    },
+    {
+      "eventName": "Summer Streets for NYC’s 400th Anniversary",
+      "eventType": "Community",
+      "date": "2025-07-26 to 2025-08-23",
+      "location": "Various locations across NYC",
+      "description": "Pedestrian-only zones with live entertainment and activities."
+    },
+    {
+      "eventName": "Jazz Age Lawn Party",
+      "eventType": "Festival",
+      "date": "2025-08-09 to 2025-08-10",
+      "location": "Governors Island",
+      "description": "Prohibition-era themed event with live jazz and vintage activities."
+    },
+    {
+      "eventName": "Z100 Summer Bash",
+      "eventType": "Concert",
+      "date": "2025-08-07",
+      "location": "Hudson Yards",
+      "description": "Free concert featuring artists like Lewis Capaldi and Julia Michaels."
+    },
+    {
+      "eventName": "“Seinfeld Night” Yankees Promo",
+      "eventType": "Sports",
+      "date": "2025-08-21",
+      "location": "Yankee Stadium",
+      "description": "Yankees vs. Red Sox game with a George Costanza bobblehead giveaway."
+    },
+    {
+      "eventName": "Major Concerts in July and August",
+      "eventType": "Concert",
+      "date": "July and August 2025",
+      "location": "Various locations",
+      "description": "Concerts by Foo Fighters, Olivia Rodrigo, The Strokes, and more."
+    },
+    {
+      "eventName": "NYC Restaurant Scene—August Openings",
+      "eventType": "Culinary",
+      "date": "August 2025",
+      "location": "Various locations",
+      "description": "New restaurant and bar openings across NYC."
+    },
+    {
+      "eventName": "Protests and Legal Developments in August",
+      "eventType": "Protest",
+      "date": "August 2025",
+      "location": "Various locations",
+      "description": "Protests and legal incidents, including arrests at the UN and Times Square."
+    }
+  ],
+  "extractionDate": "2023-10-09"
+}

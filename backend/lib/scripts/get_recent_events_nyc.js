@@ -73,7 +73,7 @@ async function searchForNYCEvents() {
   const todayStr = today.toISOString().split('T')[0];
   const twoMonthsAgoStr = twoMonthsAgo.toISOString().split('T')[0];
   
-  const searchQuery = `Find 10 recent notable events, news, or happenings in New York City (NYC) that occurred between ${twoMonthsAgoStr} and ${todayStr}. Include diverse types of events such as cultural events, concerts, festivals, sports, conferences, major news, openings, or community events.`;
+  const searchQuery = `Find up to 10 really famous and notable events or happenings in New York City (NYC) that occurred between ${twoMonthsAgoStr} and ${todayStr}. Focus on truly famous events that made headlines, such as major seasonal events, famous fairs, bizarre occurrences, viral incidents, celebrity happenings, major cultural festivals, iconic NYC traditions, or unusual news stories. Only include events that are widely known or talked about.`;
   
   const requestData = {
     model: "gpt-4.1",
@@ -135,11 +135,11 @@ async function processEventsToStructuredOutput(searchResponse) {
     input: [
       {
         role: "system",
-        content: "Extract a structured list of NYC events from the provided text. Focus on getting accurate event details."
+        content: "Extract a structured list of famous NYC events from the provided text. Focus on the most notable, famous, or widely-known events. Include only events that are truly significant or talked about."
       },
       {
         role: "user",
-        content: `Please extract the NYC events mentioned in the following text and structure them according to the schema:\n\n${searchContent}`
+        content: `Please extract the famous NYC events mentioned in the following text and structure them according to the schema. Only include the most notable ones:\n\n${searchContent}`
       }
     ],
     text: {
@@ -160,7 +160,7 @@ async function processEventsToStructuredOutput(searchResponse) {
                   },
                   eventType: {
                     type: "string",
-                    description: "Type of event (e.g., concert, festival, sports, conference, etc.)"
+                    description: "Type of event (e.g., festival, bizarre incident, celebrity event, seasonal tradition, viral happening, etc.)"
                   },
                   date: {
                     type: "string",
@@ -179,7 +179,7 @@ async function processEventsToStructuredOutput(searchResponse) {
                 additionalProperties: false
               },
               minItems: 1,
-              maxItems: 15
+              maxItems: 10
             },
             extractionDate: {
               type: "string",
