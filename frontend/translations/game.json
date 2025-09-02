@@ -113,38 +113,6 @@
       "it": "Discutete e trovate il bugiardo!"
     }
   },
-  "finish": {
-    "selectWord": {
-      "ko": "라이어는 단어를 선택해주세요:",
-      "en": "Liar, please select the word:",
-      "it": "Bugiardo, seleziona la parola:"
-    },
-    "liarWins": {
-      "ko": "라이어가 승리하였습니다!",
-      "en": "The liar wins!",
-      "it": "Il bugiardo vince!"
-    },
-    "liarLoses": {
-      "ko": "라이어가 패하였습니다!",
-      "en": "The liar loses!",
-      "it": "Il bugiardo perde!"
-    },
-    "correctGuess": {
-      "ko": "라이어가 선택한 단어가 맞습니다!",
-      "en": "The liar guessed correctly!",
-      "it": "Il bugiardo ha indovinato!"
-    },
-    "notFound": {
-      "ko": "라이어를 찾지 못하였습니다!",
-      "en": "Couldn't find the liar!",
-      "it": "Non sono riuscito a trovare il bugiardo!"
-    },
-    "selectedWord": {
-      "ko": "선택된 단어는:",
-      "en": "The selected word was:",
-      "it": "La parola selezionata era:"
-    }
-  },
   "console": {
     "couldNotFindLiar": {
       "ko": "Could not find liar",

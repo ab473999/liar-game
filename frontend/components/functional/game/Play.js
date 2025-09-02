@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { IconButton } from "@/components/ui/IconButton";
 import { ArrowLeft, RotateCcw } from "lucide-react";
-import Link from "next/link";
 
 const Play = ({ resetToWordReveal }) => {
   const { t } = useTranslation();
@@ -26,20 +26,20 @@ const Play = ({ resetToWordReveal }) => {
       
       {/* Navigation buttons - Icons only */}
       <div className="flex justify-center gap-4 mt-12">
-        <Link 
-          href="/" 
-          className="p-4 bg-gray-600 hover:bg-gray-700 rounded-lg transition-colors"
-          aria-label="Back to home"
-        >
-          <ArrowLeft size={24} />
-        </Link>
-        <button
+        <IconButton
+          href="/"
+          icon={<ArrowLeft size={24} />}
+          ariaLabel="Back to home"
+          variant="secondary"
+          size="lg"
+        />
+        <IconButton
           onClick={handleReplay}
-          className="p-4 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-          aria-label="Redo word reveal"
-        >
-          <RotateCcw size={24} />
-        </button>
+          icon={<RotateCcw size={24} />}
+          ariaLabel="Redo word reveal"
+          variant="primary"
+          size="lg"
+        />
       </div>
     </div>
   );

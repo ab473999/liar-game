@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { useGameContext } from "@/components/GameContextWrapper";
+import { useGameContext } from "@/components/contexts/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
-import { PressHoldReveal } from "@/components/PressHoldReveal";
+import { PlayerWordReveal } from "@/components/functional/PlayerWordReveal";
 import { getApiUrl } from "@/config/api";
 
 const Select = (props) => {
@@ -148,7 +148,7 @@ const Select = (props) => {
   }
 
   return (
-    <PressHoldReveal 
+    <PlayerWordReveal 
       currentPlayer={currentPlayerIndex + 1}
       totalPlayers={playerNum}
       isLiar={currentPlayerIndex === liar}

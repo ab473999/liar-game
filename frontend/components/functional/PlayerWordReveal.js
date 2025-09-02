@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 
-export const PressHoldReveal = ({ 
+export const PlayerWordReveal = ({ 
   currentPlayer, 
   totalPlayers, 
   isLiar, 
@@ -95,10 +95,11 @@ export const PressHoldReveal = ({
   }, [showContent, isLiar, word]);
 
   // Calculate circle size based on progress
-  const circleSize = 200 + (holdProgress * 2); // Start at 200px, grow to 400px
+  // On mobile, we want it to grow larger to properly overflow the screen
+  const circleSize = 200 + (holdProgress * 4); // Start at 200px, grow to 600px
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] relative">
+    <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden">
       {/* Player counter */}
       <div className="absolute top-8 text-2xl" style={{ color: 'var(--color-textPrimary)' }}>
         <span>{t("game.select.player")} </span>
@@ -157,10 +158,12 @@ export const PressHoldReveal = ({
             ? 'var(--color-accentPrimary)' 
             : 'var(--color-bgTertiary)',
           border: `2px solid ${holdProgress > 0 ? 'var(--color-accentPrimary)' : 'var(--color-borderPrimary)'}`,
-          transform: isHolding ? 'scale(1)' : 'scale(0.95)',
+          transform: `translate(-50%, -50%) ${isHolding ? 'scale(1)' : 'scale(0.95)'}`,
           opacity: isHolding ? 1 : 0.9,
           cursor: 'pointer',
-          position: 'relative',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
           overflow: 'hidden'
         }}
         onMouseDown={startHold}
@@ -191,7 +194,7 @@ export const PressHoldReveal = ({
       
       {/* Instructions */}
       {!showContent && !isHolding && hasRevealed && (
-        <p className="mt-8 text-sm" style={{ color: 'var(--color-textMuted)' }}>
+        <p className="absolute bottom-16 text-sm" style={{ color: 'var(--color-textMuted)' }}>
           {t("game.select.passToNext")}
         </p>
       )}

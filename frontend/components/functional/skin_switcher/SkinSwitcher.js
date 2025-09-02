@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useSkin } from '@/components/SkinContext';
+import { useSkin } from '@/components/contexts/SkinContext';
 
 export const SkinSwitcher = ({ inHeader = false }) => {
   const [mounted, setMounted] = useState(false);

@@ -39,7 +39,6 @@ This document tracks the implementation of multi-language support for the Liar G
 - [x] Update `Settings.js` (`app/settings/page.js`)
 - [x] Update `Select.js`
 - [x] Update `Play.js`
-- [x] Update `Finish.js`
 - [x] Update `Timer.js`
 - [x] Update `app/game/page.js`
 

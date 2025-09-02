@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useGameContext } from "@/components/GameContextWrapper";
-import Select from "@/components/Select";
-import Play from "@/components/Play";
-import Finish from "@/components/Finish";
+import { useGameContext } from "@/components/contexts/GameContextWrapper";
+import Select from "@/components/functional/game/Select";
+import Play from "@/components/functional/game/Play";
 
 export default function Game() {
   const {
@@ -63,28 +62,6 @@ export default function Game() {
       break;
     case 2:
       gameView = <Play resetToWordReveal={resetToWordReveal} />;
-      break;
-    case 3:
-      gameView = (
-        <Finish
-          nextStage={progressNextStage}
-          liarStatus="found"
-          vocab={vocab}
-          theme={theme}
-          selectData={selectData}
-        />
-      );
-      break;
-    case 4:
-      gameView = (
-        <Finish
-          nextStage={progressNextStage}
-          liarStatus="not-found"
-          vocab={vocab}
-          theme={theme}
-          selectData={selectData}
-        />
-      );
       break;
     default:
       gameView = (

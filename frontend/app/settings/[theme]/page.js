@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useDatabase } from '../../../hooks/useDatabase';
-import { Plus } from 'lucide-react';
-import { Trash2 } from 'lucide-react';
-import Link from 'next/link';
+import { AddNewWord } from '@/components/functional/AddNewWord';
+import { WordsTable } from '@/components/functional/WordsTable';
+import { LoadingState } from '@/components/functional/LoadingState';
 
 export default function ThemePage({ params }) {
   const { 
@@ -16,7 +16,7 @@ export default function ThemePage({ params }) {
   } = useDatabase();
 
   const [words, setWords] = useState([]);
-  const [newWord, setNewWord] = useState('');
+
   const [saving, setSaving] = useState({});
 
   const themeType = params.theme;
@@ -35,16 +35,12 @@ export default function ThemePage({ params }) {
     }
   };
 
-  const handleAddWord = async (e) => {
-    e.preventDefault();
-    if (!newWord.trim()) return;
-    
+  const handleAddWord = async (newWord) => {
     try {
       await createWord({
         themeId: words[0]?.themeId || 1,
-        wordEn: newWord.trim()
+        wordEn: newWord
       });
-      setNewWord('');
       loadWords();
     } catch (err) {
       console.error('Failed to create word:', err);
@@ -97,84 +93,18 @@ export default function ThemePage({ params }) {
           </div>
         )}
 
-        {loading && (
-          <div className="text-center py-4">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2" style={{ borderColor: 'var(--color-primary)' }}></div>
-          </div>
-        )}
+        {loading && <LoadingState />}
 
         {/* Add New Word */}
-        <div className="p-6 rounded-lg shadow mb-6" style={{ backgroundColor: 'var(--color-cardBg)' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--color-textPrimary)' }}>Add New Word</h2>
-          <form onSubmit={handleAddWord} className="flex gap-3">
-            <input
-              type="text"
-              value={newWord}
-              onChange={(e) => setNewWord(e.target.value)}
-              placeholder="Enter a new word..."
-              className="flex-1 p-3 border rounded-lg text-lg"
-              style={{ 
-                backgroundColor: 'var(--color-inputBg)',
-                color: 'var(--color-textPrimary)',
-                borderColor: 'var(--color-borderPrimary)'
-              }}
-              required
-            />
-            <button
-              type="submit"
-              className="px-6 py-3 rounded-lg transition-colors flex items-center gap-2"
-              style={{ 
-                backgroundColor: 'var(--color-primary)',
-                color: 'var(--color-textOnPrimary)'
-              }}
-            >
-              <Plus size={20} />
-              Add
-            </button>
-          </form>
-        </div>
+        <AddNewWord onSubmit={handleAddWord} />
 
         {/* Words List */}
-        <div className="rounded-lg shadow" style={{ backgroundColor: 'var(--color-cardBg)' }}>
-          <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4" style={{ color: 'var(--color-textPrimary)' }}>
-              Words ({words.length})
-            </h2>
-            <div className="space-y-3">
-              {words.map((word) => (
-                <div key={word.id} className="flex items-center gap-3 group">
-                  <input
-                    type="text"
-                    defaultValue={word.wordEn}
-                    onBlur={(e) => handleUpdateWord(word.id, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.target.blur();
-                      }
-                    }}
-                    className="flex-1 p-3 border rounded-lg text-lg transition-colors"
-                    style={{ 
-                      backgroundColor: 'var(--color-inputBg)',
-                      color: 'var(--color-textPrimary)',
-                      borderColor: saving[word.id] ? 'var(--color-primary)' : 'var(--color-borderPrimary)'
-                    }}
-                    disabled={saving[word.id]}
-                  />
-                  {saving[word.id] && (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2" style={{ borderColor: 'var(--color-primary)' }}></div>
-                  )}
-                  <button
-                    onClick={() => handleDeleteWord(word.id)}
-                    className="text-red-500 hover:text-red-700 transition-colors opacity-0 group-hover:opacity-100 p-2"
-                    title="Delete word"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <WordsTable 
+          words={words}
+          onUpdate={handleUpdateWord}
+          onDelete={handleDeleteWord}
+          savingIds={saving}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
-import { SkinSwitcher } from '@/components/SkinSwitcher';
+import { SkinSwitcher } from '@/components/functional/skin_switcher/SkinSwitcher';
+import { IconButton } from '@/components/ui/IconButton';
 import { Settings2, X, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export const Header = () => {
@@ -16,40 +16,28 @@ export const Header = () => {
         {/* Left side - Back button or empty space */}
         <div className="w-12 flex justify-start">
           {(isSettingsPage || isThemePage) && (
-            <Link
+            <IconButton
               href={isSettingsPage ? "/" : "/settings"}
-              className="p-2 rounded transition-colors hover:opacity-75"
-              style={{ 
-                color: 'var(--color-textPrimary)',
-                backgroundColor: 'var(--color-inputBg)',
-                border: '1px solid var(--color-borderSecondary)'
-              }}
-              aria-label={isSettingsPage ? "Back to home" : "Back to themes"}
-            >
-              <ArrowLeft size={20} />
-            </Link>
+              icon={<ArrowLeft size={20} />}
+              ariaLabel={isSettingsPage ? "Back to home" : "Back to themes"}
+              size="sm"
+            />
           )}
         </div>
 
         {/* Center - Title */}
-        <h1 className="text-2xl font-bold absolute left-1/2 transform -translate-x-1/2" style={{ color: 'var(--color-textPrimary)' }}>Liar</h1>
+        <h1 className="text-2xl font-thin absolute left-1/2 transform -translate-x-1/2" style={{ color: 'var(--color-textPrimary)' }}>LIAR</h1>
 
         {/* Right side - Settings/Close button */}
         <div className="w-12 flex justify-end">
           {isSettingsPage && <SkinSwitcher inHeader={true} />}
           {!isSettingsPage && !isGamePage && (
-            <Link
+            <IconButton
               href="/settings"
-              className="p-2 rounded transition-colors hover:opacity-75"
-              style={{ 
-                color: 'var(--color-textPrimary)',
-                backgroundColor: 'var(--color-inputBg)',
-                border: '1px solid var(--color-borderSecondary)'
-              }}
-              aria-label="Settings"
-            >
-              <Settings2 size={20} />
-            </Link>
+              icon={<Settings2 size={20} />}
+              ariaLabel="Settings"
+              size="sm"
+            />
           )}
         </div>
       </div>

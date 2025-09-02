@@ -1,9 +1,10 @@
 "use client";
 
-import { useGameContext } from "@/components/GameContextWrapper";
+import { useGameContext } from "@/components/contexts/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
-import Link from "next/link";
-import { ChevronUp, ChevronDown, Loader2 } from "lucide-react";
+import { PlayerSelector } from "@/components/functional/PlayerSelector";
+import { ThemeGrid } from "@/components/functional/ThemeGrid";
+import { LoadingState } from "@/components/functional/LoadingState";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -17,75 +18,21 @@ export default function Home() {
     error,
   } = useGameContext();
 
-  let themeButton = [];
-  // After apiData state has value from the API
-  if (dbData) {
-    themeButton = dbData.map((theme) => {
-      // Skip corrupted or invalid theme data
-      if (!theme.type || typeof theme.type !== 'string') {
-        return null;
-      }
-      
-      // Get the theme name from the database, fallback to type
-      const themeName = theme.typeEn || theme.type;
-      
-      return (
-        <Link
-          href="/game"
-          onClick={() => {
-            console.log(`[Settings] Theme selected: ${theme.type}`);
-            setTheme(theme.type);
-            setThemeKr(theme.typeKr || themeName);
-          }}
-          key={theme.type}
-          className="inline-block border border-white text-xs hover:opacity-75 h-16 flex items-center justify-center rounded-2xl px-2"
-        >
-          {themeName}
-        </Link>
-      );
-    }).filter(Boolean); // Remove null entries
-  } else {
-    // Fallback to local themes when dbData is not available
-    const localThemes = [
-      { type: 'food', typeKr: '음식' },
-      { type: 'place', typeKr: '장소' },
-      { type: 'occupation', typeKr: '직업' },
-      { type: 'biblecharacter', typeKr: '성경인물' }
-    ];
-    
-    themeButton = localThemes.map((theme) => {
-      const themeName = theme.typeKr || theme.type;
-      
-      return (
-        <Link
-          href="/game"
-          onClick={() => {
-            setTheme(theme.type);
-            setThemeKr(themeName);
-          }}
-          key={theme.type}
-          className="inline-block border border-white text-xs hover:opacity-75 h-16 flex items-center justify-center rounded-2xl px-2"
-        >
-          {themeName}
-        </Link>
-      );
-    }).filter(Boolean);
-  }
+  // Prepare themes data - use local themes as fallback
+  const themes = dbData || [
+    { type: 'food', typeKr: '음식', typeEn: 'Food' },
+    { type: 'place', typeKr: '장소', typeEn: 'Place' },
+    { type: 'occupation', typeKr: '직업', typeEn: 'Occupation' },
+    { type: 'biblecharacter', typeKr: '성경인물', typeEn: 'Bible Character' }
+  ];
 
   // Show loading state for entire page
   if (loading) {
     return (
-      <section className="text-center flex flex-col items-center justify-center min-h-[400px] space-y-4">
-        <Loader2 className="w-12 h-12 animate-spin" style={{ color: 'var(--color-accentPrimary)' }} />
-        <div>
-          <h2 className="text-xl font-semibold mb-2" style={{ color: 'var(--color-textPrimary)' }}>
-            {t("common.loading") || "Loading..."}
-          </h2>
-          <p className="text-sm" style={{ color: 'var(--color-textMuted)' }}>
-            {t("common.preparingGame") || "Getting things ready for you..."}
-          </p>
-        </div>
-      </section>
+      <LoadingState 
+        title={t("common.loading") || "Loading..."}
+        subtitle={t("common.preparingGame") || "Getting things ready for you..."}
+      />
     );
   }
 
@@ -108,71 +55,19 @@ export default function Home() {
 
   return (
     <section className="text-center flex flex-col space-y-2">
-        <form className="flex flex-col items-center">
-          <div className="m-4 flex flex-col items-center">
-            <div className="flex items-center gap-2">
-              <div className="flex flex-col items-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const newPlayerNum = Math.min(20, playerNum + 1);
-                    setPlayerNum(newPlayerNum);
-                  }}
-                  className={`p-1 transition-colors ${
-                    playerNum >= 20 
-                      ? 'cursor-not-allowed opacity-40' 
-                      : 'hover:opacity-75'
-                  }`}
-                  style={{ 
-                    color: playerNum >= 20 ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
-                    border: 'none',
-                    background: 'transparent'
-                  }}
-                  disabled={playerNum >= 20}
-                  aria-label="Increase players"
-                >
-                  <ChevronUp size={24} />
-                </button>
-                
-                <div className="text-3xl px-2 py-0 min-w-[60px] text-center">
-                  {playerNum}
-                </div>
-                
-                <button
-                  type="button"
-                  onClick={() => {
-                    const newPlayerNum = Math.max(3, playerNum - 1);
-                    setPlayerNum(newPlayerNum);
-                  }}
-                  className={`p-1 transition-colors ${
-                    playerNum <= 3 
-                      ? 'cursor-not-allowed opacity-40' 
-                      : 'hover:opacity-75'
-                  }`}
-                  style={{ 
-                    color: playerNum <= 3 ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
-                    border: 'none',
-                    background: 'transparent'
-                  }}
-                  disabled={playerNum <= 3}
-                  aria-label="Decrease players"
-                >
-                  <ChevronDown size={24} />
-                </button>
-              </div>
-              
-              <span className="text-xl">{t("settings.players", null) || "players"}</span>
-            </div>
-          </div>
-        </form>
-
-        <div className="m-4">
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            {themeButton.map((button) => {
-              return button;
-            })}
-          </div>
-        </div>
-      </section>
-    );
-  }
+      <PlayerSelector 
+        playerNum={playerNum}
+        setPlayerNum={setPlayerNum}
+      />
+      
+      <ThemeGrid 
+        themes={themes}
+        onThemeSelect={(theme) => {
+          console.log(`[Settings] Theme selected: ${theme.type}`);
+          setTheme(theme.type);
+          setThemeKr(theme.typeKr || theme.typeEn || theme.type);
+        }}
+      />
+    </section>
+  );
+}
