@@ -63,13 +63,6 @@ echo -e "View frontend logs:  ${GREEN}tmux attach -t frontend${NC}"
 echo -e "List sessions:       ${GREEN}tmux ls${NC}"
 echo -e "Detach from session: ${GREEN}Ctrl+B then D${NC}"
 
-echo -e "\n${YELLOW}=== Quick Status Check ===${NC}"
-echo -e "Backend session:"
-tmux capture-pane -t backend -p | tail -n 5
-
-echo -e "\nFrontend session:"
-tmux capture-pane -t frontend -p | tail -n 5
-
 # Wait a bit more for services to fully initialize
 echo -e "\n${YELLOW}Waiting for services to fully initialize...${NC}"
 sleep 3

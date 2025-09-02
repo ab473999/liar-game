@@ -12,11 +12,11 @@ export const useDatabase = () => {
   }, []);
 
   // Theme operations
-  const getThemes = useCallback(async (easterEgg = null) => {
+  const getThemes = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const themes = await DatabaseAPI.getThemes(easterEgg);
+      const themes = await DatabaseAPI.getThemes();
       return themes;
     } catch (err) {
       handleError(err);

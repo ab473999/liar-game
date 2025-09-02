@@ -10,8 +10,6 @@ export default function Game() {
   const {
     playerNum,
     theme,
-    easterEgg,
-    setEasterEgg,
     dbData,
   } = useGameContext();
 
@@ -20,12 +18,6 @@ export default function Game() {
   const [selectData, setSelectData] = useState(null);
   const [isReplay, setIsReplay] = useState(false);
   const [gameSetup, setGameSetup] = useState(null); // Store liar position
-
-  useEffect(() => {
-    if (easterEgg !== "") {
-      setEasterEgg(easterEgg);
-    }
-  }, [easterEgg]);
 
   const progressNextStage = (stage) => {
     console.log(`[Game] Moving to stage ${stage}`);

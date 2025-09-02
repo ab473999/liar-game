@@ -1,17 +1,10 @@
 // API service for database operations
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://liar.nyc:3001/api' 
-  : 'http://localhost:3001/api';
+import API_BASE_URL from '@/config/api';
 
 class DatabaseAPI {
   // Theme operations
-  static async getThemes(easterEgg = null) {
-    const params = new URLSearchParams();
-    if (easterEgg !== null) {
-      params.append('easterEgg', easterEgg);
-    }
-    
-    const response = await fetch(`${API_BASE_URL}/themes?${params}`);
+  static async getThemes() {
+    const response = await fetch(`${API_BASE_URL}/themes`);
     const result = await response.json();
     
     if (!result.success) {

@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useEffect, useState, useContext } from "react";
+import { getApiUrl } from "@/config/api";
 
 const GameContext = createContext();
 
@@ -7,7 +8,7 @@ export const GameContextWrapper = ({ children }) => {
   const [playerNum, setPlayerNum] = useState(3);
   const [theme, setTheme] = useState("");
   const [themeKr, setThemeKr] = useState("");
-  const [easterEgg, setEasterEgg] = useState("false");
+
   const [dbData, setDbData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,8 +20,7 @@ export const GameContextWrapper = ({ children }) => {
         setError(null);
         
         // Fetch themes from our backend API
-        const includeEasterEgg = easterEgg === "onnuri";
-        const response = await fetch(`http://localhost:3001/api/themes?easterEgg=${includeEasterEgg}`);
+        const response = await fetch(getApiUrl('themes'));
         
         if (!response.ok) {
           throw new Error('Failed to fetch themes');
@@ -35,8 +35,7 @@ export const GameContextWrapper = ({ children }) => {
             type: theme.type,
             typeKr: theme.nameKo,
             typeEn: theme.nameEn,
-            typeIt: theme.nameIt,
-            easterEgg: theme.easterEgg
+            typeIt: theme.nameIt
           }));
           
           setDbData(transformedThemes);
@@ -54,7 +53,7 @@ export const GameContextWrapper = ({ children }) => {
     };
 
     fetchThemes();
-  }, [easterEgg]);
+  }, []);
 
   return (
     <GameContext.Provider
@@ -65,8 +64,7 @@ export const GameContextWrapper = ({ children }) => {
         setTheme,
         themeKr,
         setThemeKr,
-        easterEgg,
-        setEasterEgg,
+
         dbData,
         loading,
         error,

@@ -14,7 +14,6 @@ export default function Home() {
     setTheme,
     setThemeKr,
     themeKr,
-    easterEgg,
     dbData,
     loading,
     error,
@@ -32,7 +31,7 @@ export default function Home() {
       // Get the theme name from the database, fallback to type
       const themeName = theme.typeEn || theme.type;
       
-      return theme.easterEgg === false || theme.easterEgg === easterEgg ? (
+      return (
         <Link
           href="/game"
           onClick={() => {
@@ -45,8 +44,6 @@ export default function Home() {
         >
           {themeName}
         </Link>
-      ) : (
-        "" // Empty string
       );
     }).filter(Boolean); // Remove null entries
   } else {
@@ -55,14 +52,13 @@ export default function Home() {
       { type: 'food', typeKr: '음식' },
       { type: 'place', typeKr: '장소' },
       { type: 'occupation', typeKr: '직업' },
-      { type: 'biblecharacter', typeKr: '성경인물' },
-      { type: 'onnurichanyangteammember', typeKr: '온누리 찬양팀' }
+      { type: 'biblecharacter', typeKr: '성경인물' }
     ];
     
     themeButton = localThemes.map((theme) => {
       const themeName = theme.typeKr || theme.type;
       
-      return theme.type !== 'onnurichanyangteammember' || easterEgg === 'onnuri' ? (
+      return (
         <Link
           href="/game"
           onClick={() => {
@@ -74,7 +70,7 @@ export default function Home() {
         >
           {themeName}
         </Link>
-      ) : null;
+      );
     }).filter(Boolean);
   }
 

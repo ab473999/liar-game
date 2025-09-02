@@ -16,7 +16,6 @@ model Theme {
   nameKo     String?  @map("name_ko") @db.VarChar(100)
   nameEn     String   @map("name_en") @db.VarChar(100)
   nameIt     String?  @map("name_it") @db.VarChar(100)
-  easterEgg  Boolean  @default(false) @map("easter_egg")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
   

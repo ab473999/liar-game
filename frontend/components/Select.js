@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useGameContext } from "@/components/GameContextWrapper";
 import { useTranslation } from "@/hooks/useTranslation";
 import { PressHoldReveal } from "@/components/PressHoldReveal";
+import { getApiUrl } from "@/config/api";
 
 const Select = (props) => {
   // Extract replay props
@@ -18,8 +19,6 @@ const Select = (props) => {
     playerNum,
     dbData,
     theme,
-    easterEgg,
-    setEasterEgg,
   } = useGameContext();
   const { t } = useTranslation();
 
@@ -33,11 +32,6 @@ const Select = (props) => {
 
   // Initialize the game once when component mounts
   useEffect(() => {
-    // Set Easter Egg
-    if (easterEgg !== "") {
-      setEasterEgg(easterEgg);
-    }
-
     if (isReplay) {
       // We're replaying - DO NOT re-initialize game
       console.log(`[Select] === REPLAY MODE ===`);
@@ -61,7 +55,7 @@ const Select = (props) => {
         setIsDataLoading(true);
         
         try {
-          const response = await fetch(`http://localhost:3001/api/words?theme=${theme}&lang=en`);
+          const response = await fetch(getApiUrl(`words?theme=${theme}&lang=en`));
           const result = await response.json();
           
           if (result.success) {

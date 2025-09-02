@@ -20,17 +20,5 @@
     "ko": "게임하기",
     "en": "Play Game",
     "it": "Gioca"
-  },
-  "easterEgg": {
-    "placeholder": {
-      "ko": "코드를 입력하세요",
-      "en": "Enter code",
-      "it": "Inserisci il codice"
-    },
-    "onnuriMode": {
-      "ko": "온누리 모드 Activated",
-      "en": "Onnuri Mode Activated",
-      "it": "Modalità Onnuri Attivata"
-    }
   }
 }

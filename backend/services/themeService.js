@@ -2,20 +2,11 @@ const prisma = require('../lib/prisma');
 
 /**
  * Get all themes from the database
- * @param {boolean} easterEgg - Filter by easter egg status (optional)
  * @returns {Promise<Array>} Array of theme objects
  */
-async function getThemes(easterEgg = null) {
+async function getThemes() {
   try {
-    const whereClause = {};
-    
-    // Add easter egg filter if provided
-    if (easterEgg !== null) {
-      whereClause.easterEgg = easterEgg;
-    }
-    
     const themes = await prisma.theme.findMany({
-      where: whereClause,
       orderBy: {
         createdAt: 'asc'
       }
@@ -71,7 +62,6 @@ async function getThemeByType(type) {
  * @param {string} themeData.nameKo - Korean name (optional)
  * @param {string} themeData.nameEn - English name
  * @param {string} themeData.nameIt - Italian name (optional)
- * @param {boolean} themeData.easterEgg - Easter egg status
  * @returns {Promise<Object>} Created theme object
  */
 async function createTheme(themeData) {

@@ -54,8 +54,7 @@ async function addThemes() {
         // Create theme data
         const themeData = {
           type: type,
-          nameEn: themeName,
-          easterEgg: false
+          nameEn: themeName
         };
         
         // Add theme to database

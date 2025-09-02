@@ -4,21 +4,11 @@ const themeService = require('../services/themeService');
 
 /**
  * GET /api/themes
- * Get all themes with optional easter egg filter
- * Query parameters:
- * - easterEgg: boolean (optional) - Filter by easter egg status
+ * Get all themes
  */
 router.get('/', async (req, res) => {
   try {
-    const { easterEgg } = req.query;
-    
-    // Parse easterEgg parameter if provided
-    let easterEggFilter = null;
-    if (easterEgg !== undefined) {
-      easterEggFilter = easterEgg === 'true';
-    }
-    
-    const themes = await themeService.getThemes(easterEggFilter);
+    const themes = await themeService.getThemes();
     
     res.json({
       success: true,
@@ -105,11 +95,10 @@ router.get('/type/:type', async (req, res) => {
  * - nameKo: string (optional) - Korean name
  * - nameEn: string (required) - English name
  * - nameIt: string (optional) - Italian name
- * - easterEgg: boolean (optional) - Easter egg status, defaults to false
  */
 router.post('/', async (req, res) => {
   try {
-    const { type, nameKo, nameEn, nameIt, easterEgg = false } = req.body;
+    const { type, nameKo, nameEn, nameIt } = req.body;
     
     // Validate required fields
     if (!type || !nameEn) {
@@ -123,8 +112,7 @@ router.post('/', async (req, res) => {
       type,
       nameKo,
       nameEn,
-      nameIt,
-      easterEgg
+      nameIt
     });
     
     res.status(201).json({
@@ -154,15 +142,14 @@ router.post('/', async (req, res) => {
  * - nameKo: string (optional) - Korean name
  * - nameEn: string (optional) - English name
  * - nameIt: string (optional) - Italian name
- * - easterEgg: boolean (optional) - Easter egg status
  */
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { nameKo, nameEn, nameIt, easterEgg } = req.body;
+    const { nameKo, nameEn, nameIt } = req.body;
     
     // Validate that at least one field is provided
-    if (!nameKo && !nameEn && !nameIt && easterEgg === undefined) {
+    if (!nameKo && !nameEn && !nameIt) {
       return res.status(400).json({
         success: false,
         error: 'At least one field must be provided for update'
@@ -173,7 +160,6 @@ router.put('/:id', async (req, res) => {
     if (nameKo !== undefined) updateData.nameKo = nameKo;
     if (nameEn !== undefined) updateData.nameEn = nameEn;
     if (nameIt !== undefined) updateData.nameIt = nameIt;
-    if (easterEgg !== undefined) updateData.easterEgg = easterEgg;
     
     const theme = await themeService.updateTheme(id, updateData);
     
