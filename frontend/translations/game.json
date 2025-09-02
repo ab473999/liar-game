@@ -145,13 +145,6 @@
       "it": "La parola selezionata era:"
     }
   },
-  "timer": {
-    "seconds": {
-      "ko": "초",
-      "en": "seconds",
-      "it": "secondi"
-    }
-  },
   "console": {
     "couldNotFindLiar": {
       "ko": "Could not find liar",

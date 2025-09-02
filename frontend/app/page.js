@@ -10,10 +10,8 @@ export default function Home() {
   const {
     playerNum,
     setPlayerNum,
-    theme,
     setTheme,
     setThemeKr,
-    themeKr,
     dbData,
     loading,
     error,
@@ -135,9 +133,6 @@ export default function Home() {
         </form>
 
         <div className="m-4">
-          {theme && (
-            <h2>{t("settings.theme")} {themeKr || theme}</h2>
-          )}
           {loading ? (
             <div className="grid grid-cols-3 gap-4 mt-4">
               {/* Skeleton loader for themes */}
