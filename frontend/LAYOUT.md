@@ -682,13 +682,18 @@ When held:
 #### PlayerWordReveal Component (The "Press and Hold" Component)
 ```jsx
 <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-visible">
-  <div className="absolute top-8 text-2xl">
+  <div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-2xl">
     Player {currentPlayer} of {totalPlayers}
   </div>
   
-  {/* Press and hold circle - ABSOLUTELY POSITIONED */}
-  <button className="absolute top-50% left-50% transform -translate-x-1/2 -translate-y-1/2"
-          style={{width: circleSize, height: circleSize}}>
+  {/* Press and hold circle - FIXED POSITIONED TO VIEWPORT CENTER */}
+  <button className="fixed top-50vh left-50vw transform -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: circleSize, 
+            height: circleSize,
+            boxSizing: 'border-box',
+            transform: 'translate(-50%, -50%) scale(0.95/1)'
+          }}>
     HOLD
   </button>
   
@@ -699,11 +704,193 @@ When held:
 - **Lives in**: Game page → Select component → PlayerWordReveal
 - **Container**: Sets own `min-h-[500px]` with `overflow-visible`
 - **Circle Button**: 
-  - Absolutely positioned at center with transform translate
-  - Grows from 200px to 600px when held
-  - Can overflow equally left and right due to absolute positioning
-- **Layout**: Container uses flexbox but button is absolutely positioned
+  - Fixed positioned at 75vh from top (moved down from 60vh)
+  - Grows from 300px to 500px when held (reduced from 200-600px)
+  - 0.5s delay before transition starts (increased from 0.25s)
+  - 0.5s transition duration (reduced from 1.0s)
+  - Always perfectly centered horizontally regardless of container offsets
+  - Uses `box-sizing: border-box` to include border in size
+  - Transform order: `translate(-50%, -50%)` first, then `scale()` for proper centering
+  - Can overflow equally left and right
+- **Layout**: Container uses flexbox, button is fixed to viewport
 - **Overflow**: Container and all parent elements have `overflow-visible` to allow symmetric expansion
+
+## PlayerWordReveal Circle Positioning: Complete Technical Analysis
+
+### DOM Hierarchy & Positioning Chain
+
+The circle's position is determined by this complete hierarchy:
+
+```
+<html>                                          // Viewport reference
+  └─ <body>                                     // overflow-x: visible
+      └─ Layout div (min-h-screen)              // overflow-visible
+          └─ <main> (pt-16)                     // overflow-visible
+              └─ max-w-lg container              // overflow-visible
+                  └─ Game page <div>
+                      └─ Select component
+                          └─ PlayerWordReveal component
+                              └─ Container <div>         // overflow-visible
+                                  └─ Circle <button>     // position: fixed
+```
+
+### Detailed Positioning Sequence
+
+#### 1. Circle Button Base Position
+```css
+button {
+  position: fixed;      /* Positioned relative to viewport, not parent */
+  top: 75vh;           /* 75% of viewport height (moved down from 60%) */
+  left: 50vw;          /* 50% of viewport width */
+}
+```
+This places the button's TOP-LEFT corner at the viewport center.
+
+#### 2. Transform Adjustments
+```css
+transform: translate(-50%, -50%) scale(0.95);  /* When not holding */
+transform: translate(-50%, -50%) scale(1);     /* When holding */
+```
+
+**Critical transform order:**
+1. `translate(-50%, -50%)` - Shifts button left and up by 50% of its own dimensions
+2. `scale()` - Applied AFTER translate to maintain center point
+
+**Why order matters:** If scale came first, the translate would use the scaled dimensions, causing misalignment.
+
+#### 3. Size Calculations
+```javascript
+const circleSize = 300 + (holdProgress * 2);  // 300px → 500px
+```
+- Base size: 300px × 300px
+- Maximum size: 500px × 500px (when holdProgress = 100)
+- Border: 2px solid (included in size via `box-sizing: border-box`)
+
+### Factors That Do NOT Affect Circle Position
+
+Despite the complex DOM hierarchy, these do NOT affect the circle's position because of `position: fixed`:
+
+1. **Parent container constraints:**
+   - `max-w-lg` (512px) from MainContent
+   - `min-h-[500px]` from PlayerWordReveal container
+   - Any padding/margin on parent elements
+
+2. **Sibling elements (all use `absolute` positioning):**
+   - Player counter at top
+   - Word/Role display (conditional)
+   - Instructions at bottom (conditional)
+
+3. **Header offset:**
+   - The 64px (`pt-16`) padding from fixed header doesn't affect fixed positioned elements
+
+### Conditional Elements Analysis
+
+#### Player Counter (Always Visible)
+```jsx
+<div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-2xl z-10">
+```
+- Position: `absolute top-8` (32px from container top)
+- **Impact on circle:** NONE (different positioning context)
+
+#### Word/Role Display (showContent === true)
+```jsx
+{showContent && (
+  <div className="absolute" style={{ 
+    top: '25%', 
+    left: '50%', 
+    transform: 'translateX(-50%)',
+    zIndex: 100,
+    pointerEvents: 'none',
+    minWidth: '300px'
+  }}>
+```
+- Position: `absolute` at 25% from container top
+- **Impact on circle:** NONE (different positioning context)
+- `pointerEvents: 'none'` ensures no interaction interference
+
+#### Button Text (showContent === false)
+```jsx
+{!showContent && (
+  <span className="text-xl z-10 pointer-events-none">
+    {t("game.select.pressAndHold")}
+  </span>
+)}
+```
+- Position: Inside button (affects button content layout)
+- **Impact on circle position:** NONE (only affects internal content)
+- **Impact on interaction:** NONE (`pointer-events-none`)
+
+#### Instructions Text (Complex Conditional)
+```jsx
+{!showContent && !isHolding && hasRevealed && (
+  <p className="absolute bottom-16 text-sm">
+    {t("game.select.passToNext")}
+  </p>
+)}
+```
+- Position: `absolute bottom-16` (64px from container bottom)
+- **Impact on circle:** NONE (different positioning context)
+
+### Z-Index Layering
+
+```
+z-index: 100  - Word/Role display (highest)
+z-index: 20   - Circle button
+z-index: 10   - Player counter
+(no z-index)  - Container and instructions
+```
+
+### Overflow Behavior Chain
+
+For the circle to expand symmetrically beyond viewport:
+
+```css
+html, body        { overflow-x: visible; }  /* globals.css */
+Layout div        { overflow-visible }      /* app/layout.js */
+MainContent main  { overflow-visible }      /* MainContent.js */
+max-w-lg div      { overflow-visible }      /* MainContent.js */
+Container div     { overflow-visible }      /* PlayerWordReveal.js */
+```
+
+### Visual Positioning Diagram
+
+```
+Viewport (e.g., 894×744px)
+┌─────────────────────────────────────────┐
+│                                         │
+│                                         │
+│    ┌────┼────┐                          │
+│    │    │    │                          │ ← Circle at 300px
+│    │    ●    │                          │ ← transform origin
+│    │         │                          │
+│    └─────────┘                          │
+│                                         │
+│                                         │
+│         ◎ (50vw, 75vh)                 │ ← Circle center point (moved down further)
+│         │                               │
+│  When expanded to 500px:                │
+│┌─────────┼─────────┐                    │ ← Overflows viewport
+││         │         │                    │   equally left/right
+││         ●         │                    │ ← Still centered horizontally
+││         │         │                    │
+│└─────────┼─────────┘                    │
+└─────────────────────────────────────────┘
+```
+
+### Key Insights
+
+1. **Fixed positioning bypasses all parent constraints** - The circle ignores max-w-lg, padding, margins
+2. **Transform order is critical** - translate MUST come before scale
+3. **Conditional elements don't affect position** - All use absolute positioning in different contexts
+4. **box-sizing: border-box** - Ensures border is included in size calculations
+5. **overflow-visible chain** - Required on ALL parents for symmetric overflow
+
+### Common Misconceptions
+
+❌ **Parent container width affects circle position** - No, fixed positioning uses viewport
+❌ **Absolute positioned siblings push the circle** - No, they're in different stacking contexts  
+❌ **The 64px header padding affects the circle** - No, fixed positioning ignores this
+✅ **Only viewport dimensions and transform affect final position**
 
 ### Stage 2: Play Component (components/functional/game/Play.js)
 

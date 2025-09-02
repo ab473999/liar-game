@@ -19,39 +19,49 @@ export const PlayerWordReveal = ({
   const progressIntervalRef = useRef(null);
   const hasLoggedReveal = useRef(false);
   
-  const HOLD_DURATION = 1500; // 1.5 seconds to fully reveal
+  const HOLD_DURATION = 500; // 0.5 seconds to fully reveal (reduced from 1.0s)
   const PROGRESS_INTERVAL = 20; // Update every 20ms for smooth animation
+  const HOLD_DELAY = 500; // 0.5s delay before starting transition (increased from 0.25s)
+  
+  // Calculate circle size based on progress
+  // On mobile, we want it to grow larger to properly overflow the screen
+  const circleSize = 300 + (holdProgress * 2); // Start at 300px, grow to 500px
 
   const startHold = () => {
     console.log(`[PressHold] Started holding for Player ${currentPlayer}`);
-    setIsHolding(true);
+    // Don't set isHolding immediately - wait for delay
     setHoldProgress(0);
     hasLoggedReveal.current = false; // Reset the flag when starting a new hold
     
-    const startTime = Date.now();
-    let lastLogTime = 0;
-    
-    progressIntervalRef.current = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min((elapsed / HOLD_DURATION) * 100, 100);
-      setHoldProgress(progress);
+    // Add delay before starting ANY visual feedback
+    setTimeout(() => {
+      setIsHolding(true); // Now start the visual feedback
       
-      // Log every 500ms
-      if (Math.floor(elapsed / 500) > lastLogTime) {
-        lastLogTime = Math.floor(elapsed / 500);
-        console.log(`[PressHold] Holding... ${(elapsed / 1000).toFixed(1)}s (${progress.toFixed(0)}%)`);
-      }
+      const startTime = Date.now();
+      let lastLogTime = 0;
       
-      if (progress >= 100 && !showContent) {
-        // Only log once when reveal happens
-        if (!hasLoggedReveal.current) {
-          console.log(`[PressHold] REVEAL! Player ${currentPlayer} - isLiar: ${isLiar}, word: "${word?.text}"`);
-          hasLoggedReveal.current = true;
+      progressIntervalRef.current = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min((elapsed / HOLD_DURATION) * 100, 100);
+        setHoldProgress(progress);
+        
+        // Log every 500ms
+        if (Math.floor(elapsed / 500) > lastLogTime) {
+          lastLogTime = Math.floor(elapsed / 500);
+          console.log(`[PressHold] Holding... ${(elapsed / 1000).toFixed(1)}s (${progress.toFixed(0)}%)`);
         }
-        setShowContent(true);
-        setHasRevealed(true);
-      }
-    }, PROGRESS_INTERVAL);
+        
+        if (progress >= 100 && !showContent) {
+          // Only log once when reveal happens
+          if (!hasLoggedReveal.current) {
+            console.log(`[PressHold] REVEAL! Player ${currentPlayer} - isLiar: ${isLiar}, word: "${word?.text}"`);
+            hasLoggedReveal.current = true;
+          }
+          setShowContent(true);
+          setHasRevealed(true);
+        }
+      }, PROGRESS_INTERVAL);
+    }, HOLD_DELAY);
   };
 
   const endHold = () => {
@@ -94,13 +104,9 @@ export const PlayerWordReveal = ({
       console.log(`[PressHold] Content is now visible! isLiar: ${isLiar}, word: "${word?.text}"`);
     }
   }, [showContent, isLiar, word]);
-
-  // Calculate circle size based on progress
-  // On mobile, we want it to grow larger to properly overflow the screen
-  const circleSize = 200 + (holdProgress * 4); // Start at 200px, grow to 600px
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-visible" style={{ border: '1px solid red' }}>
+    <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-visible">
       {/* Player counter */}
       <div className="absolute top-8 left-1/2 transform -translate-x-1/2 text-2xl z-10" style={{ color: 'var(--color-textPrimary)' }}>
         <span>{t("game.select.player")} </span>
@@ -112,34 +118,23 @@ export const PlayerWordReveal = ({
       {/* Word/Role display - positioned above the circle */}
       {showContent && (
         <div className="absolute" style={{ 
-          top: '25%', 
+          top: '40%', 
           left: '50%', 
           transform: 'translateX(-50%)',
           zIndex: 100,
           pointerEvents: 'none',
           minWidth: '300px'
         }}>
-          <div className="text-center animate-fadeIn" style={{ 
-            backgroundColor: 'var(--color-bgSecondary)', 
-            padding: '20px', 
-            borderRadius: '10px',
-            border: '2px solid var(--color-borderPrimary)'
-          }}>
+          <div className="text-center animate-fadeIn">
             {isLiar ? (
               <div>
-                <p className="text-lg mb-2" style={{ color: 'var(--color-textPrimary)' }}>
-                  {t("game.select.youAre")}
-                </p>
-                <p className="text-4xl font-bold" style={{ color: 'var(--color-accentDanger)' }}>
-                  {t("game.select.liar")}
+                <p className="text-2xl font-thin" style={{ color: 'var(--color-accentSuccess)' }}>
+                  You're the liar
                 </p>
               </div>
             ) : (
               <div>
-                <p className="text-lg mb-2" style={{ color: 'var(--color-textPrimary)' }}>
-                  {t("game.select.selectedWord")}
-                </p>
-                <p className="text-4xl font-bold" style={{ color: 'var(--color-accentSuccess)' }}>
+                <p className="text-2xl font-thin" style={{ color: 'var(--color-accentSuccess)' }}>
                   {word?.text || "No word"}
                 </p>
               </div>
@@ -152,19 +147,21 @@ export const PlayerWordReveal = ({
       <button
         className="rounded-full flex items-center justify-center select-none"
         style={{
-          transition: 'all 0.1s ease-out',
+          transition: 'all 0.3s ease-out',
           width: `${circleSize}px`,
           height: `${circleSize}px`,
           backgroundColor: showContent 
-            ? 'var(--color-accentPrimary)' 
+            ? 'var(--color-bgSecondary)' 
             : 'var(--color-bgTertiary)',
-          border: `2px solid ${holdProgress > 0 ? 'var(--color-accentPrimary)' : 'var(--color-borderPrimary)'}`,
+          border: 'none',
+          boxSizing: 'border-box',
           transform: `translate(-50%, -50%) ${isHolding ? 'scale(1)' : 'scale(0.95)'}`,
+          transformOrigin: 'center',
           opacity: isHolding ? 1 : 0.9,
           cursor: 'pointer',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
+          position: 'fixed',
+          top: '75vh',
+          left: '50vw',
           overflow: 'hidden',
           zIndex: 20
         }}
