@@ -73,7 +73,7 @@ async function searchForNYCEvents() {
   const todayStr = today.toISOString().split('T')[0];
   const twoMonthsAgoStr = twoMonthsAgo.toISOString().split('T')[0];
   
-  const searchQuery = `Find up to 10 really famous and notable events or happenings in New York City (NYC) that occurred between ${twoMonthsAgoStr} and ${todayStr}. Focus on truly famous events that made headlines, such as major seasonal events, famous fairs, bizarre occurrences, viral incidents, celebrity happenings, major cultural festivals, iconic NYC traditions, or unusual news stories. Only include events that are widely known or talked about.`;
+  const searchQuery = `Find major events actively happening in New York City (NYC) between ${twoMonthsAgoStr} and ${todayStr}. Focus ONLY on events that are HAPPENING or TAKING PLACE (not ending/stopping/concluding). These must be events that gained at least regional interest and media coverage, such as: major sports tournaments (like US Open), iconic seasonal traditions (like Macy's fireworks), Fashion Week, major concert series, famous festivals, large conventions, celebrity events, or viral happenings. Think of events that tourists would plan trips around or that New Yorkers mark on their calendars. DO NOT include: closures, endings, outbreaks ending, or anything stopping. IMPORTANT: Quality over quantity - only include truly notable events. If there are only 3-5 events that meet these criteria, that's perfectly fine. Do not force it to 10.`;
   
   const requestData = {
     model: "gpt-4.1",
@@ -89,7 +89,6 @@ async function searchForNYCEvents() {
       }
     ],
     input: searchQuery,
-    temperature: 0.7,
     max_output_tokens: 2000
   };
 
@@ -114,6 +113,8 @@ async function processEventsToStructuredOutput(searchResponse) {
   // Extract the text content from the search response
   let searchContent = '';
   
+  // Remove debug logging
+  
   if (searchResponse.output && searchResponse.output.length > 0) {
     for (const item of searchResponse.output) {
       if (item.type === 'message' && item.content) {
@@ -127,19 +128,24 @@ async function processEventsToStructuredOutput(searchResponse) {
   }
   
   if (!searchContent) {
-    throw new Error('No content found in search response');
+    // Check for output_text directly
+    if (searchResponse.output_text) {
+      searchContent = searchResponse.output_text;
+    } else {
+      throw new Error('No content found in search response');
+    }
   }
   
   const requestData = {
-    model: "gpt-4o-2024-08-06",
+    model: "gpt-5",
     input: [
       {
         role: "system",
-        content: "Extract a structured list of famous NYC events from the provided text. Focus on the most notable, famous, or widely-known events. Include only events that are truly significant or talked about."
+        content: "Extract a structured list of major NYC events that are ACTIVELY HAPPENING from the provided text. Focus only on events that gained at least regional interest - events that tourists would plan trips around or locals mark on calendars. Include ONLY active events (not endings/closures/conclusions). IMPORTANT: Event names must be 1-3 words maximum."
       },
       {
         role: "user",
-        content: `Please extract the famous NYC events mentioned in the following text and structure them according to the schema. Only include the most notable ones:\n\n${searchContent}`
+        content: `Please extract the major NYC events that are HAPPENING (not ending) from the following text. Only include events with regional/national interest like US Open, Fashion Week, Macy's fireworks, major concerts, etc. IMPORTANT: Keep event names to 1-3 words only (e.g., "US Open", "Summer Streets", "Fashion Week"). Quality over quantity - if there are only 3-5 truly notable events, that's perfect. Do not pad the list:\n\n${searchContent}`
       }
     ],
     text: {
@@ -156,11 +162,11 @@ async function processEventsToStructuredOutput(searchResponse) {
                 properties: {
                   eventName: {
                     type: "string",
-                    description: "Name of the event"
+                    description: "Name of the event (1-3 words maximum, e.g., 'US Open', 'Summer Streets')"
                   },
                   eventType: {
                     type: "string",
-                    description: "Type of event (e.g., festival, bizarre incident, celebrity event, seasonal tradition, viral happening, etc.)"
+                    description: "Type of event (e.g., sports tournament, fashion week, music festival, seasonal tradition, major concert, convention, cultural festival, etc.)"
                   },
                   date: {
                     type: "string",
@@ -192,8 +198,7 @@ async function processEventsToStructuredOutput(searchResponse) {
         strict: true
       }
     },
-    temperature: 0.3,
-    max_output_tokens: 2000
+    max_output_tokens: 4000
   };
 
   console.log('🔄 Request 2 Started: Processing events into structured format...');
@@ -208,10 +213,26 @@ async function processEventsToStructuredOutput(searchResponse) {
         if (item.type === 'message' && item.content) {
           for (const content of item.content) {
             if (content.type === 'output_text') {
-              return JSON.parse(content.text);
+              try {
+                return JSON.parse(content.text);
+              } catch (parseError) {
+                console.error('❌ Failed to parse JSON:', parseError.message);
+                console.error('Raw text:', content.text.substring(0, 200) + '...');
+                throw new Error(`Failed to parse structured output: ${parseError.message}`);
+              }
             }
           }
         }
+      }
+    }
+    
+    // Check if response has output_text directly
+    if (response.output_text) {
+      try {
+        return JSON.parse(response.output_text);
+      } catch (parseError) {
+        console.error('❌ Failed to parse output_text:', parseError.message);
+        throw new Error(`Failed to parse output_text: ${parseError.message}`);
       }
     }
     
