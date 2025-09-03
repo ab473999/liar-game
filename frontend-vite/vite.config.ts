@@ -22,5 +22,17 @@ export default defineConfig({
     port: 5174,  // Vite runs on 5174, nginx proxies from https://liar.nyc:5173 to this
     host: '0.0.0.0',
     strictPort: true,
+    hmr: {
+      port: 5174,
+      host: 'localhost'
+    },
+    cors: true,
+    // Allow liar.nyc to connect to the dev server
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      'liar.nyc',
+      '.liar.nyc'  // Also allow subdomains if any
+    ],
   },
 })
