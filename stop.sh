@@ -23,11 +23,13 @@ kill_tmux_session() {
 # Kill tmux sessions
 kill_tmux_session "backend"
 kill_tmux_session "frontend"
+kill_tmux_session "frontend-vite"
 
 # Clean up any processes that might still be using the ports
 echo -e "${YELLOW}Cleaning up any remaining processes on ports...${NC}"
 lsof -ti:8001 2>/dev/null | xargs -r kill -9 2>/dev/null
 lsof -ti:3000 2>/dev/null | xargs -r kill -9 2>/dev/null
+lsof -ti:5174 2>/dev/null | xargs -r kill -9 2>/dev/null
 
 echo -e "\n${GREEN}=== All services stopped! ===${NC}"
 
