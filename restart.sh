@@ -26,7 +26,7 @@ kill_tmux_session() {
     else
         echo -e "${GREEN}No existing tmux session: $session${NC}"
     fi  
-
+}
 
 # Kill existing tmux sessions
 kill_tmux_session "backend"

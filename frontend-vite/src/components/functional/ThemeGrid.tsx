@@ -1,12 +1,98 @@
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useThemes } from '@/hooks/useApi'
+import { ThemeBox } from '@/components/ui/ThemeBox'
+import { useGameStore } from '@/stores'
+import { apiService } from '@/services/api'
 
 export const ThemeGrid = () => {
-  const { themes } = useThemes()
+  const navigate = useNavigate()
+  const { themes, loading } = useThemes()
+  const [isSelecting, setIsSelecting] = useState(false)
   
-  // Console log the themes when they're fetched
-  console.log('Themes fetched:', themes)
+  // Get store actions
+  const { 
+    playerNum,
+    setTheme,
+    setWord,
+    setLiarPosition
+  } = useGameStore()
+  
+  // Log when themes are loaded
+  useEffect(() => {
+    if (!loading && themes.length > 0) {
+      console.log('Themes loaded:', themes)
+    }
+  }, [themes, loading])
+  
+  const handleThemeClick = async (themeType: string, themeName: string) => {
+    if (isSelecting) return // Prevent double clicks
+    
+    try {
+      setIsSelecting(true)
+      console.log('Theme selected:', themeName, '(type:', themeType, ')')
+      
+      // Set the selected theme in store (store the name for display)
+      setTheme(themeName)
+      
+      // Fetch words for this theme using the type
+      const words = await apiService.getWordsByTheme(themeType)
+      
+      if (words.length === 0) {
+        console.error('No words available for theme:', themeName)
+        setIsSelecting(false)
+        return
+      }
+      
+      // Select a random words 
+      const randomWordIndex = Math.floor(Math.random() * words.length)
+      const selectedWord = words[randomWordIndex].word
+      console.log('Random word selected:', selectedWord, `(${randomWordIndex + 1}/${words.length})`)
+      setWord(selectedWord)
+      
+      // Select a random player to be the liar (1-indexed for display)
+      const liarPlayerNumber = Math.floor(Math.random() * playerNum) + 1
+      console.log('Liar selected: Player', liarPlayerNumber, `(out of ${playerNum} players)`)
+      setLiarPosition(liarPlayerNumber)
+      
+      // Navigate to game page
+      navigate('/game')
+      
+    } catch (error) {
+      console.error('Error selecting theme:', error)
+      setIsSelecting(false)
+    }
+  }
+  
+  // Don't render anything while loading
+  if (loading) {
+    return null
+  }
+  
+  // Don't render empty grid if no themes
+  if (themes.length === 0) {
+    return null
+  }
   
   return (
-    <div>this is theme grid component</div>
+    <div 
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '0.75rem',
+        alignContent: 'start',
+        padding: '1rem',
+        opacity: isSelecting ? 0.5 : 1,
+        pointerEvents: isSelecting ? 'none' : 'auto'
+      }}
+    >
+      {themes.map((theme) => (
+        <ThemeBox 
+          key={theme.id} 
+          name={theme.name}
+          onClick={() => handleThemeClick(theme.type, theme.name)}
+        />
+      ))}
+    </div>
   )
 }

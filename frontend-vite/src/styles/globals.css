@@ -22,6 +22,11 @@
   --color-inputBg: #374151;
   --color-buttonBg: #374151;
   --color-buttonHoverBg: #4b5563;
+  
+  /* ThemeBox colors */
+  --color-themebox-bg: #374151;
+  --color-themebox-border: #4b5563;
+  --color-themebox-font: #ffffff;
 }
 
 html {

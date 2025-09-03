@@ -1,19 +1,15 @@
-import { useState } from 'react'
 import { ChevronUp, ChevronDown } from 'lucide-react'
+import { useGameStore, MIN_PLAYERS, MAX_PLAYERS } from '@/stores'
 
 export const PlayerCounter = () => {
-  const [playerNum, setPlayerNum] = useState(4)
-  const min = 3
-  const max = 20
+  const { playerNum, incrementPlayerNum, decrementPlayerNum } = useGameStore()
 
   const handleIncrease = () => {
-    const newPlayerNum = Math.min(max, playerNum + 1)
-    setPlayerNum(newPlayerNum)
+    incrementPlayerNum()
   }
 
   const handleDecrease = () => {
-    const newPlayerNum = Math.max(min, playerNum - 1)
-    setPlayerNum(newPlayerNum)
+    decrementPlayerNum()
   }
 
   return (
@@ -23,16 +19,16 @@ export const PlayerCounter = () => {
           type="button"
           onClick={handleIncrease}
           className={`p-1 transition-colors ${
-            playerNum >= max 
+            playerNum >= MAX_PLAYERS 
               ? 'cursor-not-allowed opacity-40' 
               : 'hover:opacity-75'
           }`}
           style={{ 
-            color: playerNum >= max ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
+            color: playerNum >= MAX_PLAYERS ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
             border: 'none',
             background: 'transparent'
           }}
-          disabled={playerNum >= max}
+          disabled={playerNum >= MAX_PLAYERS}
           aria-label="Increase players"
         >
           <ChevronUp size={24} />
@@ -46,16 +42,16 @@ export const PlayerCounter = () => {
           type="button"
           onClick={handleDecrease}
           className={`p-1 transition-colors ${
-            playerNum <= min 
+            playerNum <= MIN_PLAYERS 
               ? 'cursor-not-allowed opacity-40' 
               : 'hover:opacity-75'
           }`}
           style={{ 
-            color: playerNum <= min ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
+            color: playerNum <= MIN_PLAYERS ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
             border: 'none',
             background: 'transparent'
           }}
-          disabled={playerNum <= min}
+          disabled={playerNum <= MIN_PLAYERS}
           aria-label="Decrease players"
         >
           <ChevronDown size={24} />

@@ -6,7 +6,7 @@ interface MainContentBodyProps {
 
 export const MainContentBody = ({ children }: MainContentBodyProps) => {
   return (
-    <div className="flex-1 flex items-center justify-center border-2 border-yellow-500">
+    <div className="flex-1 flex items-center justify-center">
       {children}
     </div>
   )

@@ -10,7 +10,7 @@ export interface ApiResponse<T> {
 export interface Theme {
   id: number;
   type: string;
-  nameEn: string;
+  name: string;
   createdAt?: string;
   updatedAt?: string;
 }

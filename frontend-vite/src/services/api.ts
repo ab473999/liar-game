@@ -51,7 +51,7 @@ class ApiService {
     }
   }
 
-  async createTheme(theme: { nameEn: string; type: string }): Promise<Theme> {
+  async createTheme(theme: { name: string; type: string }): Promise<Theme> {
     try {
       const response = await this.client.post<ApiResponse<Theme>>('/themes', theme);
       if (response.data.success && response.data.data) {
@@ -68,7 +68,7 @@ class ApiService {
   async getWordsByTheme(theme: string): Promise<Word[]> {
     try {
       const response = await this.client.get<ApiResponse<Word[]>>('/words', {
-        params: { theme, lang: 'en' }
+        params: { theme }
       });
       if (response.data.success && response.data.data) {
         return response.data.data;
