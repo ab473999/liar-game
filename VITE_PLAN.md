@@ -31,7 +31,7 @@ Next.js (App Router) + JavaScript
 ### Key Features to Migrate
 1. **Core Pages**
    - Home (player selection + theme selection)
-   - Game (word reveal + play stages)
+   - Game (word reveal for all players)
    - Settings (theme management)
    - Theme Settings (word management)
 
@@ -48,6 +48,42 @@ Next.js (App Router) + JavaScript
    - Dark/light/custom skins via CSS variables
    - Tailwind utility classes
    - Icon system (Lucide React)
+
+## Game Mechanics & Navigation Flow
+
+### How the Liar Game Works
+The Liar Game is a social deduction party game where:
+1. **Setup**: Players select the number of participants and choose a theme
+2. **Word Reveal**: Each player privately views their role:
+   - Normal players see the secret word
+   - One random player (the liar) sees "You are the Liar" instead
+3. **Real-Life Discussion**: Players discuss the topic without saying the word directly
+4. **Voting**: Players vote on who they think is the liar (happens in person)
+
+### Navigation Flow
+```
+Home (/)
+   │
+   ├─[Select Players & Theme]
+   │
+   ▼
+Game (/game)
+   │
+   ├─Word Reveal Phase
+   │  └─Each player takes turn viewing word/role
+   │
+   └─Options (after all players revealed)
+      ├─→ Back to Home (/) - Start new game
+      └─→ Replay - Re-do word reveal with same setup
+   
+Settings (/settings)
+   └─[Standalone page for game configuration]
+      ├─ Manage themes
+      ├─ Add/edit/delete words
+      └─ Change UI skin
+```
+
+**Note**: The discussion and voting happen in real life, not in the app. The app's role ends after all players have viewed their word/role.
 
 ## Migration Phases
 
@@ -104,7 +140,7 @@ frontend-vite/src/
 ```
 
 ### Phase 3: Component Library Migration & Core Setup
-**Status**: ⏳ Not Started
+**Status**: 🔄 In Progress (50%)
 
 **Order of Implementation & Rationale:**
 1. **Layout Components First** - Establishes the visual structure without dependencies
@@ -113,10 +149,11 @@ frontend-vite/src/
 4. **Components Last** - Build with routing and state management already in place
 
 #### 3.1 Layout Components (FIRST PRIORITY)
-- [ ] Create `components/layout/Layout.tsx` - Main wrapper (h-screen flex flex-col)
-- [ ] Create `components/layout/Header.tsx` - Fixed header (h-16, 64px)
-- [ ] Create `components/layout/MainContent.tsx` - Scrollable content (flex-1 overflow-y-auto)
-- [ ] Move current App.tsx content to `components/functional/admin/index.tsx`
+**Status**: ✅ COMPLETED
+- [x] Create `components/layout/Layout.tsx` - Main wrapper (min-h-screen flex flex-col)
+- [x] Create `components/layout/Header.tsx` - Fixed header (sticky top-0)
+- [x] Create `components/layout/MainContent.tsx` - Scrollable content (flex-1 flex flex-col)
+- [x] Refactor App.tsx to use Layout component
 
 **Layout Architecture:**
 ```
@@ -128,14 +165,15 @@ App.tsx (will become router wrapper)
 ```
 
 #### 3.2 React Router Setup (SECOND PRIORITY)
-- [ ] Install React Router v6
-- [ ] Transform App.tsx to router setup
-- [ ] Define initial routes:
+**Status**: ✅ COMPLETED
+- [x] Install React Router v6
+- [x] Transform App.tsx to router setup
+- [x] Define initial routes:
   - `/` - Home page
   - `/game` - Game page
   - `/settings` - Settings page
-  - `/admin` - API testing (current App.tsx content)
-- [ ] Create placeholder pages
+- [x] Create placeholder pages
+- [x] Add React Router v7 future flags to prevent warnings
 
 #### 3.3 Zustand Store Setup (THIRD PRIORITY)
 - [ ] Install Zustand
@@ -175,7 +213,8 @@ interface GameState {
   theme: string;
   word: string;
   liarPosition: number;
-  stage: 'select' | 'play';
+  stage: 'intro' | 'select' | 'options';
+  revealedPlayers: number[];
 }
 ```
 
@@ -197,16 +236,17 @@ interface GameState {
 
 #### 4.2 Game Flow
 - [ ] Port Select component (word reveal)
-- [ ] Port Play component (discussion phase)
 - [ ] Implement PlayerWordReveal (press-hold mechanic)
 - [ ] Game state management with Zustand
-- [ ] Replay functionality
+- [ ] Options page after word reveal (back to home / replay buttons)
+- [ ] Replay functionality (re-do word reveal with same setup)
 
 **Test Checklist**:
 - [ ] Word reveal for each player
-- [ ] Liar assignment logic
-- [ ] Stage transitions
+- [ ] Liar assignment logic  
+- [ ] Proper liar/word display
 - [ ] Replay word reveal
+- [ ] Navigation back to home
 
 #### 4.3 Settings Pages
 - [ ] Main settings page
@@ -251,8 +291,9 @@ interface GameState {
   - [ ] Error states
 
 - [ ] **E2E Tests**
-  - [ ] Complete game flow
+  - [ ] Full word reveal flow (all players)
   - [ ] Settings management
+  - [ ] Replay functionality
 
 - [ ] **Performance**
   - [ ] Bundle size optimization
@@ -411,13 +452,13 @@ npm run dev  # Port 5173
 
 ## Progress Tracker
 
-### Overall Progress: 25% ✅
+### Overall Progress: 31% ✅
 
 | Phase              | Status          | Progress | Notes                                              |
 |--------------------|-----------------|----------|---------------------------------------------------|
 | 1. Setup           | ✅ Completed    | 100%     | Vite, TS, Tailwind v3, nginx configured          |
 | 2. Infrastructure  | ✅ Completed    | 100%     | TypeScript types, API service, hooks, CORS fixed |
-| 3. Components      | ⏳ Not Started  | 0%       | -                                                 |
+| 3. Components      | 🔄 In Progress  | 50%      | Layout + Router complete, Zustand next           |
 | 4. Pages           | ⏳ Not Started  | 0%       | -                                                 |
 | 5. Features        | ⏳ Not Started  | 0%       | -                                                 |
 | 6. Testing         | ⏳ Not Started  | 0%       | -                                                 |
@@ -431,3 +472,5 @@ npm run dev  # Port 5173
 | -            | -        | Plan created                                                                                                                                                                                                                             | -                                                   |
 | Dec 3, 2024  | Phase 1  | ✅ Vite project initialized<br>✅ TypeScript configured<br>✅ Tailwind CSS v3 setup<br>✅ Path aliases configured<br>✅ Environment variables<br>✅ Nginx HTTPS proxy on port 5173<br>✅ Removed custom font (Do Hyeon) → system fonts | Fixed: Tailwind v4 → v3 downgrade for stability    |
 | Dec 3, 2024  | Phase 2  | ✅ Core Infrastructure Complete<br>✅ TypeScript types defined<br>✅ API service layer with Axios<br>✅ Custom hooks (useThemes, useWords)<br>✅ API tested in App.tsx<br>✅ CORS configuration fixed<br>✅ Backend updated: Removed all non-English language fields from routes and services | English-only implementation per requirement |
+| Dec 3, 2024  | Phase 3.1 | ✅ Layout Components Complete<br>✅ Layout.tsx - Main app wrapper<br>✅ Header.tsx - Sticky header with LIAR branding<br>✅ MainContent.tsx - Flex content container<br>✅ App.tsx refactored to use Layout<br>✅ Placeholder component for API testing | Component architecture established |
+| Dec 3, 2024  | Phase 3.2 | ✅ React Router v6 Setup Complete<br>✅ React Router installed<br>✅ App.tsx configured with BrowserRouter<br>✅ Three routes created (/, /game, /settings)<br>✅ Placeholder pages for each route<br>✅ Future flags added for v7 compatibility | Routing infrastructure ready |
