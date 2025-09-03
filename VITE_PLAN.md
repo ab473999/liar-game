@@ -74,62 +74,80 @@ frontend-vite/
 ```
 
 ### Phase 2: Core Infrastructure
-**Status**: 🚧 IN PROGRESS
+**Status**: ✅ COMPLETED
 
-- [ ] **TypeScript Types & Interfaces**
-  - [ ] Define Theme, Word, GameState types
-  - [ ] API response types
-  - [ ] Store state types
+- [x] **TypeScript Types & Interfaces**
+  - [x] Define Theme, Word, GameState types
+  - [x] API response types
+  - [x] Store state types
 
-- [ ] **API Layer**
-  - [ ] Create API service class
-  - [ ] Type definitions for API responses
-  - [ ] Error handling utilities
-  - [ ] Custom hooks for data fetching
-  - [ ] **Test API calls in App.tsx** (verify themes & words endpoints)
+- [x] **API Layer**
+  - [x] Create API service class
+  - [x] Type definitions for API responses
+  - [x] Error handling utilities
+  - [x] Custom hooks for data fetching
+  - [x] **Test API calls in App.tsx** (verify themes & words endpoints)
+  - [x] Fix CORS issues for Vite development
 
-- [ ] **Zustand Store Setup**
-  - [ ] Game store (player count, theme, game state)
-  - [ ] UI store (skin/theme, language)
-  - [ ] API store (loading states, error handling)
-
-- [ ] **Routing Setup** (after API verification)
-  - [ ] Install and configure React Router v6
-  - [ ] Define route structure
-  - [ ] Create route guards/wrappers
-
-**Key Files**:
+**Key Files Created**:
 ```
 frontend-vite/src/
-├── stores/
-│   ├── gameStore.ts
-│   ├── uiStore.ts
-│   └── apiStore.ts
+├── types/
+│   └── index.ts      ✅ (TypeScript interfaces)
 ├── services/
-│   ├── api.ts
-│   └── types.ts
+│   └── api.ts        ✅ (API service class)
 ├── hooks/
-│   └── useApi.ts
-└── router/
-    └── index.tsx
+│   └── useApi.ts     ✅ (React hooks for API)
+└── App.tsx          ✅ (API testing interface)
 ```
 
-### Phase 3: Component Library Migration
+### Phase 3: Component Library Migration & Core Setup
 **Status**: ⏳ Not Started
 
-#### 3.1 Layout Components
-- [ ] Layout wrapper
-- [ ] Header component
-- [ ] MainContent wrapper
-- [ ] Navigation components
+**Order of Implementation & Rationale:**
+1. **Layout Components First** - Establishes the visual structure without dependencies
+2. **React Router Second** - Enables navigation between pages once layout exists
+3. **Zustand Third** - Add state management as we build actual components
+4. **Components Last** - Build with routing and state management already in place
 
-#### 3.2 UI Components
+#### 3.1 Layout Components (FIRST PRIORITY)
+- [ ] Create `components/layout/Layout.tsx` - Main wrapper (h-screen flex flex-col)
+- [ ] Create `components/layout/Header.tsx` - Fixed header (h-16, 64px)
+- [ ] Create `components/layout/MainContent.tsx` - Scrollable content (flex-1 overflow-y-auto)
+- [ ] Move current App.tsx content to `components/functional/admin/index.tsx`
+
+**Layout Architecture:**
+```
+App.tsx (will become router wrapper)
+  └─ Layout component
+      ├─ Header (fixed, h-16)
+      └─ MainContent (fills remaining height)
+          └─ Page content (scrollable internally)
+```
+
+#### 3.2 React Router Setup (SECOND PRIORITY)
+- [ ] Install React Router v6
+- [ ] Transform App.tsx to router setup
+- [ ] Define initial routes:
+  - `/` - Home page
+  - `/game` - Game page
+  - `/settings` - Settings page
+  - `/admin` - API testing (current App.tsx content)
+- [ ] Create placeholder pages
+
+#### 3.3 Zustand Store Setup (THIRD PRIORITY)
+- [ ] Install Zustand
+- [ ] Game store (player count, theme, game state)
+- [ ] UI store (skin/theme settings)
+- [ ] Create store hooks
+
+#### 3.4 UI Components
 - [ ] IconButton
 - [ ] ThemeBox
 - [ ] WordBox
 - [ ] LoadingState
 
-#### 3.3 Form Components
+#### 3.5 Form Components
 - [ ] PlayerSelector
 - [ ] ThemeForm
 - [ ] AddNewWord
@@ -396,23 +414,23 @@ npm run dev  # Port 5173
 
 ## Progress Tracker
 
-### Overall Progress: 12% ✅
+### Overall Progress: 25% ✅
 
-| Phase | Status | Progress | Notes |
-|-------|--------|----------|-------|
-| 1. Setup | ✅ Completed | 100% | Vite, TS, Tailwind v3, nginx configured |
-| 2. Infrastructure | ⏳ Not Started | 0% | - |
-| 3. Components | ⏳ Not Started | 0% | - |
-| 4. Pages | ⏳ Not Started | 0% | - |
-| 5. Features | ⏳ Not Started | 0% | - |
-| 6. Testing | ⏳ Not Started | 0% | - |
-| 7. Validation | ⏳ Not Started | 0% | - |
-| 8. Cutover | ⏳ Not Started | 0% | - |
+| Phase              | Status          | Progress | Notes                                              |
+|--------------------|-----------------|----------|---------------------------------------------------|
+| 1. Setup           | ✅ Completed    | 100%     | Vite, TS, Tailwind v3, nginx configured          |
+| 2. Infrastructure  | ✅ Completed    | 100%     | TypeScript types, API service, hooks, CORS fixed |
+| 3. Components      | ⏳ Not Started  | 0%       | -                                                 |
+| 4. Pages           | ⏳ Not Started  | 0%       | -                                                 |
+| 5. Features        | ⏳ Not Started  | 0%       | -                                                 |
+| 6. Testing         | ⏳ Not Started  | 0%       | -                                                 |
+| 7. Validation      | ⏳ Not Started  | 0%       | -                                                 |
+| 8. Cutover         | ⏳ Not Started  | 0%       | -                                                 |
 
 ### Daily Log
 <!-- Add entries as work progresses -->
-| Date | Phase | Work Completed | Issues/Blockers |
-|------|-------|----------------|-----------------|
-| - | - | Plan created | - |
-| Dec 3, 2024 | Phase 1 | ✅ Vite project initialized<br>✅ TypeScript configured<br>✅ Tailwind CSS v3 setup<br>✅ Path aliases configured<br>✅ Environment variables<br>✅ Nginx HTTPS proxy on port 5173<br>✅ Removed custom font (Do Hyeon) → system fonts | Fixed: Tailwind v4 → v3 downgrade for stability |
-| Dec 3, 2024 | Phase 2 | 🚧 Starting Core Infrastructure<br>- TypeScript types definition<br>- API service layer<br>- Testing API in App.tsx first | Added: API testing requirement before pages |
+| Date         | Phase    | Work Completed                                                                                                                                                                                                                           | Issues/Blockers                                     |
+|--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| -            | -        | Plan created                                                                                                                                                                                                                             | -                                                   |
+| Dec 3, 2024  | Phase 1  | ✅ Vite project initialized<br>✅ TypeScript configured<br>✅ Tailwind CSS v3 setup<br>✅ Path aliases configured<br>✅ Environment variables<br>✅ Nginx HTTPS proxy on port 5173<br>✅ Removed custom font (Do Hyeon) → system fonts | Fixed: Tailwind v4 → v3 downgrade for stability    |
+| Dec 3, 2024  | Phase 2  | ✅ Core Infrastructure Complete<br>✅ TypeScript types defined<br>✅ API service layer with Axios<br>✅ Custom hooks (useThemes, useWords)<br>✅ API tested in App.tsx<br>✅ CORS configuration fixed                                    | Removed all language references per requirement    |
