@@ -42,9 +42,9 @@ export const GameContextWrapper = ({ children }) => {
           const transformedThemes = result.data.map(theme => ({
             id: theme.id,
             type: theme.type,
-            typeKr: theme.nameKo,
-            typeEn: theme.nameEn,
-            typeIt: theme.nameIt
+            typeKr: theme.name, // Use English name for all fields temporarily
+            typeEn: theme.name,
+            typeIt: theme.name
           }));
           
           setDbData(transformedThemes);

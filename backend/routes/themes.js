@@ -92,27 +92,23 @@ router.get('/type/:type', async (req, res) => {
  * Create a new theme
  * Body parameters:
  * - type: string (required) - Theme type identifier
- * - nameKo: string (optional) - Korean name
- * - nameEn: string (required) - English name
- * - nameIt: string (optional) - Italian name
+ * - name: string (required) - English name
  */
 router.post('/', async (req, res) => {
   try {
-    const { type, nameKo, nameEn, nameIt } = req.body;
+    const { type, name } = req.body;
     
     // Validate required fields
-    if (!type || !nameEn) {
+    if (!type || !name) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required fields: type, nameEn'
+        error: 'Missing required fields: type and name'
       });
     }
     
     const theme = await themeService.createTheme({
       type,
-      nameKo,
-      nameEn,
-      nameIt
+      nameEn: name
     });
     
     res.status(201).json({
@@ -139,27 +135,24 @@ router.post('/', async (req, res) => {
  * PUT /api/themes/:id
  * Update a theme by ID
  * Body parameters:
- * - nameKo: string (optional) - Korean name
- * - nameEn: string (optional) - English name
- * - nameIt: string (optional) - Italian name
+ * - name: string (required) - English name
  */
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { nameKo, nameEn, nameIt } = req.body;
+    const { name } = req.body;
     
-    // Validate that at least one field is provided
-    if (!nameKo && !nameEn && !nameIt) {
+    // Validate that name field is provided
+    if (!name) {
       return res.status(400).json({
         success: false,
-        error: 'At least one field must be provided for update'
+        error: 'Name field is required for update'
       });
     }
     
-    const updateData = {};
-    if (nameKo !== undefined) updateData.nameKo = nameKo;
-    if (nameEn !== undefined) updateData.nameEn = nameEn;
-    if (nameIt !== undefined) updateData.nameIt = nameIt;
+    const updateData = {
+      nameEn: name
+    };
     
     const theme = await themeService.updateTheme(id, updateData);
     

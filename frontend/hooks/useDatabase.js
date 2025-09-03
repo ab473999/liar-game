@@ -55,11 +55,11 @@ export const useDatabase = () => {
   }, [handleError]);
 
   // Word operations
-  const getWordsByTheme = useCallback(async (theme, lang = 'en') => {
+  const getWordsByTheme = useCallback(async (theme) => {
     setLoading(true);
     setError(null);
     try {
-      const words = await DatabaseAPI.getWordsByTheme(theme, lang);
+      const words = await DatabaseAPI.getWordsByTheme(theme);
       return words;
     } catch (err) {
       handleError(err);

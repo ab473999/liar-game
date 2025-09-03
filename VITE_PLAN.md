@@ -3,6 +3,8 @@
 ## Overview
 Complete migration from Next.js (JavaScript) to Vite + React + TypeScript with Zustand state management.
 
+**Important**: Application is **English-only**. All multi-language support has been removed from the backend.
+
 ### Migration Strategy
 - **Parallel Development**: Run both frontends simultaneously during migration
 - **Incremental Migration**: Build and test one page/feature at a time
@@ -38,7 +40,7 @@ Next.js (App Router) + JavaScript
    - Theme selection
    - Game flow state
    - Skin/theme switching
-   - Language support
+   - ~~Language support~~ (Removed - English only)
    - Loading states
 
 3. **UI Systems**
@@ -158,14 +160,12 @@ App.tsx (will become router wrapper)
 interface Theme {
   id: string;
   type: string;
-  nameEn: string;
-  nameKo?: string;
-  nameIt?: string;
+  name: string;  // English only
 }
 
 interface Word {
   id: string;
-  word: string;
+  word: string;  // English only
   themeId: string;
 }
 
@@ -228,10 +228,10 @@ interface GameState {
   - [ ] Persist skin preference
   - [ ] All skin themes working
 
-- [ ] **Internationalization**
-  - [ ] Translation system setup
-  - [ ] English translations
-  - [ ] Translation hooks
+- [ ] ~~**Internationalization**~~ (Removed - English only)
+  - ~~Translation system setup~~
+  - ~~English translations~~
+  - ~~Translation hooks~~
 
 - [ ] **Analytics**
   - [ ] Google Analytics integration
@@ -307,13 +307,11 @@ interface GameStore {
 interface UIStore {
   // State
   skin: SkinType;
-  language: 'en' | 'ko' | 'it';
   isLoading: boolean;
   error: string | null;
   
   // Actions
   setSkin: (skin: SkinType) => void;
-  setLanguage: (lang: Language) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
 }
@@ -341,8 +339,7 @@ frontend-vite/
 │   │   └── types.ts
 │   ├── hooks/
 │   │   ├── useGame.ts
-│   │   ├── useThemes.ts
-│   │   └── useTranslation.ts
+│   │   └── useThemes.ts
 │   ├── styles/
 │   │   ├── globals.css
 │   │   └── skins.ts
@@ -433,4 +430,4 @@ npm run dev  # Port 5173
 |--------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
 | -            | -        | Plan created                                                                                                                                                                                                                             | -                                                   |
 | Dec 3, 2024  | Phase 1  | ✅ Vite project initialized<br>✅ TypeScript configured<br>✅ Tailwind CSS v3 setup<br>✅ Path aliases configured<br>✅ Environment variables<br>✅ Nginx HTTPS proxy on port 5173<br>✅ Removed custom font (Do Hyeon) → system fonts | Fixed: Tailwind v4 → v3 downgrade for stability    |
-| Dec 3, 2024  | Phase 2  | ✅ Core Infrastructure Complete<br>✅ TypeScript types defined<br>✅ API service layer with Axios<br>✅ Custom hooks (useThemes, useWords)<br>✅ API tested in App.tsx<br>✅ CORS configuration fixed                                    | Removed all language references per requirement    |
+| Dec 3, 2024  | Phase 2  | ✅ Core Infrastructure Complete<br>✅ TypeScript types defined<br>✅ API service layer with Axios<br>✅ Custom hooks (useThemes, useWords)<br>✅ API tested in App.tsx<br>✅ CORS configuration fixed<br>✅ Backend updated: Removed all non-English language fields from routes and services | English-only implementation per requirement |

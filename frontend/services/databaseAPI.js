@@ -15,12 +15,18 @@ class DatabaseAPI {
   }
 
   static async createTheme(themeData) {
+    // Transform to match new API structure
+    const apiData = {
+      type: themeData.type,
+      name: themeData.nameEn || themeData.name
+    };
+    
     const response = await fetch(`${API_BASE_URL}/themes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(themeData),
+      body: JSON.stringify(apiData),
     });
     
     const result = await response.json();
@@ -33,12 +39,17 @@ class DatabaseAPI {
   }
 
   static async updateTheme(id, updateData) {
+    // Transform to match new API structure
+    const apiData = {
+      name: updateData.nameEn || updateData.name
+    };
+    
     const response = await fetch(`${API_BASE_URL}/themes/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updateData),
+      body: JSON.stringify(apiData),
     });
     
     const result = await response.json();
@@ -51,10 +62,9 @@ class DatabaseAPI {
   }
 
   // Word operations
-  static async getWordsByTheme(theme, lang = 'en') {
+  static async getWordsByTheme(theme) {
     const params = new URLSearchParams({
-      theme,
-      lang,
+      theme
     });
     
     const response = await fetch(`${API_BASE_URL}/words?${params}`);
@@ -68,12 +78,18 @@ class DatabaseAPI {
   }
 
   static async createWord(wordData) {
+    // Transform to match new API structure
+    const apiData = {
+      themeId: wordData.themeId,
+      word: wordData.wordEn || wordData.word
+    };
+    
     const response = await fetch(`${API_BASE_URL}/words`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(wordData),
+      body: JSON.stringify(apiData),
     });
     
     const result = await response.json();
@@ -86,12 +102,17 @@ class DatabaseAPI {
   }
 
   static async updateWord(id, updateData) {
+    // Transform to match new API structure
+    const apiData = {
+      word: updateData.wordEn || updateData.word
+    };
+    
     const response = await fetch(`${API_BASE_URL}/words/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updateData),
+      body: JSON.stringify(apiData),
     });
     
     const result = await response.json();

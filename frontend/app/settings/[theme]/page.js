@@ -39,7 +39,7 @@ export default function ThemePage({ params }) {
     try {
       await createWord({
         themeId: words[0]?.themeId || 1,
-        wordEn: newWord
+        wordEn: newWord  // databaseAPI.js will transform this to 'word'
       });
       loadWords();
     } catch (err) {
@@ -52,9 +52,9 @@ export default function ThemePage({ params }) {
     
     setSaving(prev => ({ ...prev, [wordId]: true }));
     try {
-      await updateWord(wordId, { wordEn: newValue.trim() });
-      setWords(prev => prev.map(word => 
-        word.id === wordId ? { ...word, wordEn: newValue.trim() } : word
+      await updateWord(wordId, { wordEn: newValue.trim() });  // databaseAPI.js will transform this to 'word'
+      setWords(prev => prev.map(w => 
+        w.id === wordId ? { ...w, wordEn: newValue.trim(), word: newValue.trim() } : w
       ));
     } catch (err) {
       console.error('Failed to update word:', err);

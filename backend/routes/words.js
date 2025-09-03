@@ -4,14 +4,13 @@ const wordService = require('../services/wordService');
 
 /**
  * GET /api/words
- * Get words by theme and language
+ * Get words by theme
  * Query parameters:
  * - theme: string (required) - Theme type (e.g., 'food', 'place')
- * - lang: string (optional) - Language code ('ko', 'en', 'it'), defaults to 'en'
  */
 router.get('/', async (req, res) => {
   try {
-    const { theme, lang = 'en' } = req.query;
+    const { theme } = req.query;
     
     if (!theme) {
       return res.status(400).json({
@@ -20,14 +19,13 @@ router.get('/', async (req, res) => {
       });
     }
 
-    const words = await wordService.getWordsByTheme(theme, lang);
+    const words = await wordService.getWordsByTheme(theme);
     
     res.json({
       success: true,
       data: words,
       count: words.length,
-      theme: theme,
-      language: lang
+      theme: theme
     });
   } catch (error) {
     console.error('Error in words route:', error);
@@ -44,11 +42,10 @@ router.get('/', async (req, res) => {
  * Get a random word from a theme
  * Query parameters:
  * - theme: string (required) - Theme type
- * - lang: string (optional) - Language code, defaults to 'en'
  */
 router.get('/random', async (req, res) => {
   try {
-    const { theme, lang = 'en' } = req.query;
+    const { theme } = req.query;
     
     if (!theme) {
       return res.status(400).json({
@@ -57,7 +54,7 @@ router.get('/random', async (req, res) => {
       });
     }
 
-    const word = await wordService.getRandomWordByTheme(theme, lang);
+    const word = await wordService.getRandomWordByTheme(theme);
     
     if (!word) {
       return res.status(404).json({
@@ -69,8 +66,7 @@ router.get('/random', async (req, res) => {
     res.json({
       success: true,
       data: word,
-      theme: theme,
-      language: lang
+      theme: theme
     });
   } catch (error) {
     console.error('Error in random word route:', error);
@@ -118,40 +114,28 @@ router.get('/:id', async (req, res) => {
  * Create a new word
  * Body parameters:
  * - themeId: number (required) - Theme ID
- * - wordKo: string (optional) - Korean word
- * - wordEn: string (optional) - English word
- * - wordIt: string (optional) - Italian word
+ * - word: string (required) - English word
  */
 router.post('/', async (req, res) => {
   try {
-    const { themeId, wordKo, wordEn, wordIt } = req.body;
+    const { themeId, word } = req.body;
     
     // Validate required fields
-    if (!themeId) {
+    if (!themeId || !word) {
       return res.status(400).json({
         success: false,
-        error: 'Missing required field: themeId'
+        error: 'Missing required fields: themeId and word'
       });
     }
     
-    // Validate that at least one word field is provided
-    if (!wordKo && !wordEn && !wordIt) {
-      return res.status(400).json({
-        success: false,
-        error: 'At least one word field must be provided: wordKo, wordEn, or wordIt'
-      });
-    }
-    
-    const word = await wordService.createWord({
+    const newWord = await wordService.createWord({
       themeId: parseInt(themeId),
-      wordKo,
-      wordEn,
-      wordIt
+      wordEn: word
     });
     
     res.status(201).json({
       success: true,
-      data: word
+      data: newWord
     });
   } catch (error) {
     console.error('Error in create word route:', error);
@@ -173,31 +157,28 @@ router.post('/', async (req, res) => {
  * PUT /api/words/:id
  * Update a word by ID
  * Body parameters:
- * - wordKo: string (optional) - Korean word
- * - wordEn: string (optional) - English word
- * - wordIt: string (optional) - Italian word
+ * - word: string (required) - English word
  */
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { wordKo, wordEn, wordIt } = req.body;
+    const { word } = req.body;
     
-    // Validate that at least one field is provided
-    if (!wordKo && !wordEn && !wordIt) {
+    // Validate that word field is provided
+    if (!word) {
       return res.status(400).json({
         success: false,
-        error: 'At least one field must be provided for update'
+        error: 'Word field is required for update'
       });
     }
     
-    const updateData = {};
-    if (wordKo !== undefined) updateData.wordKo = wordKo;
-    if (wordEn !== undefined) updateData.wordEn = wordEn;
-    if (wordIt !== undefined) updateData.wordIt = wordIt;
+    const updateData = {
+      wordEn: word
+    };
     
-    const word = await wordService.updateWord(id, updateData);
+    const updatedWord = await wordService.updateWord(id, updateData);
     
-    if (!word) {
+    if (!updatedWord) {
       return res.status(404).json({
         success: false,
         error: 'Word not found'
@@ -206,7 +187,7 @@ router.put('/:id', async (req, res) => {
     
     res.json({
       success: true,
-      data: word
+      data: updatedWord
     });
   } catch (error) {
     console.error('Error in update word route:', error);

@@ -12,7 +12,14 @@ async function getThemes() {
       }
     });
     
-    return themes;
+    // Transform to return only English fields
+    return themes.map(theme => ({
+      id: theme.id,
+      type: theme.type,
+      name: theme.nameEn || '',
+      createdAt: theme.createdAt,
+      updatedAt: theme.updatedAt
+    }));
   } catch (error) {
     console.error('Error fetching themes:', error);
     throw new Error('Failed to fetch themes from database');
@@ -30,7 +37,18 @@ async function getThemeById(id) {
       where: { id: parseInt(id) }
     });
     
-    return theme;
+    if (!theme) {
+      return null;
+    }
+    
+    // Return only English fields
+    return {
+      id: theme.id,
+      type: theme.type,
+      name: theme.nameEn || '',
+      createdAt: theme.createdAt,
+      updatedAt: theme.updatedAt
+    };
   } catch (error) {
     console.error('Error fetching theme by ID:', error);
     throw new Error('Failed to fetch theme from database');
@@ -48,7 +66,18 @@ async function getThemeByType(type) {
       where: { type }
     });
     
-    return theme;
+    if (!theme) {
+      return null;
+    }
+    
+    // Return only English fields
+    return {
+      id: theme.id,
+      type: theme.type,
+      name: theme.nameEn || '',
+      createdAt: theme.createdAt,
+      updatedAt: theme.updatedAt
+    };
   } catch (error) {
     console.error('Error fetching theme by type:', error);
     throw new Error('Failed to fetch theme from database');
@@ -59,9 +88,7 @@ async function getThemeByType(type) {
  * Create a new theme
  * @param {Object} themeData - Theme data object
  * @param {string} themeData.type - Theme type identifier
- * @param {string} themeData.nameKo - Korean name (optional)
  * @param {string} themeData.nameEn - English name
- * @param {string} themeData.nameIt - Italian name (optional)
  * @returns {Promise<Object>} Created theme object
  */
 async function createTheme(themeData) {
@@ -70,7 +97,14 @@ async function createTheme(themeData) {
       data: themeData
     });
     
-    return theme;
+    // Return only type and English fields
+    return {
+      id: theme.id,
+      type: theme.type,
+      name: theme.nameEn || '',
+      createdAt: theme.createdAt,
+      updatedAt: theme.updatedAt
+    };
   } catch (error) {
     console.error('Error creating theme:', error);
     throw new Error('Failed to create theme in database');
@@ -90,7 +124,14 @@ async function updateTheme(id, updateData) {
       data: updateData
     });
     
-    return theme;
+    // Return only English fields
+    return {
+      id: theme.id,
+      type: theme.type,
+      name: theme.nameEn || '',
+      createdAt: theme.createdAt,
+      updatedAt: theme.updatedAt
+    };
   } catch (error) {
     console.error('Error updating theme:', error);
     if (error.code === 'P2025') {

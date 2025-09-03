@@ -1,12 +1,11 @@
 const prisma = require('../lib/prisma');
 
 /**
- * Get words by theme type and language
+ * Get words by theme type
  * @param {string} themeType - The theme type (e.g., 'food', 'place')
- * @param {string} language - The language code ('ko', 'en', 'it')
  * @returns {Promise<Array>} Array of word objects
  */
-async function getWordsByTheme(themeType, language = 'en') {
+async function getWordsByTheme(themeType) {
   try {
     // First get the theme by type
     const theme = await prisma.theme.findUnique({
@@ -23,27 +22,11 @@ async function getWordsByTheme(themeType, language = 'en') {
       orderBy: { createdAt: 'asc' }
     });
 
-    // Transform words based on language
+    // Transform words to return only English
     const transformedWords = words.map(word => {
-      let wordText = word.wordEn || word.wordKo || ''; // Default to English, then Korean, then empty
-      
-      switch (language) {
-        case 'en':
-          wordText = word.wordEn || word.wordKo || '';
-          break;
-        case 'it':
-          wordText = word.wordIt || word.wordKo || '';
-          break;
-        default:
-          wordText = word.wordEn || word.wordKo || ''; // Default to English, then Korean
-      }
-
       return {
         id: word.id,
-        word: wordText,
-        wordKo: word.wordKo,
-        wordEn: word.wordEn,
-        wordIt: word.wordIt,
+        word: word.wordEn || '',
         themeId: word.themeId
       };
     });
@@ -69,7 +52,17 @@ async function getWordById(id) {
       }
     });
     
-    return word;
+    if (!word) {
+      return null;
+    }
+    
+    // Return only English fields
+    return {
+      id: word.id,
+      word: word.wordEn || '',
+      themeId: word.themeId,
+      theme: word.theme
+    };
   } catch (error) {
     console.error('Error fetching word by ID:', error);
     throw new Error('Failed to fetch word from database');
@@ -79,10 +72,9 @@ async function getWordById(id) {
 /**
  * Get random word from a theme
  * @param {string} themeType - The theme type
- * @param {string} language - The language code
  * @returns {Promise<Object|null>} Random word object or null if no words found
  */
-async function getRandomWordByTheme(themeType, language = 'en') {
+async function getRandomWordByTheme(themeType) {
   try {
     // First get the theme by type
     const theme = await prisma.theme.findUnique({
@@ -105,26 +97,9 @@ async function getRandomWordByTheme(themeType, language = 'en') {
     // Select random word
     const randomWord = words[Math.floor(Math.random() * words.length)];
 
-    // Transform word based on language
-    let wordText = randomWord.wordEn || randomWord.wordKo || ''; // Default to English, then Korean, then empty
-    
-    switch (language) {
-      case 'en':
-        wordText = randomWord.wordEn || randomWord.wordKo || '';
-        break;
-      case 'it':
-        wordText = randomWord.wordIt || randomWord.wordKo || '';
-        break;
-      default:
-        wordText = randomWord.wordEn || randomWord.wordKo || ''; // Default to English, then Korean
-    }
-
     return {
       id: randomWord.id,
-      word: wordText,
-      wordKo: randomWord.wordKo,
-      wordEn: randomWord.wordEn,
-      wordIt: randomWord.wordIt,
+      word: randomWord.wordEn || '',
       themeId: randomWord.themeId
     };
   } catch (error) {
@@ -137,9 +112,7 @@ async function getRandomWordByTheme(themeType, language = 'en') {
  * Create a new word
  * @param {Object} wordData - Word data object
  * @param {number} wordData.themeId - Theme ID
- * @param {string} wordData.wordKo - Korean word (optional)
- * @param {string} wordData.wordEn - English word (optional)
- * @param {string} wordData.wordIt - Italian word (optional)
+ * @param {string} wordData.wordEn - English word
  * @returns {Promise<Object>} Created word object
  */
 async function createWord(wordData) {
@@ -148,7 +121,12 @@ async function createWord(wordData) {
       data: wordData
     });
     
-    return word;
+    // Return only English fields
+    return {
+      id: word.id,
+      word: word.wordEn || '',
+      themeId: word.themeId
+    };
   } catch (error) {
     console.error('Error creating word:', error);
     throw new Error('Failed to create word in database');
@@ -168,7 +146,12 @@ async function updateWord(id, updateData) {
       data: updateData
     });
     
-    return word;
+    // Return only English fields
+    return {
+      id: word.id,
+      word: word.wordEn || '',
+      themeId: word.themeId
+    };
   } catch (error) {
     console.error('Error updating word:', error);
     if (error.code === 'P2025') {

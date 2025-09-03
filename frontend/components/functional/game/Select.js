@@ -57,12 +57,12 @@ const Select = (props) => {
       
       const fetchWords = async () => {
         console.log(`[Select] === NEW GAME INITIALIZATION ===`);
-        console.log(`[Select] Theme: ${theme}, Language: en`);
+        console.log(`[Select] Theme: ${theme}`);
         console.log(`[Select] Players: ${playerNum}`);
         setIsDataLoading(true);
         
         try {
-          const response = await fetch(getApiUrl(`words?theme=${theme}&lang=en`));
+          const response = await fetch(getApiUrl(`words?theme=${theme}`));
           const result = await response.json();
           
           if (result.success) {

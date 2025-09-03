@@ -31,7 +31,7 @@ export const ThemeGrid = ({
           <div className="grid grid-cols-3 gap-3 sm:gap-4 mt-4">
             {validThemes.map((theme) => {
           // Determine the display name
-          const themeName = theme.typeEn || theme.nameEn || theme.type;
+          const themeName = theme.typeEn || theme.nameEn || theme.name || theme.type;
           
           // If linkTo is provided, create links
           if (linkTo) {
