@@ -13,6 +13,50 @@ Complete migration from Next.js (JavaScript) to Vite + React + TypeScript with Z
   - New Vite: Port 5173 (default Vite port)
 - **Final Cutover**: Delete old frontend, rename frontend-vite → frontend, update nginx
 
+## IMMEDIATE PRIORITIES (Updated Dec 2024)
+
+### 1. Settings Page (/settings) - 🚀 TOP PRIORITY
+Build the main settings page with:
+- [ ] Add new theme functionality (name input, auto-generate type)
+- [ ] Display list of existing themes (clickable to navigate)
+- [ ] Show/hide AI themes toggle
+- [ ] Navigation to /settings/[theme.type] on theme click
+
+### 2. Theme Settings Page (/settings/[theme.type]) - 🚀 TOP PRIORITY
+Build individual theme management page with:
+- [ ] Edit theme name functionality
+- [ ] Add new words (name input)
+- [ ] Edit existing word names (inline editing)
+- [ ] Delete word functionality
+- [ ] Back navigation to /settings
+
+### 3. WordReveal Component - HIGH PRIORITY
+Build the core game mechanic:
+- [ ] Press-and-hold to reveal word/role
+- [ ] Show word for normal players
+- [ ] Show "You are the Liar" for liar
+- [ ] Player counter display
+- [ ] Next player button
+- [ ] Complete game flow
+
+### 4. Skin System - MEDIUM PRIORITY
+Implement theming:
+- [ ] CSS variable management for skins
+- [ ] Skin switcher component
+- [ ] Persist skin preference in localStorage
+- [ ] Support all skin themes (dark, light, midnight, ocean, pink, og)
+
+### 5. Cutover - FINAL STEP
+Complete migration:
+- [ ] Final testing on staging
+- [ ] Backup current frontend
+- [ ] Stop old frontend service  
+- [ ] Rename directories (frontend-vite → frontend)
+- [ ] Update nginx configuration
+- [ ] Update deployment scripts
+- [ ] Restart services
+- [ ] Smoke testing
+
 ## Current Stack Analysis
 
 ### Existing Architecture
@@ -131,16 +175,16 @@ frontend-vite/
 ```
 frontend-vite/src/
 ├── types/
-│   └── index.ts      ✅ (TypeScript interfaces)
+│   └── index.ts     ✅ (TypeScript interfaces)
 ├── services/
-│   └── api.ts        ✅ (API service class)
+│   └── api.ts       ✅ (API service class)
 ├── hooks/
-│   └── useApi.ts     ✅ (React hooks for API)
+│   └── useApi.ts    ✅ (React hooks for API)
 └── App.tsx          ✅ (API testing interface)
 ```
 
 ### Phase 3: Component Library Migration & Core Setup
-**Status**: 🔄 In Progress (50%)
+**Status**: ✅ COMPLETED
 
 **Order of Implementation & Rationale:**
 1. **Layout Components First** - Establishes the visual structure without dependencies
@@ -148,49 +192,48 @@ frontend-vite/src/
 3. **Zustand Third** - Add state management as we build actual components
 4. **Components Last** - Build with routing and state management already in place
 
-#### 3.1 Layout Components (FIRST PRIORITY)
+#### 3.1 Layout Components
 **Status**: ✅ COMPLETED
 - [x] Create `components/layout/Layout.tsx` - Main wrapper (min-h-screen flex flex-col)
 - [x] Create `components/layout/Header.tsx` - Fixed header (sticky top-0)
 - [x] Create `components/layout/MainContent.tsx` - Scrollable content (flex-1 flex flex-col)
+- [x] Create `components/layout/MainContentTop.tsx` - Top section for player counter
+- [x] Create `components/layout/MainContentBody.tsx` - Body section for main content
 - [x] Refactor App.tsx to use Layout component
 
-**Layout Architecture:**
-```
-App.tsx (will become router wrapper)
-  └─ Layout component
-      ├─ Header (fixed, h-16)
-      └─ MainContent (fills remaining height)
-          └─ Page content (scrollable internally)
-```
-
-#### 3.2 React Router Setup (SECOND PRIORITY)
+#### 3.2 React Router Setup
 **Status**: ✅ COMPLETED
 - [x] Install React Router v6
 - [x] Transform App.tsx to router setup
 - [x] Define initial routes:
   - `/` - Home page
-  - `/game` - Game page
+  - `/game` - Game page  
   - `/settings` - Settings page
-- [x] Create placeholder pages
+- [x] Create page components
 - [x] Add React Router v7 future flags to prevent warnings
 
-#### 3.3 Zustand Store Setup (THIRD PRIORITY)
-- [ ] Install Zustand
-- [ ] Game store (player count, theme, game state)
-- [ ] UI store (skin/theme settings)
-- [ ] Create store hooks
+#### 3.3 Zustand Store Setup
+**Status**: ✅ COMPLETED
+- [x] Install Zustand
+- [x] Game store (player count, theme, game state, liar position)
+- [x] Store persistence with localStorage
+- [x] DevTools integration for debugging
+- [x] Create store hooks and exports
 
 #### 3.4 UI Components
-- [ ] IconButton
-- [ ] ThemeBox
-- [ ] WordBox
-- [ ] LoadingState
+**Status**: ✅ PARTIALLY COMPLETED
+- [x] ThemeBox - Theme selection boxes
+- [ ] IconButton - Reusable icon button (needed for settings)
+- [ ] WordBox - Word display/edit component (needed for settings)
+- [ ] LoadingState - Loading spinner component
 
-#### 3.5 Form Components
-- [ ] PlayerSelector
-- [ ] ThemeForm
-- [ ] AddNewWord
+#### 3.5 Functional Components
+**Status**: ✅ PARTIALLY COMPLETED
+- [x] PlayerCounter - Player number selector with increment/decrement
+- [x] ThemeGrid - Grid of theme boxes with selection logic
+- [x] Placeholder - API testing component (can be removed later)
+- [ ] ThemeForm - Form for adding/editing themes
+- [ ] AddNewWord - Form for adding words
 
 **Type Definitions Required**:
 ```typescript
@@ -219,45 +262,50 @@ interface GameState {
 ```
 
 ### Phase 4: Page Implementation
-**Status**: ⏳ Not Started
+**Status**: 🔄 In Progress (50%)
 
 #### 4.1 Home Page
-- [ ] Port home page layout
-- [ ] Implement PlayerSelector with Zustand
-- [ ] Implement ThemeGrid
-- [ ] Connect to API for themes
-- [ ] Add loading/error states
+**Status**: ✅ COMPLETED
+- [x] Port home page layout with MainContentTop/MainContentBody
+- [x] Implement PlayerCounter with Zustand
+- [x] Implement ThemeGrid with theme selection
+- [x] Connect to API for themes
+- [x] Random word selection from theme
+- [x] Random liar assignment
+- [x] Navigation to game page with state
 
-**Test Checklist**:
-- [ ] Player count increment/decrement
-- [ ] Theme selection and navigation
-- [ ] Loading state display
-- [ ] Error handling
+**Working Features**:
+- [x] Player count increment/decrement (3-20 players)
+- [x] Theme selection and navigation
+- [x] API integration for themes and words
+- [x] Game state initialization
 
 #### 4.2 Game Flow
-- [ ] Port Select component (word reveal)
-- [ ] Implement PlayerWordReveal (press-hold mechanic)
-- [ ] Game state management with Zustand
-- [ ] Options page after word reveal (back to home / replay buttons)
-- [ ] Replay functionality (re-do word reveal with same setup)
+**Status**: 🔄 PARTIALLY IMPLEMENTED
+- [x] Basic game page structure
+- [x] Game state validation (redirect if no state)
+- [x] Display theme and player count
+- [ ] **WordReveal component** (press-hold mechanic) - NEEDS IMPLEMENTATION
+- [ ] Player progression logic
+- [ ] Options after all players revealed
+- [ ] Replay functionality
 
 **Test Checklist**:
 - [ ] Word reveal for each player
-- [ ] Liar assignment logic  
-- [ ] Proper liar/word display
-- [ ] Replay word reveal
+- [ ] Liar assignment display
+- [ ] Player progression
+- [ ] Replay with same setup
 - [ ] Navigation back to home
 
 #### 4.3 Settings Pages
-- [ ] Main settings page
-- [ ] Theme management
-- [ ] Individual theme settings
+**Status**: ⏳ NOT STARTED - TOP PRIORITY
+- [ ] Main settings page (/settings)
+- [ ] Theme list display
+- [ ] Add new theme functionality
+- [ ] Navigate to theme details
+- [ ] Theme settings page (/settings/[theme])
 - [ ] Word CRUD operations
-
-**Test Checklist**:
-- [ ] Create new theme
-- [ ] Add/edit/delete words
-- [ ] Navigation between settings
+- [ ] AI themes toggle
 
 ### Phase 5: Feature Parity
 **Status**: ⏳ Not Started
@@ -280,7 +328,7 @@ interface GameState {
 ### Phase 6: Testing & Optimization
 **Status**: ⏳ Not Started
 
-- [ ] **Unit Tests**
+- [ ] **Unit Tests** 
   - [ ] Zustand stores
   - [ ] Utility functions
   - [ ] API services
@@ -452,18 +500,18 @@ npm run dev  # Port 5173
 
 ## Progress Tracker
 
-### Overall Progress: 31% ✅
+### Overall Progress: 45% ✅
 
-| Phase              | Status          | Progress | Notes                                              |
-|--------------------|-----------------|----------|---------------------------------------------------|
-| 1. Setup           | ✅ Completed    | 100%     | Vite, TS, Tailwind v3, nginx configured          |
-| 2. Infrastructure  | ✅ Completed    | 100%     | TypeScript types, API service, hooks, CORS fixed |
-| 3. Components      | 🔄 In Progress  | 50%      | Layout + Router complete, Zustand next           |
-| 4. Pages           | ⏳ Not Started  | 0%       | -                                                 |
-| 5. Features        | ⏳ Not Started  | 0%       | -                                                 |
-| 6. Testing         | ⏳ Not Started  | 0%       | -                                                 |
-| 7. Validation      | ⏳ Not Started  | 0%       | -                                                 |
-| 8. Cutover         | ⏳ Not Started  | 0%       | -                                                 |
+| Phase              | Status          | Progress | Notes                                                    |
+|--------------------|-----------------|----------|----------------------------------------------------------|
+| 1. Setup           | ✅ Completed    | 100%     | Vite, TS, Tailwind v3, nginx configured                  |
+| 2. Infrastructure  | ✅ Completed    | 100%     | TypeScript types, API service, hooks, CORS fixed         |
+| 3. Components      | ✅ Completed    | 100%     | Layout, Router, Zustand, Core components complete        |
+| 4. Pages           | 🔄 In Progress  | 50%      | Home complete, Game partial, Settings needed             |
+| 5. Features        | ⏳ Not Started  | 0%       | Skins system needed                                      |
+| 6. Testing         | ⏳ Not Started  | 0%       | -                                                        |
+| 7. Validation      | ⏳ Not Started  | 0%       | -                                                        |
+| 8. Cutover         | ⏳ Not Started  | 0%       | -                                                        |
 
 ### Daily Log
 <!-- Add entries as work progresses -->
@@ -472,5 +520,5 @@ npm run dev  # Port 5173
 | -            | -        | Plan created                                                                                                                                                                                                                             | -                                                   |
 | Dec 3, 2024  | Phase 1  | ✅ Vite project initialized<br>✅ TypeScript configured<br>✅ Tailwind CSS v3 setup<br>✅ Path aliases configured<br>✅ Environment variables<br>✅ Nginx HTTPS proxy on port 5173<br>✅ Removed custom font (Do Hyeon) → system fonts | Fixed: Tailwind v4 → v3 downgrade for stability    |
 | Dec 3, 2024  | Phase 2  | ✅ Core Infrastructure Complete<br>✅ TypeScript types defined<br>✅ API service layer with Axios<br>✅ Custom hooks (useThemes, useWords)<br>✅ API tested in App.tsx<br>✅ CORS configuration fixed<br>✅ Backend updated: Removed all non-English language fields from routes and services | English-only implementation per requirement |
-| Dec 3, 2024  | Phase 3.1 | ✅ Layout Components Complete<br>✅ Layout.tsx - Main app wrapper<br>✅ Header.tsx - Sticky header with LIAR branding<br>✅ MainContent.tsx - Flex content container<br>✅ App.tsx refactored to use Layout<br>✅ Placeholder component for API testing | Component architecture established |
-| Dec 3, 2024  | Phase 3.2 | ✅ React Router v6 Setup Complete<br>✅ React Router installed<br>✅ App.tsx configured with BrowserRouter<br>✅ Three routes created (/, /game, /settings)<br>✅ Placeholder pages for each route<br>✅ Future flags added for v7 compatibility | Routing infrastructure ready |
+| Dec 2024     | Phase 3  | ✅ All Core Components Complete<br>✅ Layout components (Header, MainContent, MainContentTop/Body)<br>✅ React Router v6 with all routes<br>✅ Zustand store with game state management & persistence<br>✅ PlayerCounter component<br>✅ ThemeGrid with API integration<br>✅ ThemeBox UI component | Full component infrastructure ready |
+| Dec 2024     | Phase 4  | ✅ Home Page Complete<br>✅ Player selection (3-20 players)<br>✅ Theme selection with API<br>✅ Random word and liar assignment<br>✅ Navigation to game with state<br>🔄 Basic Game page structure<br>⏳ Settings pages not started | Need: WordReveal component, Settings pages |
