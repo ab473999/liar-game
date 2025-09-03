@@ -50,15 +50,17 @@ Next.js (App Router) + JavaScript
 ## Migration Phases
 
 ### Phase 1: Project Setup & Foundation
-**Status**: ⏳ Not Started
+**Status**: ✅ COMPLETED
 
-- [ ] Initialize Vite project with React + TypeScript
-- [ ] Configure TypeScript (tsconfig.json)
-- [ ] Set up Tailwind CSS
-- [ ] Configure path aliases (@/ imports)
-- [ ] Set up ESLint + Prettier
-- [ ] Configure environment variables (.env)
-- [ ] Set up development scripts
+- [x] Initialize Vite project with React + TypeScript
+- [x] Configure TypeScript (tsconfig.json)
+- [x] Set up Tailwind CSS (v3)
+- [x] Configure path aliases (@/ imports)
+- [ ] Set up ESLint + Prettier (optional, can add later)
+- [x] Configure environment variables (.env)
+- [x] Set up development scripts
+- [x] Configure nginx for HTTPS access on port 5173
+- [x] Test app running at https://liar.nyc:5173
 
 **Key Files**:
 ```
@@ -72,23 +74,29 @@ frontend-vite/
 ```
 
 ### Phase 2: Core Infrastructure
-**Status**: ⏳ Not Started
+**Status**: 🚧 IN PROGRESS
 
-- [ ] **Zustand Store Setup**
-  - [ ] Game store (player count, theme, game state)
-  - [ ] UI store (skin/theme, language)
-  - [ ] API store (loading states, error handling)
-
-- [ ] **Routing Setup**
-  - [ ] Install and configure React Router v6
-  - [ ] Define route structure
-  - [ ] Create route guards/wrappers
+- [ ] **TypeScript Types & Interfaces**
+  - [ ] Define Theme, Word, GameState types
+  - [ ] API response types
+  - [ ] Store state types
 
 - [ ] **API Layer**
   - [ ] Create API service class
   - [ ] Type definitions for API responses
   - [ ] Error handling utilities
   - [ ] Custom hooks for data fetching
+  - [ ] **Test API calls in App.tsx** (verify themes & words endpoints)
+
+- [ ] **Zustand Store Setup**
+  - [ ] Game store (player count, theme, game state)
+  - [ ] UI store (skin/theme, language)
+  - [ ] API store (loading states, error handling)
+
+- [ ] **Routing Setup** (after API verification)
+  - [ ] Install and configure React Router v6
+  - [ ] Define route structure
+  - [ ] Create route guards/wrappers
 
 **Key Files**:
 ```
@@ -388,11 +396,11 @@ npm run dev  # Port 5173
 
 ## Progress Tracker
 
-### Overall Progress: 0% ⏳
+### Overall Progress: 12% ✅
 
 | Phase | Status | Progress | Notes |
 |-------|--------|----------|-------|
-| 1. Setup | ⏳ Not Started | 0% | - |
+| 1. Setup | ✅ Completed | 100% | Vite, TS, Tailwind v3, nginx configured |
 | 2. Infrastructure | ⏳ Not Started | 0% | - |
 | 3. Components | ⏳ Not Started | 0% | - |
 | 4. Pages | ⏳ Not Started | 0% | - |
@@ -406,3 +414,5 @@ npm run dev  # Port 5173
 | Date | Phase | Work Completed | Issues/Blockers |
 |------|-------|----------------|-----------------|
 | - | - | Plan created | - |
+| Dec 3, 2024 | Phase 1 | ✅ Vite project initialized<br>✅ TypeScript configured<br>✅ Tailwind CSS v3 setup<br>✅ Path aliases configured<br>✅ Environment variables<br>✅ Nginx HTTPS proxy on port 5173<br>✅ Removed custom font (Do Hyeon) → system fonts | Fixed: Tailwind v4 → v3 downgrade for stability |
+| Dec 3, 2024 | Phase 2 | 🚧 Starting Core Infrastructure<br>- TypeScript types definition<br>- API service layer<br>- Testing API in App.tsx first | Added: API testing requirement before pages |

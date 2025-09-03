@@ -11,8 +11,15 @@ const PORT = process.env.PORT || 8001;
 app.use(helmet());
 app.use(cors({
   origin: [
-    'http://localhost:3000', 
+    'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://localhost:5173',
+    'http://localhost:5174', 
+    'http://localhost:5175',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    'http://127.0.0.1:5175',
+    'https://liar.nyc:5173',
     'https://liar.nyc',
     'https://www.liar.nyc',
     'http://liar.nyc',
