@@ -18,8 +18,7 @@ export const WordRevealCircle = () => {
     revealWord
   } = useGameStore()
   
-  const isLastPlayer = currentPlayer === playerNum - 1
-  const allPlayersRevealed = currentPlayer > playerNum - 1
+  const allPlayersRevealed = currentPlayer >= playerNum  // Show end buttons after all players have seen their words
   
   // Handle press start to hide help text after 250ms
   const handlePressStart = () => {
@@ -67,7 +66,7 @@ export const WordRevealCircle = () => {
     }
     
     // Log circle button center position if it exists
-    if (circleButtonRef.current && !isLastPlayer && !allPlayersRevealed) {
+    if (circleButtonRef.current && !allPlayersRevealed) {
       const buttonRect = circleButtonRef.current.getBoundingClientRect()
       const containerRect = containerRef.current?.getBoundingClientRect()
       console.log('🟢 Circle Button Center:', {
@@ -83,17 +82,7 @@ export const WordRevealCircle = () => {
     }
   }) // Dependencies handled by React - this runs on every render
   
-  // Auto-advance after 1 second for the last player
-  useEffect(() => {
-    if (isLastPlayer) {
-      const timer = setTimeout(() => {
-        console.log('Last player timer complete, advancing to end game')
-        nextPlayer()
-      }, 1000)
-      
-      return () => clearTimeout(timer)
-    }
-  }, [isLastPlayer, nextPlayer])
+  // No auto-advance for last player - they need to see their word too!
   
   // Cleanup timer on unmount
   useEffect(() => {
@@ -154,36 +143,34 @@ export const WordRevealCircle = () => {
         }}
       />
       
-      {/* Next Player Button - Circle centered horizontally, pushed 100px down */}
-      {!isLastPlayer && (
-        <button
-          ref={circleButtonRef}
-          {...handlers}
-          className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none"
-          style={{ 
-            backgroundColor: 'var(--color-circle-bg)',
-            border: 'none',
-            userSelect: 'none',
-            touchAction: 'none'
-          }}
-          aria-label="Next Player - Hold for 1 second"
-        >
-          {/* Help text that disappears after 0.25s of pressing */}
-          {showHelpText && (
-            <span 
-              style={{ 
-                color: 'var(--color-circlehelp-font)',
-                fontSize: '1.5rem',
-                fontWeight: 'normal',
-                pointerEvents: 'none',
-                userSelect: 'none'
-              }}
-            >
-              Press and hold
-            </span>
-          )}
-        </button>
-      )}
+      {/* Next Player Button - Show for all players including last */}
+      <button
+        ref={circleButtonRef}
+        {...handlers}
+        className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none"
+        style={{ 
+          backgroundColor: 'var(--color-circle-bg)',
+          border: 'none',
+          userSelect: 'none',
+          touchAction: 'none'
+        }}
+        aria-label="Next Player - Hold for 1 second"
+      >
+        {/* Help text that disappears after 0.25s of pressing */}
+        {showHelpText && (
+          <span 
+            style={{ 
+              color: 'var(--color-circlehelp-font)',
+              fontSize: '1.5rem',
+              fontWeight: 'normal',
+              pointerEvents: 'none',
+              userSelect: 'none'
+            }}
+          >
+            Press and hold
+          </span>
+        )}
+      </button>
     </div>
   )
 }

@@ -12,7 +12,7 @@ export const WordRevealText = () => {
   } = useGameStore()
   
   const isLiar = currentPlayer === liarPosition
-  const allPlayersRevealed = currentPlayer > playerNum - 1
+  const allPlayersRevealed = currentPlayer >= playerNum  // Changed from > to >=
   
   // Log dimensions whenever container renders/updates
   useEffect(() => {

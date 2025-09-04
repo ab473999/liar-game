@@ -25,8 +25,10 @@ export const usePressAndHold = ({
   const handlePressStart = (e: React.MouseEvent | React.TouchEvent) => {
     if (isPressing) return // Prevent multiple simultaneous presses
     
-    // Prevent default to avoid any scrolling or text selection
-    e.preventDefault()
+    // Only prevent default for mouse events (touch events handled by touchAction: 'none')
+    if ('button' in e) {
+      e.preventDefault()
+    }
     
     console.log('⭕ Circle press started')
     setIsPressing(true)

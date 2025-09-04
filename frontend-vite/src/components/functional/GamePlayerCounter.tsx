@@ -4,7 +4,7 @@ export const GamePlayerCounter = () => {
   const { currentPlayer, playerNum } = useGameStore()
   
   // If all players have revealed, don't show the counter
-  const allPlayersRevealed = currentPlayer > playerNum - 1
+  const allPlayersRevealed = currentPlayer >= playerNum  // Changed from > to >=
   
   if (allPlayersRevealed) {
     return (
