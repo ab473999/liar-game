@@ -6,7 +6,7 @@ interface ThemeBoxProps {
 export const ThemeBox = ({ name, onClick }: ThemeBoxProps) => {
   return (
     <div
-      className="text-sm rounded-2xl cursor-pointer"
+      className="text-base rounded-3xl cursor-pointer"
       style={{
         backgroundColor: 'var(--color-themebox-bg)',
         border: '1px solid var(--color-themebox-border)',

@@ -78,10 +78,13 @@ export const ThemeGrid = () => {
     <div 
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '0.75rem',
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+        gap: '1.25rem',
         alignContent: 'start',
         padding: '1rem',
+        width: 'calc(100% - 0.5rem)',  // Compensate for increased gap
+        maxWidth: '100%',
+        margin: '0 auto',
         opacity: isSelecting ? 0.5 : 1,
         pointerEvents: isSelecting ? 'none' : 'auto'
       }}
