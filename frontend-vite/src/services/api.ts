@@ -88,7 +88,7 @@ class ApiService {
     }
   }
 
-  async createWord(wordData: { word: string; theme: string }): Promise<Word> {
+  async createWord(wordData: { word: string; themeId: number }): Promise<Word> {
     try {
       const response = await this.client.post<ApiResponse<Word>>('/words', wordData);
       if (response.data.success && response.data.data) {
@@ -101,9 +101,9 @@ class ApiService {
     }
   }
 
-  async updateWord(id: number, word: string): Promise<Word> {
+  async updateWord(id: number, updateData: { word: string }): Promise<Word> {
     try {
-      const response = await this.client.put<ApiResponse<Word>>(`/words/${id}`, { word });
+      const response = await this.client.put<ApiResponse<Word>>(`/words/${id}`, updateData);
       if (response.data.success && response.data.data) {
         return response.data.data;
       }

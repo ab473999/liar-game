@@ -29,8 +29,9 @@
   --color-themebox-font: #ffffff;
   
   /* IconButton colors */
-  --color-iconbutton-bg: transparent;
-  --color-iconbutton-line: #3b82f6; /* Same as text-blue-400 */
+  --color-buttonicon-bg: transparent;
+  --color-buttonicon-line: #3b82f6; /* Same as text-blue-400 */
+  --color-buttondelete-line: #ef4444; /* Same as accentDanger */
 }
 
 html {
