@@ -30,11 +30,11 @@ export const WordRevealText = () => {
   
   // Don't show text after all players revealed
   if (allPlayersRevealed) {
-    return <div ref={containerRef} className="absolute inset-0 border-4 border-yellow-400" />
+    return <div ref={containerRef} className="absolute inset-0 border-4 border-yellow-400 z-20 pointer-events-none" />
   }
   
   return (
-    <div ref={containerRef} className="absolute inset-0 flex flex-col items-center border-4 border-yellow-400 pt-[60px]">
+    <div ref={containerRef} className="absolute inset-0 flex flex-col items-center border-4 border-yellow-400 pt-[60px] z-20 pointer-events-none">
       {/* Word/Liar Display - Only shown after 1s hold */}
       {isWordRevealed && (
         <div className="text-center">

@@ -116,7 +116,7 @@ export const WordRevealCircle = () => {
             pointerEvents: 'none'
           }}
         />
-        <div className="flex gap-4">
+        <div className="flex gap-4 z-30">
           <button
             onClick={() => navigate('/')}
             className="p-4 bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg"
@@ -144,7 +144,7 @@ export const WordRevealCircle = () => {
   }
   
   return (
-    <div ref={containerRef} className="absolute inset-0 flex items-center justify-center border-4 border-blue-500 pt-[100px]">
+    <div ref={containerRef} className="absolute inset-0 flex items-center justify-center border-4 border-blue-500 pt-[100px] z-10">
       {/* Vertical dashed green line for design purposes */}
       <div 
         className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
@@ -159,7 +159,7 @@ export const WordRevealCircle = () => {
         <button
           ref={circleButtonRef}
           {...handlers}
-          className="w-64 h-64 rounded-full flex items-center justify-center z-10 select-none"
+          className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none"
           style={{ 
             backgroundColor: 'var(--color-circle-bg)',
             border: 'none',
