@@ -5,7 +5,11 @@ import { ThemeBox } from '@/components/ui/ThemeBox'
 import { useGameStore } from '@/stores'
 import { apiService } from '@/services/api'
 
-export const ThemeGrid = () => {
+interface ThemeGridProps {
+  onThemeClick?: (themeType: string, themeName: string) => void | Promise<void>
+}
+
+export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
   const navigate = useNavigate()
   const { themes, loading } = useThemes()
   const [isSelecting, setIsSelecting] = useState(false)
@@ -25,12 +29,13 @@ export const ThemeGrid = () => {
     }
   }, [themes, loading])
   
-  const handleThemeClick = async (themeType: string, themeName: string) => {
+  // Default handler for Home page (game start)
+  const handleThemeClickHome = async (themeType: string, themeName: string) => {
     if (isSelecting) return // Prevent double clicks
     
     try {
       setIsSelecting(true)
-      console.log('Theme selected:', themeName, '(type:', themeType, ')')
+      console.log('Theme selected for game:', themeName, '(type:', themeType, ')')
       
       // Set the selected theme in store (store the name for display)
       setTheme(themeName)
@@ -64,6 +69,17 @@ export const ThemeGrid = () => {
     }
   }
   
+  // Use provided handler or default based on current route
+  const handleClick = async (themeType: string, themeName: string) => {
+    if (onThemeClick) {
+      // Custom handler provided
+      await onThemeClick(themeType, themeName)
+    } else {
+      // Default to home behavior if no handler provided
+      await handleThemeClickHome(themeType, themeName)
+    }
+  }
+  
   // Don't render anything while loading
   if (loading) {
     return null
@@ -93,7 +109,7 @@ export const ThemeGrid = () => {
         <ThemeBox 
           key={theme.id} 
           name={theme.name}
-          onClick={() => handleThemeClick(theme.type, theme.name)}
+          onClick={() => handleClick(theme.type, theme.name)}
         />
       ))}
     </div>

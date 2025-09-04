@@ -27,6 +27,10 @@
   --color-themebox-bg: #374151;
   --color-themebox-border: #4b5563;
   --color-themebox-font: #ffffff;
+  
+  /* IconButton colors */
+  --color-iconbutton-bg: transparent;
+  --color-iconbutton-line: #ffffff;
 }
 
 html {

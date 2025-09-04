@@ -3,6 +3,7 @@ import { Layout } from '@/components/layout/Layout'
 import { Home } from '@/pages/Home'
 import { Game } from '@/pages/Game'
 import { Settings } from '@/pages/Settings'
+import { ThemeSettings } from '@/pages/ThemeSettings'
 
 /**
  * Main App Component
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/game" element={<Game />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/:theme" element={<ThemeSettings />} />
         </Routes>
       </Layout>
     </BrowserRouter>
