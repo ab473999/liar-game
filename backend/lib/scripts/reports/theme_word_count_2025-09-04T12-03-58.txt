@@ -1,0 +1,72 @@
+╔══════════════════════════════════════════════════════════╗
+║           LIAR GAME DATABASE REPORT                       ║
+║           Theme Word Count Analysis                       ║
+╠══════════════════════════════════════════════════════════╣
+║  Generated: 9/4/2025, 12:03:58 PM                        ║
+╚══════════════════════════════════════════════════════════╝
+
+┌────────────────────────┬─────────────────────────┬──────────┐
+│ Theme Type             │ Theme Name              │ Words    │
+├────────────────────────┼─────────────────────────┼──────────┤
+│ activity               │ Activities              │       20 │
+│ anatomy                │ Anatomy                 │        0 │
+│ animals                │ Animals                 │        0 │
+│ car-brands             │ Car Brands              │        0 │
+│ clothes                │ Clothes                 │        0 │
+│ countries              │ Countries               │        0 │
+│ dailyObject            │ Daily Objects           │       20 │
+│ disney                 │ Disney                  │        0 │
+│ europe                 │ Europe                  │        0 │
+│ fashion-brands         │ Fashion Brands          │        0 │
+│ fields-of-study        │ Fields of Study         │        0 │
+│ food                   │ Food                    │        0 │
+│ harry-potter           │ Harry Potter            │        0 │
+│ history                │ History                 │        0 │
+│ jobs                   │ Jobs                    │        0 │
+│ music                  │ Music                   │        0 │
+│ netflix                │ Netflix                 │        0 │
+│ place                  │ Places                  │       25 │
+│ psychology             │ Psychology              │        0 │
+│ sex                    │ Sex                     │        0 │
+│ sports                 │ Sports                  │        0 │
+│ subcultures            │ Subcultures             │        0 │
+│ technology             │ Technology              │        0 │
+└────────────────────────┴─────────────────────────┴──────────┘
+
+═══════════════════════════════════════════════════════════
+                        SUMMARY                            
+═══════════════════════════════════════════════════════════
+Total Themes:           23
+Total Words:            65
+Average Words/Theme:    2.8
+
+───────────────────────────────────────────────────────────
+                   THEMES WITH NO WORDS                    
+───────────────────────────────────────────────────────────
+• anatomy (Anatomy)
+• animals (Animals)
+• car-brands (Car Brands)
+• clothes (Clothes)
+• countries (Countries)
+• disney (Disney)
+• europe (Europe)
+• fashion-brands (Fashion Brands)
+• fields-of-study (Fields of Study)
+• food (Food)
+• harry-potter (Harry Potter)
+• history (History)
+• jobs (Jobs)
+• music (Music)
+• netflix (Netflix)
+• psychology (Psychology)
+• sex (Sex)
+• sports (Sports)
+• subcultures (Subcultures)
+• technology (Technology)
+
+───────────────────────────────────────────────────────────
+                  TOP THEMES BY WORD COUNT                 
+───────────────────────────────────────────────────────────
+1st: place (Places): 25 words
+2nd: activity (Activities): 20 words
+3rd: dailyObject (Daily Objects): 20 words

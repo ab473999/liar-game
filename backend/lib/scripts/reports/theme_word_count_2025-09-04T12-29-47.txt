@@ -1,0 +1,48 @@
+╔══════════════════════════════════════════════════════════╗
+║           LIAR GAME DATABASE REPORT                       ║
+║           Theme Word Count Analysis                       ║
+╠══════════════════════════════════════════════════════════╣
+║  Generated: 9/4/2025, 12:29:47 PM                        ║
+╚══════════════════════════════════════════════════════════╝
+
+┌────────────────────────┬─────────────────────────┬──────────┐
+│ Theme Type             │ Theme Name              │ Words    │
+├────────────────────────┼─────────────────────────┼──────────┤
+│ activity               │ Activities              │       20 │
+│ anatomy                │ Anatomy                 │       30 │
+│ animals                │ Animals                 │       30 │
+│ car-brands             │ Car Brands              │       25 │
+│ clothes                │ Clothes                 │       35 │
+│ countries              │ Countries               │       55 │
+│ dailyObject            │ Daily Objects           │       20 │
+│ disney                 │ Disney                  │       25 │
+│ europe                 │ Europe                  │       35 │
+│ fashion-brands         │ Fashion Brands          │       32 │
+│ fields-of-study        │ Fields of Study         │       25 │
+│ food                   │ Food                    │       25 │
+│ harry-potter           │ Harry Potter            │       25 │
+│ history                │ History                 │       25 │
+│ jobs                   │ Jobs                    │       30 │
+│ music                  │ Music                   │       25 │
+│ netflix                │ Netflix                 │       25 │
+│ place                  │ Places                  │       25 │
+│ psychology             │ Psychology              │       25 │
+│ sex                    │ Sex                     │       35 │
+│ sports                 │ Sports                  │       25 │
+│ subcultures            │ Subcultures             │       30 │
+│ technology             │ Technology              │       25 │
+└────────────────────────┴─────────────────────────┴──────────┘
+
+═══════════════════════════════════════════════════════════
+                        SUMMARY                            
+═══════════════════════════════════════════════════════════
+Total Themes:           23
+Total Words:            652
+Average Words/Theme:    28.3
+
+───────────────────────────────────────────────────────────
+                  TOP THEMES BY WORD COUNT                 
+───────────────────────────────────────────────────────────
+1st: countries (Countries): 55 words
+2nd: clothes (Clothes): 35 words
+3rd: europe (Europe): 35 words
