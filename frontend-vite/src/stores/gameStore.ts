@@ -12,6 +12,7 @@ interface GameStore {
   revealedPlayers: number[]
   hasVisitedHome: boolean  // Track if we've been to home before
   isWordRevealed: boolean  // Track if current player has seen their word
+  circleScale: number  // Track the current scale of the circle for text positioning
   
   // Actions
   setPlayerNum: (num: number) => void
@@ -26,12 +27,32 @@ interface GameStore {
   markHomeVisited: () => void
   initializeHomeState: () => void
   revealWord: () => void  // Called when 1s hold is reached
+  setCircleScale: (scale: number) => void  // Update circle scale for text positioning
 }
 
 // Constants
 const MIN_PLAYERS = 3
 const MAX_PLAYERS = 20
 const DEFAULT_PLAYERS = 4
+
+// One-time migration to clear old persisted UI states
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem('liar-game-storage')
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored)
+      if (parsed.state && (parsed.state.isWordRevealed !== undefined || parsed.state.circleScale !== undefined)) {
+        // Remove UI-only states from persisted data
+        delete parsed.state.isWordRevealed
+        delete parsed.state.circleScale
+        localStorage.setItem('liar-game-storage', JSON.stringify(parsed))
+        console.log('🧹 Cleaned up persisted UI states')
+      }
+    } catch (e) {
+      console.error('Failed to migrate persisted state:', e)
+    }
+  }
+}
 
 export const useGameStore = create<GameStore>()(
   devtools(
@@ -47,6 +68,7 @@ export const useGameStore = create<GameStore>()(
         revealedPlayers: [],
         hasVisitedHome: false,
         isWordRevealed: false,
+        circleScale: 1,
       
       // Actions
       setPlayerNum: (num) => {
@@ -104,13 +126,18 @@ export const useGameStore = create<GameStore>()(
         set({
           currentPlayer: currentPlayer + 1,
           revealedPlayers: [...revealedPlayers, currentPlayer],
-          isWordRevealed: false  // Reset for next player
+          isWordRevealed: false,  // Reset for next player
+          circleScale: 1  // Reset scale for next player
         })
       },
       
       revealWord: () => {
         console.log('GameStore: revealWord for player', get().currentPlayer)
         set({ isWordRevealed: true })
+      },
+      
+      setCircleScale: (scale) => {
+        set({ circleScale: scale })
       },
       
       resetGame: () => {
@@ -122,7 +149,8 @@ export const useGameStore = create<GameStore>()(
           word: null,
           revealedPlayers: [],
           theme: null,
-          isWordRevealed: false
+          isWordRevealed: false,
+          circleScale: 1
         })
       },
       
@@ -153,14 +181,28 @@ export const useGameStore = create<GameStore>()(
           word: null,
           revealedPlayers: [],
           theme: null,  // Reset selected theme when returning to home
-          isWordRevealed: false  // Reset reveal state
+          isWordRevealed: false,  // Reset reveal state
+          circleScale: 1  // Reset circle scale
         })
       }
       }),
       {
         name: 'liar-game-storage', // Key in localStorage
-        // Persist everything! If someone refreshes mid-game, they should continue where they left off
-        // The game only resets when explicitly returning to home page
+        // Persist everything EXCEPT temporary UI states
+        partialize: (state) => ({
+          // Persist game configuration
+          playerNum: state.playerNum,
+          theme: state.theme,
+          word: state.word,
+          liarPosition: state.liarPosition,
+          currentPlayer: state.currentPlayer,
+          revealedPlayers: state.revealedPlayers,
+          stage: state.stage,
+          hasVisitedHome: state.hasVisitedHome,
+          // DO NOT persist these UI-only states:
+          // isWordRevealed - should always start false for each player
+          // circleScale - should always start at 1
+        })
       }
     ),
     {
@@ -183,7 +225,8 @@ if (import.meta.env.DEV) {
       word: state.word,
       revealedPlayers: state.revealedPlayers,
       hasVisitedHome: state.hasVisitedHome,
-      isWordRevealed: state.isWordRevealed
+      isWordRevealed: state.isWordRevealed,
+      circleScale: state.circleScale
     })
   })
 }

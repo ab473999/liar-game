@@ -17,7 +17,8 @@ export const WordRevealCircle = () => {
     currentPlayer, 
     playerNum,
     nextPlayer,
-    revealWord
+    revealWord,
+    setCircleScale
   } = useGameStore()
   
   const allPlayersRevealed = currentPlayer >= playerNum  // Show end buttons after all players have seen their words
@@ -43,12 +44,14 @@ export const WordRevealCircle = () => {
     // Reset help text visibility and scale for next interaction
     setShowHelpText(true)
     setScale(1)
+    setCircleScale(1)  // Reset scale in store too
   }
   
   // Handle progress updates for scale animation
   const handleProgress = (_progress: number, elapsedMs: number) => {
     const newScale = calculateScale(elapsedMs)
     setScale(newScale)
+    setCircleScale(newScale)  // Update store for WordRevealText to use
   }
   
   // Use the press-and-hold hook
@@ -77,6 +80,50 @@ export const WordRevealCircle = () => {
     if (circleButtonRef.current && !allPlayersRevealed) {
       const buttonRect = circleButtonRef.current.getBoundingClientRect()
       const containerRect = containerRef.current?.getBoundingClientRect()
+      
+      // Circle dimensions
+      const circleRadius = buttonRect.width / 2  // 128px at default (256px diameter)
+      const circleCenterX = buttonRect.left + circleRadius
+      const circleCenterY = buttonRect.top + circleRadius
+      
+      // Calculate positions at different scales
+      const scaleMin = 1.0
+      const scaleMax = TIMING.SCALE_MAX  // 2.1
+      
+      // At scale 1.0 (before expanding)
+      const circleTopBeforeExpanding = circleCenterY - circleRadius
+      
+      // At scale 2.1 (after expanding)
+      const expandedRadius = circleRadius * scaleMax
+      const circleTopAfterExpanding = circleCenterY - expandedRadius
+      
+      // Movement of the top
+      const topMovement = circleTopBeforeExpanding - circleTopAfterExpanding
+      
+      console.log('🎯 Circle Positioning Calculations:', {
+        '1. Circle Center': {
+          x: circleCenterX,
+          y: circleCenterY,
+          description: 'Center point stays fixed during scale'
+        },
+        '2. Circle Top (before expanding)': {
+          y: circleTopBeforeExpanding,
+          radius: circleRadius,
+          scale: scaleMin,
+          description: `Top at scale ${scaleMin}x`
+        },
+        '3. Circle Top (after expanding)': {
+          y: circleTopAfterExpanding,
+          radius: expandedRadius,
+          scale: scaleMax,
+          description: `Top at scale ${scaleMax}x`
+        },
+        'Movement': {
+          topMovesUpBy: topMovement,
+          description: `Top moves up ${topMovement}px when scaling from ${scaleMin}x to ${scaleMax}x`
+        }
+      })
+      
       console.log('🟢 Circle Button Center:', {
         centerX: buttonRect.left + buttonRect.width / 2,
         centerY: buttonRect.top + buttonRect.height / 2,
@@ -127,7 +174,8 @@ export const WordRevealCircle = () => {
               useGameStore.setState({ 
                 currentPlayer: 0,
                 revealedPlayers: [],
-                isWordRevealed: false  // Reset reveal state for replay
+                isWordRevealed: false,  // Reset reveal state for replay
+                circleScale: 1  // Reset circle scale for replay
               })
             }}
             className="p-4 bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg"
