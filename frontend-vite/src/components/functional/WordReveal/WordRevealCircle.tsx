@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { useGameStore } from '@/stores'
 import { usePressAndHold } from './hooks'
+import { TIMING, calculateScale } from '@/constants'
 
 export const WordRevealCircle = () => {
   const navigate = useNavigate()
@@ -10,6 +11,7 @@ export const WordRevealCircle = () => {
   const circleButtonRef = useRef<HTMLButtonElement>(null)
   const [showHelpText, setShowHelpText] = useState(true)
   const helpTextTimerRef = useRef<number | null>(null)
+  const [scale, setScale] = useState(1)  // Track the scale value
   
   const { 
     currentPlayer, 
@@ -20,7 +22,7 @@ export const WordRevealCircle = () => {
   
   const allPlayersRevealed = currentPlayer >= playerNum  // Show end buttons after all players have seen their words
   
-  // Handle press start to hide help text after 250ms
+  // Handle press start to hide help text after TIMING.HELP_TEXT_HIDE_DELAY
   const handlePressStart = () => {
     if (helpTextTimerRef.current) {
       clearTimeout(helpTextTimerRef.current)
@@ -28,7 +30,7 @@ export const WordRevealCircle = () => {
     
     helpTextTimerRef.current = window.setTimeout(() => {
       setShowHelpText(false)
-    }, 250)
+    }, TIMING.HELP_TEXT_HIDE_DELAY)
   }
   
   // Handle press end to show help text again
@@ -38,22 +40,25 @@ export const WordRevealCircle = () => {
       helpTextTimerRef.current = null
     }
     
-    // Reset help text visibility for next interaction
+    // Reset help text visibility and scale for next interaction
     setShowHelpText(true)
+    setScale(1)
+  }
+  
+  // Handle progress updates for scale animation
+  const handleProgress = (_progress: number, elapsedMs: number) => {
+    const newScale = calculateScale(elapsedMs)
+    setScale(newScale)
   }
   
   // Use the press-and-hold hook
-  const { handlers, progress } = usePressAndHold({
-    requiredDuration: 1000,
-    onComplete: nextPlayer,  // Called on release after 1s
-    onHoldReached: revealWord,  // Called when 1s is reached
-    logInterval: 250,
+  const { handlers } = usePressAndHold({
+    onComplete: nextPlayer,  // Called on release after threshold
+    onHoldReached: revealWord,  // Called when threshold is reached
     onPressStart: handlePressStart,
-    onPressEnd: handlePressEnd
+    onPressEnd: handlePressEnd,
+    onProgress: handleProgress
   })
-  
-  // Calculate scale: from 1x to 2x based on progress (0 to 1)
-  const scale = 1 + progress  // This will go from 1 to 2
   
   // Log dimensions whenever container renders/updates
   useEffect(() => {

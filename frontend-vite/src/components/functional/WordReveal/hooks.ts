@@ -1,20 +1,17 @@
 import { useState, useRef, useEffect } from 'react'
+import { TIMING } from '@/constants'
 
 interface UsePressAndHoldOptions {
-  requiredDuration?: number  // Duration in ms (default: 1000)
   onComplete: () => void     // Called when held for required duration and released
   onHoldReached?: () => void  // Called when required duration is reached (while still holding)
-  logInterval?: number        // Interval for progress logs in ms (default: 250)
   onPressStart?: () => void   // Called when press starts
   onPressEnd?: () => void     // Called when press ends (regardless of duration)
-  onProgress?: (progress: number) => void  // Called with progress (0 to 1) during hold
+  onProgress?: (progress: number, elapsedMs: number) => void  // Called with progress (0 to 1) and elapsed time during hold
 }
 
 export const usePressAndHold = ({
-  requiredDuration = 1000,
   onComplete,
   onHoldReached,
-  logInterval = 250,
   onPressStart,
   onPressEnd,
   onProgress
@@ -49,17 +46,17 @@ export const usePressAndHold = ({
     const updateProgress = () => {
       if (!pressStartTime.current) return
       
-      const elapsed = Date.now() - pressStartTime.current
-      const currentProgress = Math.min(elapsed / requiredDuration, 1)
+      const elapsedMs = Date.now() - pressStartTime.current
+      const currentProgress = Math.min(elapsedMs / TIMING.REVEAL_THRESHOLD, 1)
       
       setProgress(currentProgress)
       if (onProgress) {
-        onProgress(currentProgress)
+        onProgress(currentProgress, elapsedMs)
       }
       
-      // Check if we've reached the required duration
-      if (currentProgress >= 1 && !holdReachedRef.current) {
-        console.log('✅ 1 second reached!')
+      // Check if we've reached the reveal threshold
+      if (elapsedMs >= TIMING.REVEAL_THRESHOLD && !holdReachedRef.current) {
+        console.log(`✅ ${TIMING.REVEAL_THRESHOLD / 1000}s reached!`)
         holdReachedRef.current = true
         if (onHoldReached) {
           onHoldReached()
@@ -67,7 +64,7 @@ export const usePressAndHold = ({
       }
       
       // Continue animation if still pressing and not complete
-      if (currentProgress < 1) {
+      if (elapsedMs < TIMING.REVEAL_THRESHOLD) {
         animationFrameRef.current = requestAnimationFrame(updateProgress)
       }
     }
@@ -79,9 +76,9 @@ export const usePressAndHold = ({
     let elapsedCount = 0
     intervalRef.current = window.setInterval(() => {
       elapsedCount++
-      const elapsed = elapsedCount * (logInterval / 1000)
+      const elapsed = elapsedCount * (TIMING.LOG_INTERVAL / 1000)
       console.log(`⏱️ Holding... ${elapsed.toFixed(2)}s`)
-    }, logInterval)
+    }, TIMING.LOG_INTERVAL)
   }
   
   const handlePressEnd = () => {
@@ -103,11 +100,11 @@ export const usePressAndHold = ({
     }
     
     // Check if held for required duration
-    if (holdDuration >= requiredDuration) {
+    if (holdDuration >= TIMING.REVEAL_THRESHOLD) {
       console.log('✅ Advancing to next player!')
       onComplete()
     } else {
-      console.log(`❌ Not held long enough (${(holdDuration / 1000).toFixed(2)}s < ${requiredDuration / 1000}s)`)
+      console.log(`❌ Not held long enough (${(holdDuration / 1000).toFixed(2)}s < ${TIMING.REVEAL_THRESHOLD / 1000}s)`)
     }
     
     // Reset state
