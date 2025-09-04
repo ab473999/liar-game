@@ -24,10 +24,23 @@ export const WordRevealText = () => {
     const scaleIncrease = circleScale - 1
     // How much the top of the circle moves up (in rem units)
     const topMovement = scaleIncrease * 8
-    // Text should be at midpoint between original and expanded top positions
-    const textOffset = topMovement / 2
-    // Return negative value to move text up from center
-    return -8 - textOffset  // -8rem for original circle radius, then additional offset
+    // Midpoint between original and expanded circle top
+    const midpointOffset = topMovement / 2
+    
+    // Position where we want the text (from center)
+    // This positions the CENTER of the text at the midpoint
+    // To position the BOTTOM of text at midpoint, subtract ~0.75rem (half text height)
+    // To position the TOP of text at midpoint, add ~0.75rem (half text height)
+    const textPositionFromCenter = -8 - midpointOffset
+    
+    // Adjust based on where you want the text baseline:
+    // - For text BOTTOM at midpoint: subtract estimated half text height
+    // - For text TOP at midpoint: add estimated half text height  
+    // - For text CENTER at midpoint: no adjustment (current)
+    
+    // Let's position the text TOP at the midpoint (text appears below the line)
+    const textHeightAdjustment = 0.75 // Approximate half height of text in rem
+    return textPositionFromCenter + textHeightAdjustment
   }
   
   // Log dimensions whenever container renders/updates
@@ -56,19 +69,21 @@ export const WordRevealText = () => {
         const textPositionY = containerCenterY + (textOffsetRem * remToPx)
         
         console.log('📝 Text Positioning Calculation:', {
-          '4. Text Position': {
+          '4. Text Position (TOP of text)': {
             y: textPositionY,
             offsetFromCenter: textOffsetRem + 'rem (' + (textOffsetRem * remToPx) + 'px)',
             circleScale: circleScale,
-            description: `Text positioned at midpoint between circle top at scale 1.0 and scale ${circleScale.toFixed(1)}`
+            description: `TOP of text positioned at midpoint between circle top at scale 1.0 and scale ${circleScale.toFixed(1)}`
           },
           'Formula Details': {
             containerCenterY: containerCenterY,
             scaleIncrease: circleScale - 1,
             circleRadiusRem: 8,
             topMovementRem: (circleScale - 1) * 8,
-            textOffsetFromCenterRem: textOffsetRem,
-            description: 'Text = Center + (-8rem - (scaleIncrease * 8rem / 2))'
+            midpointFromCenter: -8 - ((circleScale - 1) * 8 / 2),
+            textHeightAdjustment: '+0.75rem (to position TOP of text)',
+            finalTextOffset: textOffsetRem,
+            description: 'Text TOP = Center + midpoint + 0.75rem adjustment'
           }
         })
       }

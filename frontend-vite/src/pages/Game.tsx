@@ -68,17 +68,20 @@ export const Game = () => {
     // Text position calculation
     const scaleIncrease = scaleMax - scaleMin
     const topMovementRem = scaleIncrease * circleRadiusRem
-    const textOffsetRem = -circleRadiusRem - (topMovementRem / 2)
+    const midpointRem = -circleRadiusRem - (topMovementRem / 2)
+    const textHeightAdjustment = 0.75 // Adjustment to position TOP of text at midpoint
+    const textOffsetRem = midpointRem + textHeightAdjustment
     const textOffsetPx = textOffsetRem * 16
     
-    console.log(`4️⃣ Text Position: Y = ${textOffsetRem}rem = ${textOffsetPx}px from center`)
-    console.log('   (Midpoint between circle top at scale 1.0 and scale 2.1)')
+    console.log(`4️⃣ Text TOP Position: Y = ${textOffsetRem}rem = ${textOffsetPx}px from center`)
+    console.log(`   (TOP of text at midpoint between circle top at scale 1.0 and scale 2.1)`)
+    console.log(`   Midpoint: ${midpointRem}rem, adjusted +${textHeightAdjustment}rem for text top`)
     
     console.log('\n📊 Summary:')
     console.log(`- Circle expands from ${scaleMin}x to ${scaleMax}x`)
     console.log(`- Circle top moves up by ${topMovementRem}rem (${topMovementRem * 16}px)`)
-    console.log(`- Text is positioned at the midpoint of this movement`)
-    console.log(`- Text offset from center: ${textOffsetRem}rem (${textOffsetPx}px)`)
+    console.log(`- Text TOP is positioned at the midpoint of this movement`)
+    console.log(`- Text TOP offset from center: ${textOffsetRem}rem (${textOffsetPx}px)`)
     console.log('🎨 ================================')
   }, [playerNum, theme, word, liarPosition, currentPlayer, navigate])
   
