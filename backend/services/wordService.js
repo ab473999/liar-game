@@ -61,7 +61,8 @@ async function getWordById(id) {
       id: word.id,
       word: word.wordEn || '',
       themeId: word.themeId,
-      theme: word.theme
+      theme: word.theme,
+      archive: word.archive || []
     };
   } catch (error) {
     console.error('Error fetching word by ID:', error);
@@ -141,16 +142,43 @@ async function createWord(wordData) {
  */
 async function updateWord(id, updateData) {
   try {
+    // First, fetch the current word to save its state in archive
+    const currentWord = await prisma.word.findUnique({
+      where: { id: parseInt(id) }
+    });
+    
+    if (!currentWord) {
+      return null; // Word not found
+    }
+    
+    // Prepare archive data
+    const archiveEntry = {
+      wordKo: currentWord.wordKo,
+      wordEn: currentWord.wordEn,
+      wordIt: currentWord.wordIt,
+      updatedAt: currentWord.updatedAt,
+      archivedAt: new Date()
+    };
+    
+    // Get existing archive or create new array
+    const existingArchive = currentWord.archive || [];
+    const updatedArchive = [...existingArchive, archiveEntry];
+    
+    // Update the word with new data and updated archive
     const word = await prisma.word.update({
       where: { id: parseInt(id) },
-      data: updateData
+      data: {
+        ...updateData,
+        archive: updatedArchive
+      }
     });
     
     // Return only English fields
     return {
       id: word.id,
       word: word.wordEn || '',
-      themeId: word.themeId
+      themeId: word.themeId,
+      archive: word.archive
     };
   } catch (error) {
     console.error('Error updating word:', error);
