@@ -15,12 +15,13 @@ Complete migration from Next.js (JavaScript) to Vite + React + TypeScript with Z
 
 ## IMMEDIATE PRIORITIES (Updated Dec 2024)
 
-### 1. Settings Page (/settings) - 🚀 TOP PRIORITY
+### 1. Settings Page (/settings) - ✅ COMPLETED 
 Build the main settings page with:
-- [ ] Add new theme functionality (name input, auto-generate type)
-- [ ] Display list of existing themes (clickable to navigate)
+- [x] Add new theme functionality (name input, auto-generate type)
+- [x] Display list of existing themes (clickable to navigate)
 - [ ] Show/hide AI themes toggle
-- [ ] Navigation to /settings/[theme.type] on theme click
+- [x] Navigation to /settings/[theme.type] on theme click
+- [x] Background sync with backend (smart sync solution)
 
 ### 2. Theme Settings Page (/settings/[theme.type]) - 🚀 TOP PRIORITY
 Build individual theme management page with:
@@ -373,6 +374,30 @@ interface GameState {
 
 ## Technical Decisions
 
+### Smart Sync Strategy for Themes
+The app implements an intelligent sync mechanism between Zustand (local state) and the backend to handle:
+- **Instant UI updates** - Local changes appear immediately via Zustand
+- **Background sync** - Fetches backend data without blocking the UI
+- **Multi-client sync** - Detects changes from other clients or direct backend modifications
+- **Conflict resolution** - Backend is source of truth, but preserves user experience
+
+#### Implementation Details:
+1. **Zustand Priority**: UI always uses Zustand store as primary data source (instant updates)
+2. **Background Sync**: Pages fetch backend data on mount and every 30 seconds
+3. **Smart Merge**: `syncThemes()` compares backend vs local:
+   - Detects additions (themes on backend not in local)
+   - Detects deletions (themes in local not on backend)
+   - Detects updates (same ID but different name/type)
+   - Only updates store if changes detected
+4. **Persistence**: Themes cached in localStorage with `lastSynced` timestamp
+5. **Loading States**: Separate `isLoading` (initial) and `isSyncing` (background) flags
+
+#### Benefits:
+- No loading spinners on navigation (uses cached data)
+- Real-time sync when backend changes externally
+- Optimistic updates feel instant
+- Handles offline scenarios gracefully
+
 ### State Management Architecture
 ```typescript
 // Proposed Zustand store structure
@@ -500,15 +525,15 @@ npm run dev  # Port 5173
 
 ## Progress Tracker
 
-### Overall Progress: 45% ✅
+### Overall Progress: 55% ✅
 
 | Phase              | Status          | Progress | Notes                                                    |
 |--------------------|-----------------|----------|----------------------------------------------------------|
 | 1. Setup           | ✅ Completed    | 100%     | Vite, TS, Tailwind v3, nginx configured                  |
 | 2. Infrastructure  | ✅ Completed    | 100%     | TypeScript types, API service, hooks, CORS fixed         |
 | 3. Components      | ✅ Completed    | 100%     | Layout, Router, Zustand, Core components complete        |
-| 4. Pages           | 🔄 In Progress  | 50%      | Home complete, Game partial, Settings needed             |
-| 5. Features        | ⏳ Not Started  | 0%       | Skins system needed                                      |
+| 4. Pages           | 🔄 In Progress  | 70%      | Home complete, Settings complete, Theme Settings needed  |
+| 5. Features        | 🔄 In Progress  | 20%      | Smart sync implemented, Skins system needed              |
 | 6. Testing         | ⏳ Not Started  | 0%       | -                                                        |
 | 7. Validation      | ⏳ Not Started  | 0%       | -                                                        |
 | 8. Cutover         | ⏳ Not Started  | 0%       | -                                                        |
@@ -522,4 +547,5 @@ npm run dev  # Port 5173
 | Dec 3, 2024  | Phase 2  | ✅ Core Infrastructure Complete<br>✅ TypeScript types defined<br>✅ API service layer with Axios<br>✅ Custom hooks (useThemes, useWords)<br>✅ API tested in App.tsx<br>✅ CORS configuration fixed<br>✅ Backend updated: Removed all non-English language fields from routes and services | English-only implementation per requirement |
 | Dec 2024     | Phase 3  | ✅ All Core Components Complete<br>✅ Layout components (Header, MainContent, MainContentTop/Body)<br>✅ React Router v6 with all routes<br>✅ Zustand store with game state management & persistence<br>✅ PlayerCounter component<br>✅ ThemeGrid with API integration<br>✅ ThemeBox UI component | Full component infrastructure ready |
 | Dec 2024     | Phase 4  | ✅ Home Page Complete<br>✅ Player selection (3-20 players)<br>✅ Theme selection with API<br>✅ Random word and liar assignment<br>✅ Navigation to game with state<br>🔄 Basic Game page structure<br>⏳ Settings pages not started | Need: WordReveal component, Settings pages |
+| Dec 2024     | Phase 4-5 | ✅ Settings Page Complete<br>✅ AddTheme component with validation<br>✅ Refactored AddTheme to use hooks pattern<br>✅ Smart sync strategy implemented<br>✅ Background sync with backend<br>✅ Multi-client sync support<br>✅ Help text for UX | Smart sync prevents stale data issues |
 `

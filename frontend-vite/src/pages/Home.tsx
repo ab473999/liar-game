@@ -8,29 +8,59 @@ import { apiService } from '@/services/api'
 
 export const Home = () => {
   const initializeHomeState = useGameStore((state) => state.initializeHomeState)
+  const themes = useThemesStore((state) => state.themes)
   const setThemes = useThemesStore((state) => state.setThemes)
+  const syncThemes = useThemesStore((state) => state.syncThemes)
   const setLoading = useThemesStore((state) => state.setLoading)
+  const setSyncing = useThemesStore((state) => state.setSyncing)
+  const lastSynced = useThemesStore((state) => state.lastSynced)
   
-  // Initialize home state and fetch themes when component mounts
-  // Note: In dev, React.StrictMode will run this twice - this is normal
+  // Initialize home state when component mounts
   useEffect(() => {
     initializeHomeState()
-    
-    // Fetch and cache themes in the store
-    const fetchThemes = async () => {
+  }, [initializeHomeState])
+  
+  // Initial load: if we have no themes at all, do a full fetch
+  useEffect(() => {
+    if (themes.length === 0 && !lastSynced) {
+      const fetchThemes = async () => {
+        try {
+          setLoading(true)
+          const fetchedThemes = await apiService.getThemes()
+          setThemes(fetchedThemes)
+        } catch (error) {
+          console.error('Failed to fetch themes:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchThemes()
+    }
+  }, [themes.length, lastSynced, setThemes, setLoading])
+  
+  // Background sync: always run this to catch backend changes
+  useEffect(() => {
+    const syncWithBackend = async () => {
       try {
-        setLoading(true)
-        const themes = await apiService.getThemes()
-        setThemes(themes)
+        setSyncing(true)
+        console.log('Home: Starting background sync with backend')
+        const backendThemes = await apiService.getThemes()
+        syncThemes(backendThemes)
       } catch (error) {
-        console.error('Failed to fetch themes:', error)
+        console.error('Failed to sync themes with backend:', error)
       } finally {
-        setLoading(false)
+        setSyncing(false)
       }
     }
     
-    fetchThemes()
-  }, [initializeHomeState, setThemes, setLoading])
+    // Sync on mount
+    syncWithBackend()
+    
+    // Optional: Set up periodic sync (every 30 seconds)
+    const interval = setInterval(syncWithBackend, 30000)
+    
+    return () => clearInterval(interval)
+  }, [syncThemes, setSyncing])
   
   return (
     <>

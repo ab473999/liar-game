@@ -12,11 +12,14 @@ export const Settings = () => {
   const setSelectedTheme = useSettingsStore(state => state.setSelectedTheme)
   const themes = useThemesStore(state => state.themes)
   const setThemes = useThemesStore(state => state.setThemes)
+  const syncThemes = useThemesStore(state => state.syncThemes)
   const setLoading = useThemesStore(state => state.setLoading)
+  const setSyncing = useThemesStore(state => state.setSyncing)
+  const lastSynced = useThemesStore(state => state.lastSynced)
   
-  // Fetch themes if not already loaded (e.g., direct navigation to /settings)
+  // Initial load: if we have no themes at all, do a full fetch
   useEffect(() => {
-    if (themes.length === 0) {
+    if (themes.length === 0 && !lastSynced) {
       const fetchThemes = async () => {
         try {
           setLoading(true)
@@ -30,7 +33,31 @@ export const Settings = () => {
       }
       fetchThemes()
     }
-  }, [themes.length, setThemes, setLoading])
+  }, [themes.length, lastSynced, setThemes, setLoading])
+  
+  // Background sync: always run this to catch backend changes
+  useEffect(() => {
+    const syncWithBackend = async () => {
+      try {
+        setSyncing(true)
+        console.log('Settings: Starting background sync with backend')
+        const backendThemes = await apiService.getThemes()
+        syncThemes(backendThemes)
+      } catch (error) {
+        console.error('Failed to sync themes with backend:', error)
+      } finally {
+        setSyncing(false)
+      }
+    }
+    
+    // Sync on mount
+    syncWithBackend()
+    
+    // Optional: Set up periodic sync (every 30 seconds)
+    const interval = setInterval(syncWithBackend, 30000)
+    
+    return () => clearInterval(interval)
+  }, [syncThemes, setSyncing])
   
   // Handler for settings page - navigate to theme-specific settings
   const handleThemeClickSettings = (themeType: string, themeName: string) => {
