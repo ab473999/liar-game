@@ -17,10 +17,11 @@ export const GamePlayerCounter = () => {
   
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="text-sm" style={{ color: 'var(--color-text-gray-400)' }}>Player</div>
-      <div className="text-4xl font-bold">
+      <div className="text-sm" style={{ color: 'var(--font-secondary)' }}>Player</div>
+      <div className="text-4xl font-bold" style={{ color: 'var(--font-primary)' }}>
         {currentPlayer + 1}/{playerNum}
       </div>
     </div>
   )
 }
+

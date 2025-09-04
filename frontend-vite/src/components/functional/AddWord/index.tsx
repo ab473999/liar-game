@@ -29,16 +29,16 @@ export const AddWord = ({ themeType, themeName, themeId }: AddWordProps) => {
           onClick={startAdding}
           className="flex items-center gap-2 px-2 py-2 rounded-lg transition-opacity hover:opacity-80"
           style={{
-            backgroundColor: 'var(--color-buttonBg)',
-            color: 'var(--color-textPrimary)',
-            border: '1px solid var(--color-borderPrimary)',
+            backgroundColor: 'var(--mainbutton-bg)',
+            color: 'var(--font-primary)',
+            border: 'none',
           }}
         >
           <Plus size={18} />
           <span className="text-sm">Add New Word</span>
         </button>
-        <p className="text-xs opacity-60" style={{ color: 'var(--color-textSecondary)' }}>
-          Add words for the "{themeName}" theme
+        <p className="text-base opacity-60" style={{ color: 'var(--font-primary)' }}>
+          Click on the words to edit them
         </p>
       </div>
     )
@@ -57,9 +57,9 @@ export const AddWord = ({ themeType, themeName, themeId }: AddWordProps) => {
           disabled={isLoading}
           className="flex-1 px-3 py-2 rounded-lg transition-colors"
           style={{
-            backgroundColor: 'var(--color-inputBg)',
-            color: 'var(--color-textPrimary)',
-            border: `1px solid ${warning ? 'var(--color-accentDanger)' : 'var(--color-borderPrimary)'}`,
+            backgroundColor: 'var(--mainbutton-bg)',
+            color: 'var(--font-primary)',
+            border: `1px solid ${warning ? 'var(--circle-help)' : 'var(--mainbutton-border)'}`,
             opacity: isLoading ? 0.5 : 1,
           }}
         />
@@ -70,7 +70,7 @@ export const AddWord = ({ themeType, themeName, themeId }: AddWordProps) => {
         />
       </div>
       {warning && (
-        <p className="text-sm" style={{ color: 'var(--color-accentDanger)' }}>
+        <p className="text-sm" style={{ color: 'var(--circle-help)' }}>
           {warning}
         </p>
       )}

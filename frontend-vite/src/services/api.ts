@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import type { AxiosInstance } from 'axios';
 import type { ApiResponse, Theme, Word } from '@/types';
+import { useAuthStore } from '@/stores/authStore';
+import { logger } from '@/utils/logger';
 
 class ApiService {
   private client: AxiosInstance;
@@ -14,11 +16,38 @@ class ApiService {
       },
     });
 
+    // Request interceptor to add auth header for write operations
+    this.client.interceptors.request.use(
+      (config) => {
+        // Add auth header for write operations (POST, PUT, DELETE)
+        if (config.method && ['post', 'put', 'delete'].includes(config.method.toLowerCase())) {
+          const authStore = useAuthStore.getState();
+          const password = authStore.getPassword();
+          
+          if (password) {
+            config.headers['Authorization'] = `Bearer ${password}`;
+          }
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
     // Response interceptor for error handling
     this.client.interceptors.response.use(
       (response) => response,
       (error: AxiosError) => {
-        console.error('API Error:', error);
+        logger.error('API Error:', error);
+        
+        // Handle 401 Unauthorized - clear auth and return special error
+        if (error.response?.status === 401) {
+          const authStore = useAuthStore.getState();
+          authStore.clearPassword();
+          return Promise.reject(new Error('Authentication required'));
+        }
+        
         return Promise.reject(this.handleError(error));
       }
     );
@@ -27,6 +56,12 @@ class ApiService {
   private handleError(error: AxiosError): string {
     if (error.response) {
       // Server responded with error
+      if (error.response.status === 401) {
+        return 'Authentication required';
+      }
+      if (error.response.status === 403) {
+        return 'Invalid password';
+      }
       return `Server error: ${error.response.status}`;
     } else if (error.request) {
       // No response received
@@ -46,7 +81,7 @@ class ApiService {
       }
       throw new Error(response.data.error || 'Failed to fetch themes');
     } catch (error) {
-      console.error('Error fetching themes:', error);
+      logger.error('Error fetching themes:', error);
       throw error;
     }
   }
@@ -59,7 +94,7 @@ class ApiService {
       }
       throw new Error(response.data.error || 'Failed to create theme');
     } catch (error: any) {
-      console.error('Error creating theme:', error);
+      logger.error('Error creating theme:', error);
       // Check for 409 Conflict (duplicate theme)
       if (error.response?.status === 409) {
         throw new Error('Theme already exists');
@@ -83,7 +118,7 @@ class ApiService {
       }
       throw new Error(response.data.error || 'Failed to fetch words');
     } catch (error) {
-      console.error('Error fetching words:', error);
+      logger.error('Error fetching words:', error);
       throw error;
     }
   }
@@ -96,7 +131,7 @@ class ApiService {
       }
       throw new Error(response.data.error || 'Failed to create word');
     } catch (error) {
-      console.error('Error creating word:', error);
+      logger.error('Error creating word:', error);
       throw error;
     }
   }
@@ -109,7 +144,7 @@ class ApiService {
       }
       throw new Error(response.data.error || 'Failed to update word');
     } catch (error) {
-      console.error('Error updating word:', error);
+      logger.error('Error updating word:', error);
       throw error;
     }
   }
@@ -119,7 +154,7 @@ class ApiService {
       const response = await this.client.delete<ApiResponse<void>>(`/words/${id}`);
       return response.data.success;
     } catch (error) {
-      console.error('Error deleting word:', error);
+      logger.error('Error deleting word:', error);
       throw error;
     }
   }

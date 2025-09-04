@@ -1,15 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ButtonSave } from '@/components/ui/customized/ButtonSave'
 import { ButtonDelete } from '@/components/ui/customized/ButtonDelete'
-import { useWordsStore } from '@/stores'
+import { useWordsStore, useAuthStore } from '@/stores'
 import { apiService } from '@/services/api'
 import type { Word } from '@/types'
+import { logger } from '@/utils/logger'
 
 interface RowProps {
   word: Word
 }
 
 export const Row = ({ word }: RowProps) => {
+  const navigate = useNavigate()
   const [isEditing, setIsEditing] = useState(false)
   const [editedText, setEditedText] = useState(word.word)
   const [isLoading, setIsLoading] = useState(false)
@@ -19,6 +22,7 @@ export const Row = ({ word }: RowProps) => {
   const updateWordInStore = useWordsStore((state) => state.updateWord)
   const removeWordFromStore = useWordsStore((state) => state.removeWord)
   const words = useWordsStore((state) => state.words)
+  const clearPassword = useAuthStore((state) => state.clearPassword)
   
   // Update local state when word prop changes (e.g., from backend sync)
   useEffect(() => {
@@ -79,10 +83,18 @@ export const Row = ({ word }: RowProps) => {
       setOriginalText(editedText.trim())
       setIsEditing(false)
     } catch (err) {
-      console.error('Error updating word:', err)
-      alert('Failed to update word. Please try again.')
-      setEditedText(originalText)
-      setIsEditing(false)
+      logger.error('Error updating word:', err)
+      const errorMessage = err instanceof Error ? err.message.toLowerCase() : ''
+      
+      if (errorMessage.includes('authentication required') || errorMessage.includes('invalid password')) {
+        clearPassword()
+        alert('Authentication required. Please try again.')
+        navigate('/')
+      } else {
+        alert('Failed to update word. Please try again.')
+        setEditedText(originalText)
+        setIsEditing(false)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -104,8 +116,16 @@ export const Row = ({ word }: RowProps) => {
       // Remove from store
       removeWordFromStore(word.id)
     } catch (err) {
-      console.error('Error deleting word:', err)
-      alert('Failed to delete word. Please try again.')
+      logger.error('Error deleting word:', err)
+      const errorMessage = err instanceof Error ? err.message.toLowerCase() : ''
+      
+      if (errorMessage.includes('authentication required') || errorMessage.includes('invalid password')) {
+        clearPassword()
+        alert('Authentication required. Please try again.')
+        navigate('/')
+      } else {
+        alert('Failed to delete word. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
@@ -144,9 +164,9 @@ export const Row = ({ word }: RowProps) => {
         onFocus={handleFocus}
         className="flex-1 px-2 py-1.5 rounded-lg transition-colors mr-1 text-sm"
         style={{
-          backgroundColor: 'var(--color-inputBg)',
-          color: 'var(--color-textPrimary)',
-          border: '1px solid var(--color-borderPrimary)',
+          backgroundColor: 'var(--mainbutton-bg)',
+          color: 'var(--font-primary)',
+          border: 'none',
         }}
         disabled={isLoading}
       />

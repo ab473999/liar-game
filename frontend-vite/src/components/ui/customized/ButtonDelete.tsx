@@ -11,7 +11,7 @@ interface ButtonDeleteProps {
 /**
  * Delete button component
  * Displays a trash icon in red
- * Uses CSS variable --color-buttondelete-line for the icon color
+ * Uses circle-help color (red) for the icon
  */
 export const ButtonDelete = ({ 
   onClick, 
@@ -26,7 +26,7 @@ export const ButtonDelete = ({
       className={`p-1 rounded-lg ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
       style={{
         backgroundColor: 'transparent',
-        color: 'var(--color-buttondelete-line)',
+        color: 'var(--circle-help)',
         border: 'none',
         display: 'flex',
         alignItems: 'center',

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import { logger } from '@/utils/logger'
 
 interface GameStore {
   // State
@@ -46,7 +47,7 @@ if (typeof window !== 'undefined') {
         delete parsed.state.isWordRevealed
         delete parsed.state.circleScale
         localStorage.setItem('liar-game-storage', JSON.stringify(parsed))
-        console.log('🧹 Cleaned up persisted UI states')
+        logger.log('🧹 Cleaned up persisted UI states')
       }
     } catch (e) {
       console.error('Failed to migrate persisted state:', e)
@@ -73,14 +74,14 @@ export const useGameStore = create<GameStore>()(
       // Actions
       setPlayerNum: (num) => {
         const clampedNum = Math.max(MIN_PLAYERS, Math.min(MAX_PLAYERS, num))
-        console.log('GameStore: setPlayerNum', { from: get().playerNum, to: clampedNum })
+        logger.log('GameStore: setPlayerNum', { from: get().playerNum, to: clampedNum })
         set({ playerNum: clampedNum })
       },
       
       incrementPlayerNum: () => {
         const current = get().playerNum
         if (current < MAX_PLAYERS) {
-          console.log('GameStore: incrementPlayerNum', { from: current, to: current + 1 })
+          logger.log('GameStore: incrementPlayerNum', { from: current, to: current + 1 })
           set({ playerNum: current + 1 })
         }
       },
@@ -88,30 +89,30 @@ export const useGameStore = create<GameStore>()(
       decrementPlayerNum: () => {
         const current = get().playerNum
         if (current > MIN_PLAYERS) {
-          console.log('GameStore: decrementPlayerNum', { from: current, to: current - 1 })
+          logger.log('GameStore: decrementPlayerNum', { from: current, to: current - 1 })
           set({ playerNum: current - 1 })
         }
       },
       
       setTheme: (theme) => {
-        console.log('GameStore: setTheme', { from: get().theme, to: theme })
+        logger.log('GameStore: setTheme', { from: get().theme, to: theme })
         set({ theme })
       },
       
       setWord: (word) => {
-        console.log('GameStore: setWord', { word })
+        logger.log('GameStore: setWord', { word })
         set({ word })
       },
       
       setLiarPosition: (position) => {
-        console.log('GameStore: setLiarPosition', { position })
+        logger.log('GameStore: setLiarPosition', { position })
         set({ liarPosition: position })
       },
       
       startGame: () => {
         const playerNum = get().playerNum
         const liarPosition = Math.floor(Math.random() * playerNum)
-        console.log('GameStore: startGame', { playerNum, liarPosition })
+        logger.log('GameStore: startGame', { playerNum, liarPosition })
         set({
           stage: 'select',
           currentPlayer: 0,
@@ -122,7 +123,7 @@ export const useGameStore = create<GameStore>()(
       
       nextPlayer: () => {
         const { currentPlayer, revealedPlayers } = get()
-        console.log('GameStore: nextPlayer', { from: currentPlayer, to: currentPlayer + 1 })
+        logger.log('GameStore: nextPlayer', { from: currentPlayer, to: currentPlayer + 1 })
         set({
           currentPlayer: currentPlayer + 1,
           revealedPlayers: [...revealedPlayers, currentPlayer],
@@ -132,7 +133,7 @@ export const useGameStore = create<GameStore>()(
       },
       
       revealWord: () => {
-        console.log('GameStore: revealWord for player', get().currentPlayer)
+        logger.log('GameStore: revealWord for player', get().currentPlayer)
         set({ isWordRevealed: true })
       },
       
@@ -141,7 +142,7 @@ export const useGameStore = create<GameStore>()(
       },
       
       resetGame: () => {
-        console.log('GameStore: resetGame')
+        logger.log('GameStore: resetGame')
         set({
           stage: 'intro',
           currentPlayer: 0,
@@ -155,17 +156,17 @@ export const useGameStore = create<GameStore>()(
       },
       
       markHomeVisited: () => {
-        console.log('GameStore: markHomeVisited')
+        logger.log('GameStore: markHomeVisited')
         set({ hasVisitedHome: true })
       },
       
       initializeHomeState: () => {
         const { hasVisitedHome, playerNum } = get()
-        console.log('GameStore: initializeHomeState', { hasVisitedHome, currentPlayerNum: playerNum })
+        logger.log('GameStore: initializeHomeState', { hasVisitedHome, currentPlayerNum: playerNum })
         
         // Only reset to default playerNum if this is the first time visiting home
         if (!hasVisitedHome) {
-          console.log('GameStore: First visit to home, setting playerNum to', DEFAULT_PLAYERS)
+          logger.log('GameStore: First visit to home, setting playerNum to', DEFAULT_PLAYERS)
           set({ 
             playerNum: DEFAULT_PLAYERS,
             hasVisitedHome: true
@@ -173,7 +174,7 @@ export const useGameStore = create<GameStore>()(
         }
         
         // Always reset active game state when coming to home (but keep playerNum)
-        console.log('GameStore: Resetting active game state (keeping playerNum:', get().playerNum, ')')
+        logger.log('GameStore: Resetting active game state (keeping playerNum:', get().playerNum, ')')
         set({
           stage: 'intro',
           currentPlayer: 0,
@@ -216,7 +217,7 @@ export const useGameStore = create<GameStore>()(
 // This is normal and won't happen in production
 if (import.meta.env.DEV) {
   useGameStore.subscribe((state) => {
-    console.log('GameStore State Updated:', {
+    logger.log('GameStore State Updated:', {
       playerNum: state.playerNum,
       theme: state.theme,
       stage: state.stage,

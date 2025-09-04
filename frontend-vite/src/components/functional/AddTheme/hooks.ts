@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { apiService } from '@/services/api'
-import { useThemesStore } from '@/stores'
+import { useThemesStore, useAuthStore } from '@/stores'
+import { logger } from '@/utils/logger'
 
 export const useAddTheme = () => {
+  const navigate = useNavigate()
   const [isAdding, setIsAdding] = useState(false)
   const [themeName, setThemeName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -10,6 +13,7 @@ export const useAddTheme = () => {
   const inputRef = useRef<HTMLInputElement>(null)
   const themes = useThemesStore((state) => state.themes)
   const addThemeToStore = useThemesStore((state) => state.addTheme)
+  const clearPassword = useAuthStore((state) => state.clearPassword)
   
   // Focus input when entering add mode
   useEffect(() => {
@@ -130,7 +134,7 @@ export const useAddTheme = () => {
       setIsLoading(true)
       setWarning(null)
       
-      console.log('Creating theme:', { name: trimmedName, type })
+      logger.log('Creating theme:', { name: trimmedName, type })
       const newTheme = await apiService.createTheme({ name: trimmedName, type })
       
       // Success - update store and reset
@@ -139,12 +143,17 @@ export const useAddTheme = () => {
       setIsAdding(false)
       
     } catch (err) {
-      console.error('Error creating theme:', err)
+      logger.error('Error creating theme:', err)
       
       // Handle different error cases with user-friendly messages
       const errorMessage = err instanceof Error ? err.message.toLowerCase() : ''
       
-      if (errorMessage.includes('already exists') || errorMessage.includes('duplicate') || errorMessage.includes('unique')) {
+      if (errorMessage.includes('authentication required') || errorMessage.includes('invalid password')) {
+        // Clear stored password and redirect to home
+        clearPassword()
+        alert('Authentication required. Please try again.')
+        navigate('/')
+      } else if (errorMessage.includes('already exists') || errorMessage.includes('duplicate') || errorMessage.includes('unique')) {
         setWarning('A theme with this name already exists')
       } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
         setWarning('Unable to connect to the server. Please check your connection.')

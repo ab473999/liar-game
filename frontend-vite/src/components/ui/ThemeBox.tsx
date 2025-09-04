@@ -8,9 +8,9 @@ export const ThemeBox = ({ name, onClick }: ThemeBoxProps) => {
     <div
       className="text-base rounded-3xl cursor-pointer"
       style={{
-        backgroundColor: 'var(--color-themebox-bg)',
-        border: '1px solid var(--color-themebox-border)',
-        color: 'var(--color-themebox-font)',
+        backgroundColor: 'var(--mainbutton-bg)',
+        border: '1px solid var(--mainbutton-border)',
+        color: 'var(--font-primary)',
         padding: '0.75rem',
         aspectRatio: '1 / 1',
         display: 'flex',

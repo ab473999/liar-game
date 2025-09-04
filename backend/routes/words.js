@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const wordService = require('../services/wordService');
+const { requireAuth } = require('../middleware/auth');
 
 /**
  * GET /api/words
@@ -111,12 +112,12 @@ router.get('/:id', async (req, res) => {
 
 /**
  * POST /api/words
- * Create a new word
+ * Create a new word (requires authentication)
  * Body parameters:
  * - themeId: number (required) - Theme ID
  * - word: string (required) - English word
  */
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const { themeId, word } = req.body;
     
@@ -155,11 +156,11 @@ router.post('/', async (req, res) => {
 
 /**
  * PUT /api/words/:id
- * Update a word by ID
+ * Update a word by ID (requires authentication)
  * Body parameters:
  * - word: string (required) - English word
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { word } = req.body;
@@ -201,9 +202,9 @@ router.put('/:id', async (req, res) => {
 
 /**
  * DELETE /api/words/:id
- * Delete a word by ID
+ * Delete a word by ID (requires authentication)
  */
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     

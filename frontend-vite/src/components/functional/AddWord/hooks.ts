@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { apiService } from '@/services/api'
-import { useWordsStore } from '@/stores'
+import { useWordsStore, useAuthStore } from '@/stores'
+import { logger } from '@/utils/logger'
 
 export const useAddWord = (themeType: string, themeId: number) => {
+  const navigate = useNavigate()
   const [isAdding, setIsAdding] = useState(false)
   const [wordText, setWordText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -10,6 +13,7 @@ export const useAddWord = (themeType: string, themeId: number) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const words = useWordsStore((state) => state.words)
   const addWordToStore = useWordsStore((state) => state.addWord)
+  const clearPassword = useAuthStore((state) => state.clearPassword)
   
   // Focus input when entering add mode
   useEffect(() => {
@@ -63,7 +67,7 @@ export const useAddWord = (themeType: string, themeId: number) => {
       setIsLoading(true)
       setWarning(null)
       
-      console.log('Creating word:', { word: trimmedWord, themeId })
+      logger.log('Creating word:', { word: trimmedWord, themeId })
       const newWord = await apiService.createWord({ 
         word: trimmedWord, 
         themeId 
@@ -75,12 +79,17 @@ export const useAddWord = (themeType: string, themeId: number) => {
       setIsAdding(false)
       
     } catch (err) {
-      console.error('Error creating word:', err)
+      logger.error('Error creating word:', err)
       
       // Handle different error cases with user-friendly messages
       const errorMessage = err instanceof Error ? err.message.toLowerCase() : ''
       
-      if (errorMessage.includes('already exists') || errorMessage.includes('duplicate')) {
+      if (errorMessage.includes('authentication required') || errorMessage.includes('invalid password')) {
+        // Clear stored password and redirect to home
+        clearPassword()
+        alert('Authentication required. Please try again.')
+        navigate('/')
+      } else if (errorMessage.includes('already exists') || errorMessage.includes('duplicate')) {
         setWarning('This word already exists')
       } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
         setWarning('Unable to connect to the server. Please check your connection.')

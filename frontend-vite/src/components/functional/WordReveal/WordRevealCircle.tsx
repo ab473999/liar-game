@@ -157,10 +157,11 @@ export const WordRevealCircle = () => {
             onClick={() => navigate('/')}
             className="p-4 transition-colors rounded-lg"
             style={{
-              backgroundColor: 'var(--color-button-gameover-bg)',
+              backgroundColor: 'var(--mainbutton-bg)',
+              color: 'var(--mainbutton-icon)',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-hover)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-bg)'}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
             aria-label="Back to Home"
           >
             <ArrowLeft size={24} />
@@ -177,10 +178,11 @@ export const WordRevealCircle = () => {
             }}
             className="p-4 transition-colors rounded-lg"
             style={{
-              backgroundColor: 'var(--color-button-gameover-bg)',
+              backgroundColor: 'var(--mainbutton-bg)',
+              color: 'var(--mainbutton-icon)',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-hover)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-bg)'}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
             aria-label="Repeat Reveal"
           >
             <RotateCcw size={24} />
@@ -202,8 +204,8 @@ export const WordRevealCircle = () => {
         {...handlers}
         className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none transition-transform"
         style={{ 
-          backgroundColor: 'var(--color-circle-bg)',
-          border: scale >= TIMING.SCALE_MAX ? '1px solid var(--color-revealedtext-font)' : 'none',
+          backgroundColor: 'var(--circle-bg)',
+          border: scale >= TIMING.SCALE_MAX ? '1px solid var(--circle-border)' : 'none',
           userSelect: 'none',
           touchAction: 'none',
           transform: `scale(${scale})`,  // Apply the scaling transform
@@ -216,7 +218,7 @@ export const WordRevealCircle = () => {
         {showHelpText && (
           <span 
             style={{ 
-              color: 'var(--color-circlehelp-font)',
+              color: 'var(--circle-help)',
               fontSize: '1.5rem',
               fontWeight: 'normal',
               pointerEvents: 'none',

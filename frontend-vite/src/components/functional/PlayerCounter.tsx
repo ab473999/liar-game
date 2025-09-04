@@ -24,7 +24,7 @@ export const PlayerCounter = () => {
               : 'hover:opacity-75'
           }`}
           style={{ 
-            color: playerNum >= MAX_PLAYERS ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
+            color: playerNum >= MAX_PLAYERS ? 'var(--font-secondary)' : 'var(--font-primary)',
             border: 'none',
             background: 'transparent'
           }}
@@ -34,7 +34,7 @@ export const PlayerCounter = () => {
           <ChevronUp size={24} />
         </button>
         
-        <div className="text-3xl px-2 py-0 min-w-[60px] text-center">
+        <div className="text-3xl px-2 py-0 min-w-[60px] text-center" style={{ color: 'var(--font-primary)' }}>
           {playerNum}
         </div>
         
@@ -47,7 +47,7 @@ export const PlayerCounter = () => {
               : 'hover:opacity-75'
           }`}
           style={{ 
-            color: playerNum <= MIN_PLAYERS ? 'var(--color-textMuted)' : 'var(--color-textPrimary)',
+            color: playerNum <= MIN_PLAYERS ? 'var(--font-secondary)' : 'var(--font-primary)',
             border: 'none',
             background: 'transparent'
           }}
@@ -58,7 +58,7 @@ export const PlayerCounter = () => {
         </button>
       </div>
       
-      <span className="text-xl">players</span>
+      <span className="text-xl" style={{ color: 'var(--font-primary)' }}>players</span>
     </div>
   )
 }

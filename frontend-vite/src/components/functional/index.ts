@@ -1,6 +1,7 @@
 export { AddTheme } from './AddTheme'
 export { AddWord } from './AddWord'
 export { GamePlayerCounter } from './GamePlayerCounter'
+export { PasswordDialog } from './PasswordDialog'
 export { Placeholder } from './Placeholder'
 export { PlayerCounter } from './PlayerCounter'
 export { ThemeGrid } from './ThemeGrid'

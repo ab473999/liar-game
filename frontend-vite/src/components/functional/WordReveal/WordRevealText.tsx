@@ -102,9 +102,9 @@ export const WordRevealText = () => {
           }}
         >
           {isLiar ? (
-            <h2 className="text-2xl font-light" style={{ color: 'var(--color-revealedtext-font)' }}>You're the liar</h2>
+            <h2 className="text-2xl font-light" style={{ color: 'var(--word-reveal)' }}>You're the liar</h2>
           ) : (
-            <h2 className="text-2xl font-light" style={{ color: 'var(--color-revealedtext-font)' }}>{word}</h2>
+            <h2 className="text-2xl font-light" style={{ color: 'var(--word-reveal)' }}>{word}</h2>
           )}
         </div>
       )}

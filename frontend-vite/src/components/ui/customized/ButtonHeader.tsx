@@ -11,8 +11,7 @@ interface ButtonHeaderProps {
 /**
  * Header button component for navigation icons in the header
  * Uses CSS variables for theming:
- * - --color-buttonicon-bg: Background color
- * - --color-buttonicon-line: Icon/line color
+ * - --header-icon: Icon color (same as header-font-logo)
  */
 export const ButtonHeader = ({ onClick, children, ariaLabel, className = '' }: ButtonHeaderProps) => {
   return (
@@ -21,8 +20,8 @@ export const ButtonHeader = ({ onClick, children, ariaLabel, className = '' }: B
       ariaLabel={ariaLabel}
       className={`p-1 rounded-lg ${className}`}
       style={{
-        backgroundColor: 'var(--color-buttonicon-bg)',
-        color: 'var(--color-buttonicon-line)',
+        backgroundColor: 'transparent',
+        color: 'var(--header-icon)',
         border: 'none',
         display: 'flex',
         alignItems: 'center',

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const themeService = require('../services/themeService');
+const { requireAuth } = require('../middleware/auth');
 
 /**
  * GET /api/themes
@@ -89,12 +90,12 @@ router.get('/type/:type', async (req, res) => {
 
 /**
  * POST /api/themes
- * Create a new theme
+ * Create a new theme (requires authentication)
  * Body parameters:
  * - type: string (required) - Theme type identifier
  * - name: string (required) - English name
  */
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
     const { type, name } = req.body;
     
@@ -133,11 +134,11 @@ router.post('/', async (req, res) => {
 
 /**
  * PUT /api/themes/:id
- * Update a theme by ID
+ * Update a theme by ID (requires authentication)
  * Body parameters:
  * - name: string (required) - English name
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;

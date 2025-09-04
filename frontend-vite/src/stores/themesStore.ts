@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import type { Theme } from '@/types'
+import { logger } from '@/utils/logger'
 
 interface ThemesStore {
   // State
@@ -37,7 +38,7 @@ export const useThemesStore = create<ThemesStore>()(
         
         // Actions
         setThemes: (themes) => {
-          console.log('ThemesStore: setThemes', themes.length, 'themes')
+          logger.log('ThemesStore: setThemes', themes.length, 'themes')
           set({ 
             themes,
             lastFetched: Date.now(),
@@ -46,7 +47,7 @@ export const useThemesStore = create<ThemesStore>()(
         },
         
         syncThemes: (backendThemes) => {
-          console.log('ThemesStore: syncThemes - comparing', backendThemes.length, 'backend themes with', get().themes.length, 'local themes')
+          logger.log('ThemesStore: syncThemes - comparing', backendThemes.length, 'backend themes with', get().themes.length, 'local themes')
           
           const localThemes = get().themes
           const localThemeIds = new Set(localThemes.map(t => t.id))
@@ -70,7 +71,7 @@ export const useThemesStore = create<ThemesStore>()(
           
           // Apply changes if any differences found
           if (deletedIds.length > 0 || addedThemes.length > 0 || updatedThemes.length > 0) {
-            console.log('ThemesStore: Sync changes detected:', {
+            logger.log('ThemesStore: Sync changes detected:', {
               deleted: deletedIds.length,
               added: addedThemes.length,
               updated: updatedThemes.length
@@ -96,13 +97,13 @@ export const useThemesStore = create<ThemesStore>()(
               lastSynced: Date.now()
             })
           } else {
-            console.log('ThemesStore: No sync changes needed')
+            logger.log('ThemesStore: No sync changes needed')
             set({ lastSynced: Date.now() })
           }
         },
         
         addTheme: (theme) => {
-          console.log('ThemesStore: addTheme', theme)
+          logger.log('ThemesStore: addTheme', theme)
           const themes = get().themes
           set({ 
             themes: [...themes, theme],
@@ -111,7 +112,7 @@ export const useThemesStore = create<ThemesStore>()(
         },
         
         updateTheme: (id, updatedTheme) => {
-          console.log('ThemesStore: updateTheme', id, updatedTheme)
+          logger.log('ThemesStore: updateTheme', id, updatedTheme)
           const themes = get().themes
           set({
             themes: themes.map(theme => 
@@ -122,7 +123,7 @@ export const useThemesStore = create<ThemesStore>()(
         },
         
         removeTheme: (id) => {
-          console.log('ThemesStore: removeTheme', id)
+          logger.log('ThemesStore: removeTheme', id)
           const themes = get().themes
           set({
             themes: themes.filter(theme => theme.id !== id),
@@ -167,7 +168,7 @@ export const useThemesStore = create<ThemesStore>()(
 // Subscribe to all state changes for debugging in dev
 if (import.meta.env.DEV) {
   useThemesStore.subscribe((state) => {
-    console.log('ThemesStore State Updated:', {
+    logger.log('ThemesStore State Updated:', {
       themesCount: state.themes.length,
       lastFetched: state.lastFetched ? new Date(state.lastFetched).toISOString() : null,
       isLoading: state.isLoading

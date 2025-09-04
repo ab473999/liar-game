@@ -17,6 +17,11 @@ export const Settings = () => {
   const setSyncing = useThemesStore(state => state.setSyncing)
   const lastSynced = useThemesStore(state => state.lastSynced)
   
+  console.log('Settings page render:', {
+    themesCount: themes.length,
+    lastSynced
+  })
+  
   // Initial load: if we have no themes at all, do a full fetch
   useEffect(() => {
     if (themes.length === 0 && !lastSynced) {

@@ -11,7 +11,7 @@ interface ButtonSaveProps {
 /**
  * Save button component
  * Displays a save/checkmark icon
- * Uses gray color when disabled, blue when active
+ * Uses secondary font color when disabled, primary when active
  */
 export const ButtonSave = ({ 
   onClick, 
@@ -26,7 +26,7 @@ export const ButtonSave = ({
       className={`p-1 rounded-lg ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
       style={{
         backgroundColor: 'transparent',
-        color: disabled ? 'var(--color-buttonsave-line-inactive)' : 'var(--color-buttonicon-line)',
+        color: disabled ? 'var(--font-secondary)' : 'var(--mainbutton-font)',
         border: 'none',
         display: 'flex',
         alignItems: 'center',

@@ -62,7 +62,7 @@ export const WordList = ({ themeType }: WordListProps) => {
   
   if (isLoading) {
     return (
-      <div className="p-4 text-center" style={{ color: 'var(--color-textSecondary)' }}>
+      <div className="p-4 text-center" style={{ color: 'var(--font-secondary)' }}>
         Loading words...
       </div>
     )
@@ -70,7 +70,7 @@ export const WordList = ({ themeType }: WordListProps) => {
   
   if (words.length === 0) {
     return (
-      <div className="p-4 text-center" style={{ color: 'var(--color-textSecondary)' }}>
+      <div className="p-4 text-center" style={{ color: 'var(--font-secondary)' }}>
         No words yet. Add your first word above!
       </div>
     )

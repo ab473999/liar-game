@@ -11,8 +11,8 @@ export const Layout = ({ children }: LayoutProps) => {
     <div 
       className="min-h-screen flex flex-col"
       style={{
-        backgroundColor: 'var(--color-layout-bg)',
-        color: 'var(--color-layout-text)'
+        backgroundColor: 'var(--page-bg)',
+        color: 'var(--font-primary)'
       }}
     >
       <Header />

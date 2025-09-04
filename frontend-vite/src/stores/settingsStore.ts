@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
+import { logger } from '@/utils/logger'
 
 interface SelectedTheme {
   type: string
@@ -28,23 +29,23 @@ export const useSettingsStore = create<SettingsStore>()(
         
         // Actions
         setSelectedTheme: (theme) => {
-          console.log('SettingsStore: setSelectedTheme', theme)
+          logger.log('SettingsStore: setSelectedTheme', theme)
           set({ selectedTheme: theme })
         },
         
         clearSelectedTheme: () => {
-          console.log('SettingsStore: clearSelectedTheme')
+          logger.log('SettingsStore: clearSelectedTheme')
           set({ selectedTheme: null })
         },
         
         toggleShowAIThemes: () => {
           const current = get().showAIThemes
-          console.log('SettingsStore: toggleShowAIThemes', { from: current, to: !current })
+          logger.log('SettingsStore: toggleShowAIThemes', { from: current, to: !current })
           set({ showAIThemes: !current })
         },
         
         setShowAIThemes: (show) => {
-          console.log('SettingsStore: setShowAIThemes', show)
+          logger.log('SettingsStore: setShowAIThemes', show)
           set({ showAIThemes: show })
         }
       }),
@@ -65,7 +66,7 @@ export const useSettingsStore = create<SettingsStore>()(
 // Subscribe to all state changes for debugging in dev
 if (import.meta.env.DEV) {
   useSettingsStore.subscribe((state) => {
-    console.log('SettingsStore State Updated:', {
+    logger.log('SettingsStore State Updated:', {
       selectedTheme: state.selectedTheme,
       showAIThemes: state.showAIThemes
     })

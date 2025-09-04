@@ -3,6 +3,8 @@ export { useGameStore, MIN_PLAYERS, MAX_PLAYERS, DEFAULT_PLAYERS } from './gameS
 export { useSettingsStore } from './settingsStore'
 export { useThemesStore } from './themesStore'
 export { useWordsStore } from './wordsStore'
+export { useSkinStore } from './skinStore'
+export { useAuthStore } from './authStore'
 
 // Future stores will be exported here
 // export { useUIStore } from './uiStore'

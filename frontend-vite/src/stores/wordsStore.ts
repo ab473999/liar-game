@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import type { Word } from '@/types'
+import { logger } from '@/utils/logger'
 
 interface WordsStore {
   // State
@@ -39,7 +40,7 @@ export const useWordsStore = create<WordsStore>()(
         
         // Actions
         setWords: (words, themeType) => {
-          console.log('WordsStore: setWords', words.length, 'words for theme:', themeType)
+          logger.log('WordsStore: setWords', words.length, 'words for theme:', themeType)
           set({ 
             words,
             currentThemeType: themeType,
@@ -49,11 +50,11 @@ export const useWordsStore = create<WordsStore>()(
         },
         
         syncWords: (backendWords, themeType) => {
-          console.log('WordsStore: syncWords - comparing', backendWords.length, 'backend words with', get().words.length, 'local words')
+          logger.log('WordsStore: syncWords - comparing', backendWords.length, 'backend words with', get().words.length, 'local words')
           
           // If theme changed, replace entirely
           if (get().currentThemeType !== themeType) {
-            console.log('WordsStore: Theme changed, replacing words')
+            logger.log('WordsStore: Theme changed, replacing words')
             set({
               words: backendWords,
               currentThemeType: themeType,
@@ -84,7 +85,7 @@ export const useWordsStore = create<WordsStore>()(
           
           // Apply changes if any differences found
           if (deletedIds.length > 0 || addedWords.length > 0 || updatedWords.length > 0) {
-            console.log('WordsStore: Sync changes detected:', {
+            logger.log('WordsStore: Sync changes detected:', {
               deleted: deletedIds.length,
               added: addedWords.length,
               updated: updatedWords.length
@@ -110,13 +111,13 @@ export const useWordsStore = create<WordsStore>()(
               lastSynced: Date.now()
             })
           } else {
-            console.log('WordsStore: No sync changes needed')
+            logger.log('WordsStore: No sync changes needed')
             set({ lastSynced: Date.now() })
           }
         },
         
         addWord: (word) => {
-          console.log('WordsStore: addWord', word)
+          logger.log('WordsStore: addWord', word)
           const words = get().words
           set({ 
             words: [...words, word],
@@ -125,7 +126,7 @@ export const useWordsStore = create<WordsStore>()(
         },
         
         updateWord: (id, updatedWord) => {
-          console.log('WordsStore: updateWord', id, updatedWord)
+          logger.log('WordsStore: updateWord', id, updatedWord)
           const words = get().words
           set({
             words: words.map(word => 
@@ -136,7 +137,7 @@ export const useWordsStore = create<WordsStore>()(
         },
         
         removeWord: (id) => {
-          console.log('WordsStore: removeWord', id)
+          logger.log('WordsStore: removeWord', id)
           const words = get().words
           set({
             words: words.filter(word => word.id !== id),
@@ -145,7 +146,7 @@ export const useWordsStore = create<WordsStore>()(
         },
         
         clearWords: () => {
-          console.log('WordsStore: clearWords')
+          logger.log('WordsStore: clearWords')
           set({
             words: [],
             currentThemeType: null,
@@ -186,7 +187,7 @@ export const useWordsStore = create<WordsStore>()(
 // Subscribe to all state changes for debugging in dev
 if (import.meta.env.DEV) {
   useWordsStore.subscribe((state) => {
-    console.log('WordsStore State Updated:', {
+    logger.log('WordsStore State Updated:', {
       wordsCount: state.words.length,
       themeType: state.currentThemeType,
       lastFetched: state.lastFetched ? new Date(state.lastFetched).toISOString() : null,
