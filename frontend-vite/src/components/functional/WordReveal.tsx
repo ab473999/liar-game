@@ -32,7 +32,15 @@ export const WordReveal = () => {
   // If all players have revealed, show the end game options
   if (allPlayersRevealed) {
     return (
-      <div className="flex flex-col items-center">
+      <div className="relative flex flex-col items-center justify-center border-4 border-yellow-500 p-4 w-full h-full">
+        {/* Vertical dashed green line for design purposes */}
+        <div 
+          className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
+          style={{ 
+            zIndex: 9999,
+            pointerEvents: 'none'
+          }}
+        />
         <div className="flex gap-4">
           <button
             onClick={() => {
@@ -64,7 +72,16 @@ export const WordReveal = () => {
   }
   
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="relative flex flex-col items-center justify-center gap-8 border-4 border-yellow-500 p-4 w-full h-full">
+      {/* Vertical dashed green line for design purposes */}
+      <div 
+        className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
+        style={{ 
+          zIndex: 9999,
+          pointerEvents: 'none'
+        }}
+      />
+      
       {/* Word/Liar Display */}
       <div className="text-center">
         {isLiar ? (
@@ -80,13 +97,14 @@ export const WordReveal = () => {
         )}
       </div>
       
-      {/* Next Player Button */}
+      {/* Next Player Button - Now a circle */}
       {!isLastPlayer && (
         <button
           onClick={nextPlayer}
-          className="px-8 py-4 bg-green-600 hover:bg-green-500 transition-colors rounded-lg text-lg"
+          className="w-20 h-20 bg-green-600 hover:bg-green-500 transition-colors rounded-full flex items-center justify-center"
+          aria-label="Next Player"
         >
-          Next Player
+          {/* Empty circle - no text */}
         </button>
       )}
     </div>
