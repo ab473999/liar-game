@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { MainContentTop } from '@/components/layout/MainContentTop'
 import { MainContentBody } from '@/components/layout/MainContentBody'
 import { GamePlayerCounter } from '@/components/functional/GamePlayerCounter'
-import { WordReveal } from '@/components/functional/WordReveal'
+import { WordRevealText } from '@/components/functional/WordRevealText'
+import { WordRevealCircle } from '@/components/functional/WordRevealCircle'
 import { useGameStore } from '@/stores'
 
 export const Game = () => {
@@ -49,7 +50,8 @@ export const Game = () => {
         <GamePlayerCounter />
       </MainContentTop>
       <MainContentBody>
-        <WordReveal />
+        <WordRevealText />
+        <WordRevealCircle />
       </MainContentBody>
     </>
   )

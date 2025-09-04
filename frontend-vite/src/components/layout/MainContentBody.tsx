@@ -11,7 +11,7 @@ export const MainContentBody = ({ children }: MainContentBodyProps) => {
   useEffect(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      console.log('📦 MainContentBody (PINK) dimensions:', {
+      console.log('🟪 MainContentBody (PINK) dimensions:', {
         height: rect.height,
         width: rect.width,
         top: rect.top,
@@ -21,7 +21,7 @@ export const MainContentBody = ({ children }: MainContentBodyProps) => {
   })
   
   return (
-    <div ref={containerRef} className="flex-1 flex items-center justify-center border-4 border-pink-500">
+    <div ref={containerRef} className="flex-1 flex items-center justify-center border-4 border-pink-500 relative">
       {children}
     </div>
   )
