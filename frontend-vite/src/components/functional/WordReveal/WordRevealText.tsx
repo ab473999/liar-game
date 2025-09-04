@@ -34,7 +34,7 @@ export const WordRevealText = () => {
   }
   
   return (
-    <div ref={containerRef} className="absolute inset-0 flex flex-col items-center border-4 border-yellow-400 pt-[100px]">
+    <div ref={containerRef} className="absolute inset-0 flex flex-col items-center border-4 border-yellow-400 pt-[60px]">
       {/* Word/Liar Display - Only shown after 1s hold */}
       {isWordRevealed && (
         <div className="text-center">

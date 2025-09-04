@@ -5,13 +5,17 @@ interface UsePressAndHoldOptions {
   onComplete: () => void     // Called when held for required duration and released
   onHoldReached?: () => void  // Called when required duration is reached (while still holding)
   logInterval?: number        // Interval for progress logs in ms (default: 250)
+  onPressStart?: () => void   // Called when press starts
+  onPressEnd?: () => void     // Called when press ends (regardless of duration)
 }
 
 export const usePressAndHold = ({
   requiredDuration = 1000,
   onComplete,
   onHoldReached,
-  logInterval = 250
+  logInterval = 250,
+  onPressStart,
+  onPressEnd
 }: UsePressAndHoldOptions) => {
   const pressStartTime = useRef<number | null>(null)
   const intervalRef = useRef<number | null>(null)
@@ -28,6 +32,11 @@ export const usePressAndHold = ({
     setIsPressing(true)
     pressStartTime.current = Date.now()
     holdReachedRef.current = false  // Reset the flag
+    
+    // Call the onPressStart callback if provided
+    if (onPressStart) {
+      onPressStart()
+    }
     
     // Log progress at specified intervals
     let elapsedCount = 0
@@ -70,6 +79,11 @@ export const usePressAndHold = ({
     // Reset state
     setIsPressing(false)
     pressStartTime.current = null
+    
+    // Call the onPressEnd callback if provided
+    if (onPressEnd) {
+      onPressEnd()
+    }
   }
   
   const handlePressCancel = () => {
@@ -86,6 +100,11 @@ export const usePressAndHold = ({
     // Reset state
     setIsPressing(false)
     pressStartTime.current = null
+    
+    // Call the onPressEnd callback if provided (treat cancel as an end)
+    if (onPressEnd) {
+      onPressEnd()
+    }
   }
   
   // Cleanup on unmount

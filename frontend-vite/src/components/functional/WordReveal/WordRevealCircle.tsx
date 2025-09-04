@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { useGameStore } from '@/stores'
@@ -8,6 +8,8 @@ export const WordRevealCircle = () => {
   const navigate = useNavigate()
   const containerRef = useRef<HTMLDivElement>(null)
   const circleButtonRef = useRef<HTMLButtonElement>(null)
+  const [showHelpText, setShowHelpText] = useState(true)
+  const helpTextTimerRef = useRef<number | null>(null)
   
   const { 
     currentPlayer, 
@@ -19,12 +21,36 @@ export const WordRevealCircle = () => {
   const isLastPlayer = currentPlayer === playerNum - 1
   const allPlayersRevealed = currentPlayer > playerNum - 1
   
+  // Handle press start to hide help text after 250ms
+  const handlePressStart = () => {
+    if (helpTextTimerRef.current) {
+      clearTimeout(helpTextTimerRef.current)
+    }
+    
+    helpTextTimerRef.current = window.setTimeout(() => {
+      setShowHelpText(false)
+    }, 250)
+  }
+  
+  // Handle press end to show help text again
+  const handlePressEnd = () => {
+    if (helpTextTimerRef.current) {
+      clearTimeout(helpTextTimerRef.current)
+      helpTextTimerRef.current = null
+    }
+    
+    // Reset help text visibility for next interaction
+    setShowHelpText(true)
+  }
+  
   // Use the press-and-hold hook
   const { handlers } = usePressAndHold({
     requiredDuration: 1000,
     onComplete: nextPlayer,  // Called on release after 1s
     onHoldReached: revealWord,  // Called when 1s is reached
-    logInterval: 250
+    logInterval: 250,
+    onPressStart: handlePressStart,
+    onPressEnd: handlePressEnd
   })
   
   // Log dimensions whenever container renders/updates
@@ -68,6 +94,15 @@ export const WordRevealCircle = () => {
       return () => clearTimeout(timer)
     }
   }, [isLastPlayer, nextPlayer])
+  
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (helpTextTimerRef.current) {
+        clearTimeout(helpTextTimerRef.current)
+      }
+    }
+  }, [])
   
   // If all players have revealed, show the end game options
   if (allPlayersRevealed) {
@@ -124,7 +159,7 @@ export const WordRevealCircle = () => {
         <button
           ref={circleButtonRef}
           {...handlers}
-          className="w-70 h-70 rounded-full flex items-center justify-center z-10 select-none"
+          className="w-64 h-64 rounded-full flex items-center justify-center z-10 select-none"
           style={{ 
             backgroundColor: 'var(--color-circle-bg)',
             border: 'none',
@@ -133,7 +168,20 @@ export const WordRevealCircle = () => {
           }}
           aria-label="Next Player - Hold for 1 second"
         >
-          {/* Empty circle - no text */}
+          {/* Help text that disappears after 0.25s of pressing */}
+          {showHelpText && (
+            <span 
+              style={{ 
+                color: 'var(--color-circlehelp-font)',
+                fontSize: '1.5rem',
+                fontWeight: 'normal',
+                pointerEvents: 'none',
+                userSelect: 'none'
+              }}
+            >
+              Press and hold
+            </span>
+          )}
         </button>
       )}
     </div>

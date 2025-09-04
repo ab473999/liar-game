@@ -37,6 +37,7 @@
   /* Game reveal colors */
   --color-revealedtext-font: #4E937A;
   --color-circle-bg: #ffffff;
+  --color-circlehelp-font: #DB5461;
 }
 
 html {
