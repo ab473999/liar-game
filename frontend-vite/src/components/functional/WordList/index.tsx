@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useWordsStore } from '@/stores'
 import { apiService } from '@/services/api'
 import { Row } from './Row'
+import { logger } from '@/utils/logger'
 
 interface WordListProps {
   themeType: string
@@ -27,7 +28,7 @@ export const WordList = ({ themeType }: WordListProps) => {
           const fetchedWords = await apiService.getWordsByTheme(themeType)
           setWords(fetchedWords, themeType)
         } catch (error) {
-          console.error('Failed to fetch words:', error)
+          logger.error('Failed to fetch words:', error)
         } finally {
           setLoading(false)
         }
@@ -41,11 +42,11 @@ export const WordList = ({ themeType }: WordListProps) => {
     const syncWithBackend = async () => {
       try {
         setSyncing(true)
-        console.log('WordList: Starting background sync with backend')
+        logger.log('WordList: Starting background sync with backend')
         const backendWords = await apiService.getWordsByTheme(themeType)
         syncWords(backendWords, themeType)
       } catch (error) {
-        console.error('Failed to sync words with backend:', error)
+        logger.error('Failed to sync words with backend:', error)
       } finally {
         setSyncing(false)
       }

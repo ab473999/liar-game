@@ -5,6 +5,7 @@ import { ButtonHeader } from '@/components/ui/customized/ButtonHeader'
 import { SkinSelector } from '@/components/functional/SkinSelector'
 import { PasswordDialog } from '@/components/functional/PasswordDialog'
 import { useGameStore, useSettingsStore, useThemesStore, useAuthStore } from '@/stores'
+import { logger } from '@/utils/logger'
 
 export const Header = () => {
   const location = useLocation()
@@ -26,7 +27,7 @@ export const Header = () => {
   const isThemeSettings = location.pathname.startsWith('/settings/') && location.pathname !== '/settings'
   const isSettingsRoot = location.pathname === '/settings'
   
-  console.log('Header render:', {
+  logger.log('Header render:', {
     pathname: location.pathname,
     isHome,
     isGame,
@@ -131,7 +132,7 @@ export const Header = () => {
           {isSettingsRoot && (
             <ButtonHeader 
               onClick={() => {
-                console.log('SprayCan button clicked, opening skin selector')
+                logger.log('SprayCan button clicked, opening skin selector')
                 setIsSkinSelectorOpen(true)
               }}
               ariaLabel="Open theme selector"

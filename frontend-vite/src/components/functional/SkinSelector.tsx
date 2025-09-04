@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { DialogPopup } from '@/components/ui/DialogPopup'
 import { SkinBox } from '@/components/ui/SkinBox'
 import { useSkinStore } from '@/stores/skinStore'
+import { logger } from '@/utils/logger'
 
 interface SkinSelectorProps {
   isOpen: boolean
@@ -18,7 +19,7 @@ export const SkinSelector = ({ isOpen, onClose }: SkinSelectorProps) => {
   const setSelectedSkin = useSkinStore(state => state.setSelectedSkin)
   const gridRef = useRef<HTMLDivElement>(null)
   
-  console.log('SkinSelector render:', {
+  logger.log('SkinSelector render:', {
     isOpen,
     availableSkinsCount: availableSkins.length,
     selectedSkinId
@@ -31,7 +32,7 @@ export const SkinSelector = ({ isOpen, onClose }: SkinSelectorProps) => {
           const rect = gridRef.current.getBoundingClientRect()
           const parentRect = gridRef.current.parentElement?.getBoundingClientRect()
           const computedStyle = window.getComputedStyle(gridRef.current)
-          console.log('SkinSelector grid position & layout:', {
+          logger.log('SkinSelector grid position & layout:', {
             position: {
               top: rect.top,
               left: rect.left, 
@@ -66,7 +67,7 @@ export const SkinSelector = ({ isOpen, onClose }: SkinSelectorProps) => {
   }, [isOpen])
   
   const handleSkinSelect = (skinId: string) => {
-    console.log('SkinSelector: Selecting skin', skinId)
+    logger.log('SkinSelector: Selecting skin', skinId)
     setSelectedSkin(skinId)
     // Optionally close the dialog after selection
     // onClose()

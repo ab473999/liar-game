@@ -1,6 +1,7 @@
 import { Check } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import type { Skin } from '@/constants/skins'
+import { logger } from '@/utils/logger'
 
 interface SkinBoxProps {
   skin: Skin
@@ -19,7 +20,7 @@ export const SkinBox = ({ skin, isSelected, onClick }: SkinBoxProps) => {
     if (boxRef.current) {
       const rect = boxRef.current.getBoundingClientRect()
       const parentRect = boxRef.current.parentElement?.getBoundingClientRect()
-      console.log(`SkinBox ${skin.name} position & dimensions:`, {
+      logger.log(`SkinBox ${skin.name} position & dimensions:`, {
         position: { x: rect.x, y: rect.y, top: rect.top, left: rect.left },
         size: { width: rect.width, height: rect.height },
         aspectRatio: rect.width / rect.height,

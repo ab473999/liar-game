@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 import { X } from 'lucide-react'
+import { logger } from '@/utils/logger'
 
 interface DialogPopupProps {
   isOpen: boolean
@@ -24,7 +25,7 @@ export const DialogPopup = ({
 }: DialogPopupProps) => {
   const dialogRef = useRef<HTMLDivElement>(null)
   
-  console.log('DialogPopup render:', {
+  logger.log('DialogPopup render:', {
     isOpen,
     title,
     className,
@@ -55,7 +56,7 @@ export const DialogPopup = ({
           const dialogCenterX = rect.left + (rect.width / 2)
           const dialogCenterY = rect.top + (rect.height / 2)
           
-          console.log('DialogPopup position & centering:', {
+          logger.log('DialogPopup position & centering:', {
             dialog: {
               top: rect.top,
               left: rect.left,
@@ -150,7 +151,7 @@ export const DialogPopup = ({
           if (el && isOpen) {
             setTimeout(() => {
               const rect = el.getBoundingClientRect()
-              console.log('DialogPopup content area:', {
+              logger.log('DialogPopup content area:', {
                 position: { top: rect.top, left: rect.left },
                 size: { width: rect.width, height: rect.height },
                 padding: window.getComputedStyle(el).padding

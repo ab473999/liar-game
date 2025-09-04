@@ -5,6 +5,7 @@ import { MainContentBody } from '@/components/layout/MainContentBody'
 import { AddWord } from '@/components/functional/AddWord'
 import { WordList } from '@/components/functional/WordList'
 import { useSettingsStore, useThemesStore } from '@/stores'
+import { logger } from '@/utils/logger'
 
 export const ThemeSettings = () => {
   const { theme: themeType } = useParams<{ theme: string }>()
@@ -24,7 +25,7 @@ export const ThemeSettings = () => {
         setSelectedTheme({ type: currentTheme.type, name: currentTheme.name })
       } else {
         // Theme not found, redirect back to settings
-        console.error('Theme not found:', themeType)
+        logger.error('Theme not found:', themeType)
         navigate('/settings')
       }
     }

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
+import { logger } from '@/utils/logger'
 
 interface MainContentBodyProps {
   children: ReactNode
@@ -11,7 +12,7 @@ export const MainContentBody = ({ children }: MainContentBodyProps) => {
   useEffect(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      console.log('🟪 MainContentBody (PINK) dimensions:', {
+      logger.log('🟪 MainContentBody (PINK) dimensions:', {
         height: rect.height,
         width: rect.width,
         top: rect.top,

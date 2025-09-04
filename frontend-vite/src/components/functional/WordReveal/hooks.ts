@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { TIMING } from '@/constants'
+import { logger } from '@/utils/logger'
 
 interface UsePressAndHoldOptions {
   onComplete: () => void     // Called when held for required duration and released
@@ -31,7 +32,7 @@ export const usePressAndHold = ({
       e.preventDefault()
     }
     
-    console.log('⭕ Circle press started')
+    logger.log('⭕ Circle press started')
     setIsPressing(true)
     pressStartTime.current = Date.now()
     holdReachedRef.current = false  // Reset the flag
@@ -56,7 +57,7 @@ export const usePressAndHold = ({
       
       // Check if we've reached the reveal threshold
       if (elapsedMs >= TIMING.REVEAL_THRESHOLD && !holdReachedRef.current) {
-        console.log(`✅ ${TIMING.REVEAL_THRESHOLD / 1000}s reached!`)
+        logger.log(`✅ ${TIMING.REVEAL_THRESHOLD / 1000}s reached!`)
         holdReachedRef.current = true
         if (onHoldReached) {
           onHoldReached()
@@ -77,7 +78,7 @@ export const usePressAndHold = ({
     intervalRef.current = window.setInterval(() => {
       elapsedCount++
       const elapsed = elapsedCount * (TIMING.LOG_INTERVAL / 1000)
-      console.log(`⏱️ Holding... ${elapsed.toFixed(2)}s`)
+      logger.log(`⏱️ Holding... ${elapsed.toFixed(2)}s`)
     }, TIMING.LOG_INTERVAL)
   }
   
@@ -85,7 +86,7 @@ export const usePressAndHold = ({
     if (!isPressing || !pressStartTime.current) return
     
     const holdDuration = Date.now() - pressStartTime.current
-    console.log(`⭕ Circle released after ${(holdDuration / 1000).toFixed(2)}s`)
+    logger.log(`⭕ Circle released after ${(holdDuration / 1000).toFixed(2)}s`)
     
     // Clear the interval
     if (intervalRef.current) {
@@ -101,10 +102,10 @@ export const usePressAndHold = ({
     
     // Check if held for required duration
     if (holdDuration >= TIMING.REVEAL_THRESHOLD) {
-      console.log('✅ Advancing to next player!')
+      logger.log('✅ Advancing to next player!')
       onComplete()
     } else {
-      console.log(`❌ Not held long enough (${(holdDuration / 1000).toFixed(2)}s < ${TIMING.REVEAL_THRESHOLD / 1000}s)`)
+      logger.log(`❌ Not held long enough (${(holdDuration / 1000).toFixed(2)}s < ${TIMING.REVEAL_THRESHOLD / 1000}s)`)
     }
     
     // Reset state
@@ -121,7 +122,7 @@ export const usePressAndHold = ({
   const handlePressCancel = () => {
     if (!isPressing) return
     
-    console.log('❌ Circle press cancelled')
+    logger.log('❌ Circle press cancelled')
     
     // Clear the interval
     if (intervalRef.current) {

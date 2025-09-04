@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useGameStore } from '@/stores'
+import { logger } from '@/utils/logger'
 
 export const WordRevealText = () => {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -41,7 +42,7 @@ export const WordRevealText = () => {
   useEffect(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      console.log('🟨 WordRevealText dimensions:', {
+      logger.log('🟨 WordRevealText dimensions:', {
         height: rect.height,
         width: rect.width,
         top: rect.top,
@@ -62,7 +63,7 @@ export const WordRevealText = () => {
         const textOffsetRem = calculateTextOffset()
         const textPositionY = containerCenterY + (textOffsetRem * remToPx)
         
-        console.log('📝 Text Positioning Calculation:', {
+        logger.log('📝 Text Positioning Calculation:', {
           '4. Text Position (TOP of text)': {
             y: textPositionY,
             offsetFromCenter: textOffsetRem + 'rem (' + (textOffsetRem * remToPx) + 'px)',

@@ -6,6 +6,7 @@ import { ThemeGrid } from '@/components/functional/ThemeGrid'
 import { AddTheme } from '@/components/functional/AddTheme'
 import { useSettingsStore, useThemesStore } from '@/stores'
 import { apiService } from '@/services/api'
+import { logger } from '@/utils/logger'
 
 export const Settings = () => {
   const navigate = useNavigate()
@@ -17,7 +18,7 @@ export const Settings = () => {
   const setSyncing = useThemesStore(state => state.setSyncing)
   const lastSynced = useThemesStore(state => state.lastSynced)
   
-  console.log('Settings page render:', {
+  logger.log('Settings page render:', {
     themesCount: themes.length,
     lastSynced
   })
@@ -31,7 +32,7 @@ export const Settings = () => {
           const fetchedThemes = await apiService.getThemes()
           setThemes(fetchedThemes)
         } catch (error) {
-          console.error('Failed to fetch themes:', error)
+          logger.error('Failed to fetch themes:', error)
         } finally {
           setLoading(false)
         }
@@ -45,11 +46,11 @@ export const Settings = () => {
     const syncWithBackend = async () => {
       try {
         setSyncing(true)
-        console.log('Settings: Starting background sync with backend')
+        logger.log('Settings: Starting background sync with backend')
         const backendThemes = await apiService.getThemes()
         syncThemes(backendThemes)
       } catch (error) {
-        console.error('Failed to sync themes with backend:', error)
+        logger.error('Failed to sync themes with backend:', error)
       } finally {
         setSyncing(false)
       }
@@ -66,7 +67,7 @@ export const Settings = () => {
   
   // Handler for settings page - navigate to theme-specific settings
   const handleThemeClickSettings = (themeType: string, themeName: string) => {
-    console.log('Theme selected for settings:', themeName, '(type:', themeType, ')')
+    logger.log('Theme selected for settings:', themeName, '(type:', themeType, ')')
     
     // Store the selected theme in settings store
     setSelectedTheme({ type: themeType, name: themeName })

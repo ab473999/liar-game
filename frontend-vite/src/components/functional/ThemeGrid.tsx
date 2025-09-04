@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { ThemeBox } from '@/components/ui/ThemeBox'
 import { useGameStore, useThemesStore } from '@/stores'
 import { apiService } from '@/services/api'
+import { logger } from '@/utils/logger'
 
 interface ThemeGridProps {
   onThemeClick?: (themeType: string, themeName: string) => void | Promise<void>
@@ -28,7 +29,7 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
     
     try {
       setIsSelecting(true)
-      console.log('Theme selected for game:', themeName, '(type:', themeType, ')')
+      logger.log('Theme selected for game:', themeName, '(type:', themeType, ')')
       
       // Set the selected theme in store (store the name for display)
       setTheme(themeName)
@@ -37,7 +38,7 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
       const words = await apiService.getWordsByTheme(themeType)
       
       if (words.length === 0) {
-        console.error('No words available for theme:', themeName)
+        logger.error('No words available for theme:', themeName)
         setIsSelecting(false)
         return
       }
@@ -45,20 +46,20 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
       // Select a random words 
       const randomWordIndex = Math.floor(Math.random() * words.length)
       const selectedWord = words[randomWordIndex].word
-      console.log('Random word selected:', selectedWord, `(${randomWordIndex + 1}/${words.length})`)
+      logger.log('Random word selected:', selectedWord, `(${randomWordIndex + 1}/${words.length})`)
       setWord(selectedWord)
       
       // Select a random player to be the liar (0-indexed internally, 1-indexed for display)
       const liarPosition = Math.floor(Math.random() * playerNum)  // 0 to playerNum-1
       const liarPlayerNumber = liarPosition + 1  // 1 to playerNum for display
-      console.log('Liar selected: Player', liarPlayerNumber, `(out of ${playerNum} players)`)
+      logger.log('Liar selected: Player', liarPlayerNumber, `(out of ${playerNum} players)`)
       setLiarPosition(liarPosition)  // Store the 0-indexed position
       
       // Navigate to game page
       navigate('/game')
       
     } catch (error) {
-      console.error('Error selecting theme:', error)
+      logger.error('Error selecting theme:', error)
       setIsSelecting(false)
     }
   }

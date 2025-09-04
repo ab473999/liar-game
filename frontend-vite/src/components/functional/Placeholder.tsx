@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useThemes, useWords } from '@/hooks/useApi'
+import { logger } from '@/utils/logger'
 
 /**
  * Placeholder component for initial development
@@ -13,21 +14,21 @@ export const Placeholder = () => {
   // Log API results to console
   useEffect(() => {
     if (!themesLoading && themes.length > 0) {
-      console.log('✅ API Working - Themes loaded:', themes)
-      console.log(`Found ${themes.length} themes`)
+      logger.log('✅ API Working - Themes loaded:', themes)
+      logger.log(`Found ${themes.length} themes`)
     }
     if (themesError) {
-      console.error('❌ Themes API Error:', themesError)
+      logger.error('❌ Themes API Error:', themesError)
     }
   }, [themes, themesLoading, themesError])
 
   useEffect(() => {
     if (!wordsLoading && words.length > 0) {
-      console.log('✅ API Working - Words loaded (animals):', words)
-      console.log(`Found ${words.length} words for animals theme`)
+      logger.log('✅ API Working - Words loaded (animals):', words)
+      logger.log(`Found ${words.length} words for animals theme`)
     }
     if (wordsError) {
-      console.error('❌ Words API Error:', wordsError)
+      logger.error('❌ Words API Error:', wordsError)
     }
   }, [words, wordsLoading, wordsError])
 

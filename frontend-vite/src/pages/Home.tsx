@@ -5,6 +5,7 @@ import { PlayerCounter } from '@/components/functional/PlayerCounter'
 import { ThemeGrid } from '@/components/functional/ThemeGrid'
 import { useGameStore, useThemesStore } from '@/stores'
 import { apiService } from '@/services/api'
+import { logger } from '@/utils/logger'
 
 export const Home = () => {
   const initializeHomeState = useGameStore((state) => state.initializeHomeState)
@@ -29,7 +30,7 @@ export const Home = () => {
           const fetchedThemes = await apiService.getThemes()
           setThemes(fetchedThemes)
         } catch (error) {
-          console.error('Failed to fetch themes:', error)
+          logger.error('Failed to fetch themes:', error)
         } finally {
           setLoading(false)
         }
@@ -43,11 +44,11 @@ export const Home = () => {
     const syncWithBackend = async () => {
       try {
         setSyncing(true)
-        console.log('Home: Starting background sync with backend')
+        logger.log('Home: Starting background sync with backend')
         const backendThemes = await apiService.getThemes()
         syncThemes(backendThemes)
       } catch (error) {
-        console.error('Failed to sync themes with backend:', error)
+        logger.error('Failed to sync themes with backend:', error)
       } finally {
         setSyncing(false)
       }

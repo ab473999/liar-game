@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { useGameStore } from '@/stores'
 import { usePressAndHold } from './hooks'
 import { TIMING, calculateScale } from '@/constants'
+import { logger } from '@/utils/logger'
 
 export const WordRevealCircle = () => {
   const navigate = useNavigate()
@@ -67,7 +68,7 @@ export const WordRevealCircle = () => {
   useEffect(() => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      console.log('🟦 WordRevealCircle dimensions:', {
+      logger.log('🟦 WordRevealCircle dimensions:', {
         height: rect.height,
         width: rect.width,
         top: rect.top,
@@ -100,7 +101,7 @@ export const WordRevealCircle = () => {
       // Movement of the top
       const topMovement = circleTopBeforeExpanding - circleTopAfterExpanding
       
-      console.log('🎯 Circle Positioning Calculations:', {
+      logger.log('🎯 Circle Positioning Calculations:', {
         '1. Circle Center': {
           x: circleCenterX,
           y: circleCenterY,
@@ -124,7 +125,7 @@ export const WordRevealCircle = () => {
         }
       })
       
-      console.log('🟢 Circle Button Center:', {
+      logger.log('🟢 Circle Button Center:', {
         centerX: buttonRect.left + buttonRect.width / 2,
         centerY: buttonRect.top + buttonRect.height / 2,
         width: buttonRect.width,
