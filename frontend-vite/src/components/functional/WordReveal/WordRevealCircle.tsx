@@ -124,7 +124,7 @@ export const WordRevealCircle = () => {
         <button
           ref={circleButtonRef}
           {...handlers}
-          className="w-60 h-60 rounded-full flex items-center justify-center z-10 select-none"
+          className="w-70 h-70 rounded-full flex items-center justify-center z-10 select-none"
           style={{ 
             backgroundColor: 'var(--color-circle-bg)',
             border: 'none',
