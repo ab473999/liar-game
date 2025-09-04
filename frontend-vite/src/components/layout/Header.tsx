@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { SquarePen, ArrowLeft, Blend } from 'lucide-react'
+import { SquarePen, ArrowLeft, Blend, Info } from 'lucide-react'
 import { ButtonHeader } from '@/components/ui/customized/ButtonHeader'
 import { SkinSelector } from '@/components/functional/SkinSelector'
 import { PasswordDialog } from '@/components/functional/PasswordDialog'
+import { InstructionsDialog } from '@/components/functional/InstructionsDialog'
 import { useGameStore, useSettingsStore, useThemesStore, useAuthStore } from '@/stores'
+import { IS_AUTH_ENABLED } from '@/config/authConfig'
 import { logger } from '@/utils/logger'
 
 export const Header = () => {
@@ -13,6 +15,7 @@ export const Header = () => {
   const { theme: themeType } = useParams<{ theme: string }>()
   const [isSkinSelectorOpen, setIsSkinSelectorOpen] = useState(false)
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false)
+  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false)
   const [passwordError, setPasswordError] = useState('')
   
   // Get theme information from stores
@@ -71,6 +74,12 @@ export const Header = () => {
   const isThemeSettingsTitle = headerTitle.startsWith('Settings/')
   
   const handleSettingsClick = () => {
+    // If auth is disabled, go directly to settings
+    if (!IS_AUTH_ENABLED) {
+      navigate('/settings')
+      return
+    }
+    
     // Check if already authenticated
     if (checkAuth()) {
       navigate('/settings')
@@ -99,8 +108,16 @@ export const Header = () => {
     >
       {/* Safe area padding for devices with notches */}
       <div className="h-16 pt-safe flex items-center justify-between relative">
-        {/* Left side - Back button on Settings page */}
+        {/* Left side - Info button on Home page, Back button on Settings page */}
         <div className="pl-0">
+          {isHome && (
+            <ButtonHeader 
+              onClick={() => setIsInstructionsOpen(true)}
+              ariaLabel="Open game instructions"
+            >
+              <Info size={24} />
+            </ButtonHeader>
+          )}
           {isSettings && (
             <ButtonHeader 
               onClick={() => navigate(getBackDestination())}
@@ -158,6 +175,12 @@ export const Header = () => {
         }}
         onSubmit={handlePasswordSubmit}
         errorMessage={passwordError}
+      />
+      
+      {/* Instructions Dialog */}
+      <InstructionsDialog 
+        isOpen={isInstructionsOpen}
+        onClose={() => setIsInstructionsOpen(false)}
       />
     </header>
   )

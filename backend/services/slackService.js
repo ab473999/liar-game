@@ -39,8 +39,16 @@ class SlackService {
       unfurl_media: false
     };
 
+    console.log('📤 Sending to Slack:', {
+      channel,
+      hasText: !!text,
+      hasBlocks: !!blocks,
+      blocksCount: blocks ? blocks.length : 0
+    });
+
     return new Promise((resolve, reject) => {
       const data = JSON.stringify(payload);
+      console.log('📦 Payload size:', Buffer.byteLength(data), 'bytes');
 
       const options = {
         hostname: 'slack.com',
@@ -48,8 +56,8 @@ class SlackService {
         path: '/api/chat.postMessage',
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': data.length,
+          'Content-Type': 'application/json; charset=utf-8',
+          'Content-Length': Buffer.byteLength(data),
           'Authorization': `Bearer ${this.botToken}`
         }
       };
@@ -64,15 +72,18 @@ class SlackService {
         res.on('end', () => {
           try {
             const response = JSON.parse(responseData);
+            console.log('📥 Slack API response:', JSON.stringify(response, null, 2));
             if (response.ok) {
               console.log('✅ Slack notification sent successfully');
               resolve({ success: true, response });
             } else {
               console.error('❌ Slack API error:', response.error);
+              console.error('Full error response:', response);
               resolve({ success: false, error: response.error });
             }
           } catch (error) {
             console.error('❌ Failed to parse Slack response:', error);
+            console.error('Raw response:', responseData);
             resolve({ success: false, error: error.message });
           }
         });

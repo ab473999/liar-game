@@ -6,6 +6,17 @@
 const slackService = require('../services/slackService');
 
 const requireAuth = (req, res, next) => {
+  // Check if authentication is enabled
+  const isAuthEnabled = process.env.IS_AUTH_ENABLED === 'true' || 
+                        process.env.IS_AUTH_ENABLED === 'True' ||
+                        process.env.IS_AUTH_ENABLED === 'TRUE';
+  
+  // If auth is disabled, skip authentication check
+  if (!isAuthEnabled) {
+    console.log('🔓 Authentication disabled - allowing request');
+    return next();
+  }
+  
   // Get the admin password from environment variable
   // Default password for development only
   const DEFAULT_DEV_PASSWORD = 'liar2024';

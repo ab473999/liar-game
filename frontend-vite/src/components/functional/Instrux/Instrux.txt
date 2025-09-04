@@ -1,0 +1,34 @@
+Game Instructions
+
+Welcome to the LIAR Game!
+
+1. Setup
+After choosing a category, you pass the phone around in a circle.
+- Each player silently reads the word on the screen.
+- The word will be the same for every player except the liar, who will read "You’re the liar" instead of the word.
+- Once all players have seen their word, put the phone away.
+
+2. Making Statements
+One by one, players make a short statement describing the word (without saying the word itself).
+- The liar’s goal is to blend in, making their statement sound natural and unsuspicious so they are not identified.
+
+3. Discussion
+After everyone has spoken, the group discusses who they think the liar might be.
+- If everyone agrees on a suspect, move to the next step.
+- If there are multiple suspects or no agreement, play another round of statements before deciding.
+
+4. Reveal & Scoring
+- If the group guesses the wrong liar, the real liar earns 2 points.
+- If the group guesses correctly, the liar then has a chance to guess the secret word.
+  - If they guess correctly, the liar earns 2 points.
+  - If they guess wrong, all other players earn 1 point each.
+
+Example:
+Category: Food | Word: Cherry
+
+Player 1: "I am sweet."
+Player 2 (liar): "I am expensive."
+Player 3: "People eat me in the summer."
+Player 4: "My milkshake brings all the boys to the yard."
+
+At this point, players can either accuse someone of being the liar or continue another round for more clues.

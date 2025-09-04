@@ -2,7 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-require('dotenv').config();
+const path = require('path');
+
+// Load environment variables
+require('dotenv').config({ 
+  path: path.resolve(__dirname, '.env')
+});
+
+// Debug: Log environment variables
+console.log('🔍 Environment Check:');
+console.log('  SLACK_BOT_TOKEN:', process.env.SLACK_BOT_TOKEN ? '✓ Set' : '✗ Not set');
+console.log('  DEFAULT_CHANNEL_ID:', process.env.DEFAULT_CHANNEL_ID ? '✓ Set' : '✗ Not set');
+console.log('  DEFAULT_CHANNEL_NAME:', process.env.DEFAULT_CHANNEL_NAME || 'Not set');
+console.log('  IS_AUTH_ENABLED:', process.env.IS_AUTH_ENABLED === 'true' || process.env.IS_AUTH_ENABLED === 'True' || process.env.IS_AUTH_ENABLED === 'TRUE' ? '✓ Enabled' : '✗ Disabled');
+console.log('  ADMIN_PASSWORD:', process.env.ADMIN_PASSWORD ? '✓ Set' : '✗ Not set');
 
 const app = express();
 const PORT = process.env.PORT || 8001;

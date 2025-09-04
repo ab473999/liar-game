@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { logger } from '@/utils/logger'
+import { selectLiarPosition, CAN_FIRST_PLAYER_BE_LIAR } from '@/config/gameConfig'
 
 interface GameStore {
   // State
@@ -111,8 +112,12 @@ export const useGameStore = create<GameStore>()(
       
       startGame: () => {
         const playerNum = get().playerNum
-        const liarPosition = Math.floor(Math.random() * playerNum)
-        logger.log('GameStore: startGame', { playerNum, liarPosition })
+        const liarPosition = selectLiarPosition(playerNum)
+        logger.log('GameStore: startGame', { 
+          playerNum, 
+          liarPosition,
+          canFirstPlayerBeLiar: CAN_FIRST_PLAYER_BE_LIAR 
+        })
         set({
           stage: 'select',
           currentPlayer: 0,

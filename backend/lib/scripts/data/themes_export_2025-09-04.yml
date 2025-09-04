@@ -1,0 +1,711 @@
+metadata:
+  exported_at: "2025-09-04T21:13:12.144Z"
+  total_themes: 23
+  total_words: 652
+  version: "1.0"
+themes:
+  - type: activity
+    name: Activities
+    words:
+      - Camping
+      - Cooking
+      - Cycling
+      - Dancing
+      - Drawing
+      - Exercise
+      - Fishing
+      - Gaming
+      - Hiking
+      - Meditation
+      - Reading
+      - Running
+      - Shopping
+      - Singing
+      - Studying
+      - Swimming
+      - Traveling
+      - Walking
+      - Watching Movies
+      - Yoga
+  - type: anatomy
+    name: Anatomy
+    words:
+      - Adam's Apple
+      - Appendix
+      - Armpit
+      - Belly Button
+      - Belly Fat
+      - Cuticle
+      - Dimple
+      - Double Chin
+      - Earlobe
+      - Eyebrow
+      - Eyelash
+      - Freckle
+      - Funny Bone
+      - Gallbladder
+      - Goosebumps
+      - Kneecap
+      - Knuckle
+      - Love Handles
+      - Mole
+      - Nipple
+      - Nostril
+      - Pancreas
+      - Pinky Toe
+      - Pubic Hair
+      - Spleen
+      - Tailbone
+      - Tonsils
+      - Uvula
+      - Wisdom Tooth
+      - Wrinkle
+  - type: animals
+    name: Animals
+    words:
+      - Alpaca
+      - Anteater
+      - Axolotl
+      - Aye-aye
+      - Binturong
+      - Blobfish
+      - Capybara
+      - Beetle
+      - Fossa
+      - Gharial
+      - Glassfrog
+      - Kiwi
+      - Manatee
+      - Shrimp
+      - Rat
+      - Monkey
+      - Quokka
+      - Sloth
+      - Mole
+      - Tapir
+      - Wombat
+  - type: car-brands
+    name: Car Brands
+    words:
+      - Audi
+      - BMW
+      - BYD
+      - Bentley
+      - Cadillac
+      - Chevrolet
+      - Ferrari
+      - Ford
+      - Honda
+      - Hyundai
+      - Jeep
+      - Lamborghini
+      - Land Rover
+      - Lexus
+      - Maserati
+      - Mazda
+      - Mercedes-Benz
+      - Nissan
+      - Porsche
+      - Rolls-Royce
+      - Subaru
+      - Tesla
+      - Toyota
+      - Volkswagen
+      - Volvo
+  - type: clothes
+    name: Clothes
+    words:
+      - Assless Chaps
+      - Balaclava
+      - Bodysuit
+      - Bucket Hat
+      - Cargo Pants
+      - Crocs
+      - Crop Top
+      - Croptop Hoodie
+      - Daisy Dukes
+      - Dungarees
+      - Fanny Pack
+      - Fingerless Gloves
+      - Fishnet
+      - Jorts
+      - Jumpsuit
+      - Kilt
+      - Lederhosen
+      - Leg Warmers
+      - Mankini
+      - Mesh Shirt
+      - Onesie
+      - Overalls
+      - Parachute Pants
+      - Platform Shoes
+      - Poncho
+      - Speedo
+      - Thong
+      - Toe Socks
+      - Tube Top
+      - Uggs
+  - type: countries
+    name: Countries
+    words:
+      - Argentina
+      - Australia
+      - Austria
+      - Bangladesh
+      - Belgium
+      - Brazil
+      - Canada
+      - Chile
+      - China
+      - Colombia
+      - Cuba
+      - Denmark
+      - Egypt
+      - Finland
+      - France
+      - Germany
+      - Greece
+      - Iceland
+      - India
+      - Indonesia
+      - Iran
+      - Ireland
+      - Israel
+      - Italy
+      - Japan
+      - Kenya
+      - Malaysia
+      - Mexico
+      - Morocco
+      - Netherlands
+      - New Zealand
+      - Nigeria
+      - Norway
+      - Pakistan
+      - Peru
+      - Philippines
+      - Poland
+      - Portugal
+      - Romania
+      - Russia
+      - Saudi Arabia
+      - Singapore
+      - South Africa
+      - South Korea
+      - Spain
+      - Sweden
+      - Switzerland
+      - Thailand
+      - Turkey
+      - UAE
+      - Ukraine
+      - United Kingdom
+      - United States
+      - Venezuela
+      - Vietnam
+  - type: dailyObject
+    name: Daily Objects
+    words:
+      - Bag
+      - Blanket
+      - Clock
+      - Comb
+      - Cup
+      - Glasses
+      - Hanger
+      - Keys
+      - Mirror
+      - Pillow
+      - Plate
+      - Shampoo
+      - Shoes
+      - Soap
+      - Spoon
+      - Toothbrush
+      - Toothpaste
+      - Towel
+      - Umbrella
+      - Wallet
+  - type: disney
+    name: Disney
+    words:
+      - Aladdin
+      - Anna
+      - Ariel
+      - Bambi
+      - Belle
+      - Cinderella
+      - Donald Duck
+      - Dumbo
+      - Elsa
+      - Goofy
+      - Jasmine
+      - Mickey Mouse
+      - Minnie Mouse
+      - Mufasa
+      - Mulan
+      - Peter Pan
+      - Pinocchio
+      - Pluto
+      - Pocahontas
+      - Pumbaa
+      - Simba
+      - Sleeping Beauty
+      - Snow White
+      - Timon
+      - Tinker Bell
+  - type: europe
+    name: Europe
+    words:
+      - Acropolis
+      - Alps
+      - Amsterdam
+      - Athens
+      - Berlin
+      - Big Ben
+      - Brandenburg Gate
+      - Budapest
+      - Charlemagne
+      - Colosseum
+      - Da Vinci
+      - Danube
+      - Eiffel Tower
+      - Galileo
+      - Knights Templar
+      - London
+      - Louvre
+      - Madrid
+      - Marie Curie
+      - Mediterranean
+      - Mozart
+      - Napoleon
+      - Notre Dame
+      - Paris
+      - Prague
+      - Queen Elizabeth
+      - Rhine
+      - Rome
+      - Sagrada Familia
+      - Shakespeare
+      - Stonehenge
+      - Thames
+      - Vatican
+      - Vienna
+      - Vikings
+  - type: fashion-brands
+    name: Fashion Brands
+    words:
+      - A Bathing Ape
+      - Adidas
+      - Armani
+      - Balenciaga
+      - Calvin Klein
+      - Carhartt
+      - Celine
+      - Chanel
+      - Coach
+      - Dior
+      - Fear of God
+      - Fendi
+      - Gucci
+      - H&M
+      - Hermes
+      - Kith
+      - Levi's
+      - Louis Vuitton
+      - Nike
+      - Off-White
+      - Palace
+      - Prada
+      - Prayinggg
+      - Ralph Lauren
+      - Saint Laurent
+      - Stussy
+      - Supreme
+      - Tommy Hilfiger
+      - Uniqlo
+      - Valentino
+      - Versace
+      - Zara
+  - type: fields-of-study
+    name: Fields of Study
+    words:
+      - Anthropology
+      - Architecture
+      - Art
+      - Astronomy
+      - Biology
+      - Business
+      - Chemistry
+      - Computer Science
+      - Economics
+      - Education
+      - Engineering
+      - Geography
+      - Geology
+      - History
+      - Law
+      - Linguistics
+      - Literature
+      - Mathematics
+      - Medicine
+      - Music
+      - Philosophy
+      - Physics
+      - Political Science
+      - Psychology
+      - Sociology
+  - type: food
+    name: Food
+    words:
+      - Apple
+      - Bacon
+      - Banana
+      - Bread
+      - Burger
+      - Cake
+      - Cheese
+      - Chicken
+      - Chocolate
+      - Coffee
+      - Cookie
+      - Donut
+      - Eggs
+      - Ice Cream
+      - Orange
+      - Pasta
+      - Pizza
+      - Rice
+      - Salad
+      - Sandwich
+      - Soup
+      - Steak
+      - Strawberry
+      - Sushi
+      - Tacos
+  - type: harry-potter
+    name: Harry Potter
+    words:
+      - Basilisk
+      - Dementor
+      - Draco Malfoy
+      - Dragon
+      - Dumbledore
+      - Gryffindor
+      - Hagrid
+      - Harry Potter
+      - Hermione Granger
+      - Hogwarts
+      - Horcrux
+      - House Elf
+      - Hufflepuff
+      - McGonagall
+      - Muggle
+      - Patronus
+      - Phoenix
+      - Quidditch
+      - Ravenclaw
+      - Ron Weasley
+      - Sirius Black
+      - Slytherin
+      - Snape
+      - Voldemort
+      - Wand
+  - type: history
+    name: History
+    words:
+      - Alexander the Great
+      - American Revolution
+      - Ancient Egypt
+      - Berlin Wall
+      - Churchill
+      - Cleopatra
+      - Cold War
+      - Colosseum
+      - Columbus
+      - French Revolution
+      - Great Wall
+      - Greek Empire
+      - Hitler
+      - Industrial Revolution
+      - Julius Caesar
+      - Lincoln
+      - Middle Ages
+      - Napoleon
+      - Pearl Harbor
+      - Pyramid
+      - Renaissance
+      - Roman Empire
+      - Stalin
+      - Washington
+      - World War II
+  - type: jobs
+    name: Jobs
+    words:
+      - Accountant
+      - Animator
+      - Architect
+      - Barista
+      - Bartender
+      - Chef
+      - DJ
+      - Dentist
+      - Doctor
+      - Engineer
+      - Fashion Designer
+      - Film Director
+      - Firefighter
+      - Game Designer
+      - Graphic Designer
+      - Influencer
+      - Lawyer
+      - Nurse
+      - Pharmacist
+      - Pilot
+      - Podcaster
+      - Police Officer
+      - Programmer
+      - Scientist
+      - Streamer
+      - Tattoo Artist
+      - Teacher
+      - Therapist
+      - UX Designer
+      - YouTuber
+  - type: music
+    name: Music
+    words:
+      - Bach
+      - Bass
+      - Beatles
+      - Beethoven
+      - Blues
+      - Cello
+      - Clarinet
+      - Classical
+      - Country
+      - Drums
+      - Electronic
+      - Elvis
+      - Flute
+      - Guitar
+      - Hip Hop
+      - Jazz
+      - Metal
+      - Mozart
+      - Piano
+      - Pop
+      - Reggae
+      - Rock
+      - Saxophone
+      - Trumpet
+      - Violin
+  - type: netflix
+    name: Netflix
+    words:
+      - Better Call Saul
+      - Black Mirror
+      - Breaking Bad
+      - Bridgerton
+      - Cobra Kai
+      - Dark
+      - Emily in Paris
+      - Friends
+      - House of Cards
+      - Lucifer
+      - Money Heist
+      - Narcos
+      - Orange Is the New Black
+      - Ozark
+      - Peaky Blinders
+      - Squid Game
+      - Stranger Things
+      - The Crown
+      - The Office
+      - The Queens Gambit
+      - The Umbrella Academy
+      - The Witcher
+      - Tiger King
+      - Wednesday
+      - You
+  - type: place
+    name: Places
+    words:
+      - Airport
+      - Bathhouse
+      - Bathroom
+      - Cafe
+      - Church
+      - Clothing Store
+      - Company
+      - Concert Hall
+      - Court
+      - Department Store
+      - Desert Island
+      - Driver's License Test Center
+      - Gym
+      - Harbor
+      - Hometown
+      - Hotel
+      - Kindergarten
+      - Park
+      - Post Office
+      - Rest Area
+      - School
+      - Soccer Field
+      - Subway Station
+      - Theater
+      - Villa
+  - type: psychology
+    name: Psychology
+    words:
+      - Anxiety
+      - Behavior
+      - Cognition
+      - Conditioning
+      - Consciousness
+      - Depression
+      - Ego
+      - Emotion
+      - Freud
+      - Intelligence
+      - Jung
+      - Learning
+      - Memory
+      - Motivation
+      - Pavlov
+      - Perception
+      - Personality
+      - Phobia
+      - Piaget
+      - Skinner
+      - Stress
+      - Superego
+      - Therapy
+      - Trauma
+      - Unconscious
+  - type: sex
+    name: Sex
+    words:
+      - Attraction
+      - BDSM
+      - Body oil
+      - Chemistry
+      - Consent
+      - Couple
+      - Cuckold
+      - Desire
+      - Fantasies
+      - Flirting
+      - Foreplay
+      - Gag
+      - Handcuffs
+      - Hickey
+      - Hug
+      - Intimacy
+      - Kinky
+      - Kiss
+      - Lingerie
+      - Love
+      - Orgasm
+      - Passion
+      - Pleasure
+      - Polyamory
+      - Queer
+      - Roleplay
+      - Romance
+      - Seduction
+      - Sensual
+      - Shibari
+      - Teasing
+      - Threesome
+      - Wet sheets
+  - type: sports
+    name: Sports
+    words:
+      - Baseball
+      - Basketball
+      - Beer Pong
+      - Bog Snorkeling
+      - Cheese Rolling
+      - Chess Boxing
+      - Cornhole
+      - Curling
+      - Extreme Ironing
+      - Foam Fighting
+      - Football
+      - Kabaddi
+      - Olympics
+      - Parkour
+      - Pickleball
+      - Quidditch
+      - Shin Kicking
+      - Soccer
+      - Super Bowl
+      - Tennis
+      - Toe Wrestling
+      - Ultimate Frisbee
+      - Wife Carrying
+      - World Cup
+      - Zorbing
+  - type: subcultures
+    name: Subcultures
+    words:
+      - Biker
+      - Bohemian
+      - Cosplay
+      - Cyberpunk
+      - E-girl
+      - Emo
+      - Furry
+      - Gamer
+      - Geek
+      - Goth
+      - Grunge
+      - Hikikomori
+      - Hip Hop
+      - Hippie
+      - Hipster
+      - Incel
+      - Indie
+      - Metal
+      - Minimalist
+      - Nerd
+      - Otaku
+      - Preppy
+      - Punk
+      - Raver
+      - Skater
+      - Softboy
+      - Steampunk
+      - Surfer
+      - Vegan
+      - Weeb
+  - type: technology
+    name: Technology
+    words:
+      - 404 Error
+      - AI
+      - Algorithm
+      - Android
+      - Blockchain
+      - Blue Screen
+      - Captcha
+      - Cloud
+      - Computer
+      - Database
+      - Dial-up
+      - Dogecoin
+      - Fax Machine
+      - Floppy Disk
+      - Google Glass
+      - Internet
+      - Internet Explorer
+      - Machine Learning
+      - Metaverse
+      - NFT
+      - Smartphone
+      - Virtual Reality
+      - Windows Vista
+      - Y2K Bug
+      - iPhone

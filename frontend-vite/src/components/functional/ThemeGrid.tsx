@@ -4,6 +4,7 @@ import { ThemeBox } from '@/components/ui/ThemeBox'
 import { useGameStore, useThemesStore } from '@/stores'
 import { apiService } from '@/services/api'
 import { logger } from '@/utils/logger'
+import { selectLiarPosition, CAN_FIRST_PLAYER_BE_LIAR } from '@/config/gameConfig'
 
 interface ThemeGridProps {
   onThemeClick?: (themeType: string, themeName: string) => void | Promise<void>
@@ -50,9 +51,10 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
       setWord(selectedWord)
       
       // Select a random player to be the liar (0-indexed internally, 1-indexed for display)
-      const liarPosition = Math.floor(Math.random() * playerNum)  // 0 to playerNum-1
+      const liarPosition = selectLiarPosition(playerNum)  // Uses config to determine valid range
       const liarPlayerNumber = liarPosition + 1  // 1 to playerNum for display
       logger.log('Liar selected: Player', liarPlayerNumber, `(out of ${playerNum} players)`)
+      logger.log('Config: First player can be liar?', CAN_FIRST_PLAYER_BE_LIAR)
       setLiarPosition(liarPosition)  // Store the 0-indexed position
       
       // Navigate to game page

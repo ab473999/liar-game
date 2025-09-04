@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios';
 import type { AxiosInstance } from 'axios';
 import type { ApiResponse, Theme, Word } from '@/types';
 import { useAuthStore } from '@/stores/authStore';
+import { IS_AUTH_ENABLED } from '@/config/authConfig';
 import { logger } from '@/utils/logger';
 
 class ApiService {
@@ -19,13 +20,16 @@ class ApiService {
     // Request interceptor to add auth header for write operations
     this.client.interceptors.request.use(
       (config) => {
-        // Add auth header for write operations (POST, PUT, DELETE)
-        if (config.method && ['post', 'put', 'delete'].includes(config.method.toLowerCase())) {
-          const authStore = useAuthStore.getState();
-          const password = authStore.getPassword();
-          
-          if (password) {
-            config.headers['Authorization'] = `Bearer ${password}`;
+        // Only add auth header if authentication is enabled
+        if (IS_AUTH_ENABLED) {
+          // Add auth header for write operations (POST, PUT, DELETE)
+          if (config.method && ['post', 'put', 'delete'].includes(config.method.toLowerCase())) {
+            const authStore = useAuthStore.getState();
+            const password = authStore.getPassword();
+            
+            if (password) {
+              config.headers['Authorization'] = `Bearer ${password}`;
+            }
           }
         }
         return config;
@@ -41,11 +45,14 @@ class ApiService {
       (error: AxiosError) => {
         logger.error('API Error:', error);
         
-        // Handle 401 Unauthorized - clear auth and return special error
-        if (error.response?.status === 401) {
-          const authStore = useAuthStore.getState();
-          authStore.clearPassword();
-          return Promise.reject(new Error('Authentication required'));
+        // Only handle auth errors if authentication is enabled
+        if (IS_AUTH_ENABLED) {
+          // Handle 401 Unauthorized - clear auth and return special error
+          if (error.response?.status === 401) {
+            const authStore = useAuthStore.getState();
+            authStore.clearPassword();
+            return Promise.reject(new Error('Authentication required'));
+          }
         }
         
         return Promise.reject(this.handleError(error));
@@ -56,11 +63,14 @@ class ApiService {
   private handleError(error: AxiosError): string {
     if (error.response) {
       // Server responded with error
-      if (error.response.status === 401) {
-        return 'Authentication required';
-      }
-      if (error.response.status === 403) {
-        return 'Invalid password';
+      // Only treat 401/403 as auth errors if auth is enabled
+      if (IS_AUTH_ENABLED) {
+        if (error.response.status === 401) {
+          return 'Authentication required';
+        }
+        if (error.response.status === 403) {
+          return 'Invalid password';
+        }
       }
       return `Server error: ${error.response.status}`;
     } else if (error.request) {
