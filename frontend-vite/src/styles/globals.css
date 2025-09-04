@@ -30,7 +30,7 @@
   
   /* IconButton colors */
   --color-iconbutton-bg: transparent;
-  --color-iconbutton-line: #ffffff;
+  --color-iconbutton-line: #3b82f6; /* Same as text-blue-400 */
 }
 
 html {

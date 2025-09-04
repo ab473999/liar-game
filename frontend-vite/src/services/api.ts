@@ -58,8 +58,16 @@ class ApiService {
         return response.data.data;
       }
       throw new Error(response.data.error || 'Failed to create theme');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating theme:', error);
+      // Check for 409 Conflict (duplicate theme)
+      if (error.response?.status === 409) {
+        throw new Error('Theme already exists');
+      }
+      // Re-throw the error with proper message
+      if (error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      }
       throw error;
     }
   }

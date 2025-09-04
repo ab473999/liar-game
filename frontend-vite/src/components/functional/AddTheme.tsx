@@ -2,15 +2,16 @@ import { useState, useRef, useEffect } from 'react'
 import { Plus } from 'lucide-react'
 import { ButtonSave } from '@/components/ui/customized/ButtonSave'
 import { apiService } from '@/services/api'
-import { useThemes } from '@/hooks/useApi'
+import { useThemesStore } from '@/stores'
 
 export const AddTheme = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [themeName, setThemeName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [warning, setWarning] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const { refetch } = useThemes() // To refresh themes list after adding
+  const themes = useThemesStore((state) => state.themes)
+  const addThemeToStore = useThemesStore((state) => state.addTheme)
   
   // Focus input when entering add mode
   useEffect(() => {
@@ -19,60 +20,107 @@ export const AddTheme = () => {
     }
   }, [isAdding])
   
-  // Generate type from name (lowercase, replace spaces/special chars with underscores)
+  // Generate type from name (lowercase, keep some punctuation, replace spaces with dashes)
   const generateTypeFromName = (name: string): string => {
     return name
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_') // Replace non-alphanumeric with underscore
-      .replace(/^_+|_+$/g, '') // Remove leading/trailing underscores
-      .replace(/_+/g, '_') // Replace multiple underscores with single
+      // Keep letters, numbers, and allowed punctuation (-, !, ?, ., ,)
+      .replace(/[^a-z0-9\-!?.,]+/g, '-') // Replace disallowed chars and spaces with dash
+      .replace(/^-+|-+$/g, '') // Remove leading/trailing dashes
+      .replace(/-+/g, '-') // Replace multiple dashes with single
+  }
+  
+  // Check for duplicate themes as user types
+  const checkForDuplicates = (name: string) => {
+    if (!name.trim()) {
+      setWarning(null)
+      return
+    }
+    
+    const trimmedName = name.trim()
+    const type = generateTypeFromName(trimmedName)
+    
+    // Check if a theme with this name or type already exists
+    const duplicateName = themes.some(theme => 
+      theme.name.toLowerCase() === trimmedName.toLowerCase()
+    )
+    
+    const duplicateType = themes.some(theme => 
+      theme.type === type
+    )
+    
+    if (duplicateName || duplicateType) {
+      setWarning('A theme with this name already exists')
+    } else {
+      setWarning(null)
+    }
+  }
+  
+  // Handle input change with real-time validation
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setThemeName(value)
+    checkForDuplicates(value)
   }
   
   const handleSave = async () => {
     if (!themeName.trim()) {
-      setError('Theme name cannot be empty')
+      setWarning('Please enter a theme name')
+      return
+    }
+    
+    // Don't save if there's a duplicate warning
+    if (warning) {
+      return
+    }
+    
+    const trimmedName = themeName.trim()
+    const type = generateTypeFromName(trimmedName)
+    
+    // Check if type is valid
+    if (!type) {
+      setWarning('Please enter a valid theme name')
       return
     }
     
     try {
       setIsLoading(true)
-      setError(null)
+      setWarning(null)
       
-      const type = generateTypeFromName(themeName)
+      console.log('Creating theme:', { name: trimmedName, type })
+      const newTheme = await apiService.createTheme({ name: trimmedName, type })
       
-      // Check if type is valid
-      if (!type) {
-        setError('Invalid theme name')
-        return
-      }
-      
-      console.log('Creating theme:', { name: themeName, type })
-      await apiService.createTheme({ name: themeName, type })
-      
-      // Success - reset and refresh
+      // Success - update store and reset
+      addThemeToStore(newTheme)
       setThemeName('')
       setIsAdding(false)
-      await refetch() // Refresh the themes list
       
     } catch (err) {
       console.error('Error creating theme:', err)
-      setError(err instanceof Error ? err.message : 'Failed to create theme')
+      
+      // Handle different error cases with user-friendly messages
+      const errorMessage = err instanceof Error ? err.message.toLowerCase() : ''
+      
+      if (errorMessage.includes('already exists') || errorMessage.includes('duplicate') || errorMessage.includes('unique')) {
+        setWarning('A theme with this name already exists')
+      } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+        setWarning('Unable to connect to the server. Please check your connection.')
+      } else {
+        setWarning('Something went wrong. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }
   }
   
-  const handleCancel = () => {
-    setThemeName('')
-    setIsAdding(false)
-    setError(null)
-  }
-  
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !warning) {
       handleSave()
     } else if (e.key === 'Escape') {
-      handleCancel()
+      // Exit add mode on Escape
+      setThemeName('')
+      setIsAdding(false)
+      setWarning(null)
     }
   }
   
@@ -101,10 +149,7 @@ export const AddTheme = () => {
           ref={inputRef}
           type="text"
           value={themeName}
-          onChange={(e) => {
-            setThemeName(e.target.value)
-            setError(null) // Clear error on typing
-          }}
+          onChange={handleInputChange}
           onKeyDown={handleKeyPress}
           placeholder="Enter theme name..."
           disabled={isLoading}
@@ -112,32 +157,19 @@ export const AddTheme = () => {
           style={{
             backgroundColor: 'var(--color-inputBg)',
             color: 'var(--color-textPrimary)',
-            border: `1px solid ${error ? 'var(--color-accentDanger)' : 'var(--color-borderPrimary)'}`,
+            border: `1px solid ${warning ? 'var(--color-accentDanger)' : 'var(--color-borderPrimary)'}`,
             opacity: isLoading ? 0.5 : 1,
           }}
         />
         <ButtonSave 
           onClick={handleSave} 
-          disabled={isLoading || !themeName.trim()}
+          disabled={isLoading || !themeName.trim() || !!warning}
           ariaLabel="Save theme"
         />
-        <button
-          type="button"
-          onClick={handleCancel}
-          disabled={isLoading}
-          className="px-3 py-2 text-sm rounded-lg transition-opacity hover:opacity-80"
-          style={{
-            backgroundColor: 'transparent',
-            color: 'var(--color-textSecondary)',
-            border: '1px solid var(--color-borderPrimary)',
-          }}
-        >
-          Cancel
-        </button>
       </div>
-      {error && (
+      {warning && (
         <p className="text-sm" style={{ color: 'var(--color-accentDanger)' }}>
-          {error}
+          {warning}
         </p>
       )}
     </div>

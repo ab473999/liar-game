@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useThemes } from '@/hooks/useApi'
 import { ThemeBox } from '@/components/ui/ThemeBox'
-import { useGameStore } from '@/stores'
+import { useGameStore, useThemesStore } from '@/stores'
 import { apiService } from '@/services/api'
 
 interface ThemeGridProps {
@@ -11,7 +10,8 @@ interface ThemeGridProps {
 
 export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
   const navigate = useNavigate()
-  const { themes, loading } = useThemes()
+  const themes = useThemesStore((state) => state.themes)
+  const isLoading = useThemesStore((state) => state.isLoading)
   const [isSelecting, setIsSelecting] = useState(false)
   
   // Get store actions
@@ -21,13 +21,6 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
     setWord,
     setLiarPosition
   } = useGameStore()
-  
-  // Log when themes are loaded
-  useEffect(() => {
-    if (!loading && themes.length > 0) {
-      console.log('Themes loaded:', themes)
-    }
-  }, [themes, loading])
   
   // Default handler for Home page (game start)
   const handleThemeClickHome = async (themeType: string, themeName: string) => {
@@ -81,7 +74,7 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
   }
   
   // Don't render anything while loading
-  if (loading) {
+  if (isLoading) {
     return null
   }
   
