@@ -48,10 +48,11 @@ export const ThemeGrid = ({ onThemeClick }: ThemeGridProps = {}) => {
       console.log('Random word selected:', selectedWord, `(${randomWordIndex + 1}/${words.length})`)
       setWord(selectedWord)
       
-      // Select a random player to be the liar (1-indexed for display)
-      const liarPlayerNumber = Math.floor(Math.random() * playerNum) + 1
+      // Select a random player to be the liar (0-indexed internally, 1-indexed for display)
+      const liarPosition = Math.floor(Math.random() * playerNum)  // 0 to playerNum-1
+      const liarPlayerNumber = liarPosition + 1  // 1 to playerNum for display
       console.log('Liar selected: Player', liarPlayerNumber, `(out of ${playerNum} players)`)
-      setLiarPosition(liarPlayerNumber)
+      setLiarPosition(liarPosition)  // Store the 0-indexed position
       
       // Navigate to game page
       navigate('/game')

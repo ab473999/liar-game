@@ -1,5 +1,9 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { MainContentTop } from '@/components/layout/MainContentTop'
+import { MainContentBody } from '@/components/layout/MainContentBody'
+import { GamePlayerCounter } from '@/components/functional/GamePlayerCounter'
+import { WordReveal } from '@/components/functional/WordReveal'
 import { useGameStore } from '@/stores'
 
 export const Game = () => {
@@ -10,7 +14,8 @@ export const Game = () => {
     playerNum, 
     theme, 
     word, 
-    liarPosition 
+    liarPosition,
+    currentPlayer
   } = useGameStore()
   
   // Check if we have valid game state, redirect to home if not
@@ -28,9 +33,10 @@ export const Game = () => {
     console.log('Player Count:', playerNum)
     console.log('Selected Theme:', theme)
     console.log('Selected Word:', word)
-    console.log('Liar is Player:', liarPosition)
+    console.log('Liar is Player:', liarPosition + 1) // Add 1 for human-readable number
+    console.log('Current Player:', currentPlayer + 1)
     console.log('=====================')
-  }, [playerNum, theme, word, liarPosition, navigate])
+  }, [playerNum, theme, word, liarPosition, currentPlayer, navigate])
   
   // Don't render game UI if we don't have valid state
   if (!theme || !word || liarPosition === -1) {
@@ -38,15 +44,13 @@ export const Game = () => {
   }
   
   return (
-    <div className="flex-1 flex items-center justify-center">
-      <div className="text-center">
-        <h2 className="text-2xl mb-4">Game Ready!</h2>
-        <p className="text-gray-400 mb-2">Theme: {theme}</p>
-        <p className="text-gray-400 mb-2">Players: {playerNum}</p>
-        <p className="text-xs text-gray-600 mt-8">
-          (Game interface will be implemented here)
-        </p>
-      </div>
-    </div>
+    <>
+      <MainContentTop>
+        <GamePlayerCounter />
+      </MainContentTop>
+      <MainContentBody>
+        <WordReveal />
+      </MainContentBody>
+    </>
   )
 }
