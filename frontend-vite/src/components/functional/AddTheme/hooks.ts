@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import { Plus } from 'lucide-react'
-import { ButtonSave } from '@/components/ui/customized/ButtonSave'
 import { apiService } from '@/services/api'
 import { useThemesStore } from '@/stores'
 
-export const AddTheme = () => {
+export const useAddTheme = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [themeName, setThemeName] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -30,6 +28,41 @@ export const AddTheme = () => {
       .replace(/-+/g, '-') // Replace multiple dashes with single
   }
   
+  // Generate plural/singular variations for checking
+  const generateVariations = (text: string): string[] => {
+    const lower = text.toLowerCase()
+    const variations = [lower]
+    
+    // Handle basic plural forms
+    if (lower.endsWith('s')) {
+      // Remove 's' for singular
+      variations.push(lower.slice(0, -1))
+      
+      // Handle 'ies' -> 'y' (e.g., activities -> activity)
+      if (lower.endsWith('ies')) {
+        variations.push(lower.slice(0, -3) + 'y')
+      }
+      // Handle 'es' -> '' (e.g., places -> place)
+      if (lower.endsWith('es')) {
+        variations.push(lower.slice(0, -2))
+      }
+    } else {
+      // Add 's' for plural
+      variations.push(lower + 's')
+      
+      // Handle 'y' -> 'ies' (e.g., activity -> activities)
+      if (lower.endsWith('y') && !['a', 'e', 'i', 'o', 'u'].includes(lower[lower.length - 2])) {
+        variations.push(lower.slice(0, -1) + 'ies')
+      }
+      // Add 'es' for words ending in s, x, z, ch, sh
+      if (lower.match(/(s|x|z|ch|sh)$/)) {
+        variations.push(lower + 'es')
+      }
+    }
+    
+    return [...new Set(variations)] // Remove duplicates
+  }
+  
   // Check for duplicate themes as user types
   const checkForDuplicates = (name: string) => {
     if (!name.trim()) {
@@ -38,16 +71,26 @@ export const AddTheme = () => {
     }
     
     const trimmedName = name.trim()
+    const nameVariations = generateVariations(trimmedName)
     const type = generateTypeFromName(trimmedName)
+    const typeVariations = generateVariations(type)
     
-    // Check if a theme with this name or type already exists
-    const duplicateName = themes.some(theme => 
-      theme.name.toLowerCase() === trimmedName.toLowerCase()
-    )
+    // Check if any variation of the name matches existing theme names
+    const duplicateName = themes.some(theme => {
+      const existingNameLower = theme.name.toLowerCase()
+      return nameVariations.some(variation => 
+        variation === existingNameLower || 
+        generateVariations(theme.name).includes(variation)
+      )
+    })
     
-    const duplicateType = themes.some(theme => 
-      theme.type === type
-    )
+    // Check if any variation of the type matches existing theme types
+    const duplicateType = themes.some(theme => {
+      return typeVariations.some(variation => 
+        variation === theme.type.toLowerCase() ||
+        generateVariations(theme.type).includes(variation)
+      )
+    })
     
     if (duplicateName || duplicateType) {
       setWarning('A theme with this name already exists')
@@ -124,54 +167,22 @@ export const AddTheme = () => {
     }
   }
   
-  if (!isAdding) {
-    return (
-      <button
-        type="button"
-        onClick={() => setIsAdding(true)}
-        className="flex items-center gap-2 px-4 py-2 rounded-lg transition-opacity hover:opacity-80"
-        style={{
-          backgroundColor: 'var(--color-buttonBg)',
-          color: 'var(--color-textPrimary)',
-          border: '1px solid var(--color-borderPrimary)',
-        }}
-      >
-        <Plus size={20} />
-        <span>Add New Theme</span>
-      </button>
-    )
+  const startAdding = () => {
+    setIsAdding(true)
   }
   
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
-        <input
-          ref={inputRef}
-          type="text"
-          value={themeName}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyPress}
-          placeholder="Enter theme name..."
-          disabled={isLoading}
-          className="flex-1 px-3 py-2 rounded-lg transition-colors"
-          style={{
-            backgroundColor: 'var(--color-inputBg)',
-            color: 'var(--color-textPrimary)',
-            border: `1px solid ${warning ? 'var(--color-accentDanger)' : 'var(--color-borderPrimary)'}`,
-            opacity: isLoading ? 0.5 : 1,
-          }}
-        />
-        <ButtonSave 
-          onClick={handleSave} 
-          disabled={isLoading || !themeName.trim() || !!warning}
-          ariaLabel="Save theme"
-        />
-      </div>
-      {warning && (
-        <p className="text-sm" style={{ color: 'var(--color-accentDanger)' }}>
-          {warning}
-        </p>
-      )}
-    </div>
-  )
+  return {
+    // State
+    isAdding,
+    themeName,
+    isLoading,
+    warning,
+    inputRef,
+    
+    // Actions
+    startAdding,
+    handleInputChange,
+    handleSave,
+    handleKeyPress,
+  }
 }
