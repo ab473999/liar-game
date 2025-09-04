@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const wordService = require('../services/wordService');
+const themeService = require('../services/themeService');
+const slackService = require('../services/slackService');
 const { requireAuth } = require('../middleware/auth');
 
 /**
@@ -134,6 +136,14 @@ router.post('/', requireAuth, async (req, res) => {
       wordEn: word
     });
     
+    // Get theme details for notification
+    const theme = await themeService.getThemeById(themeId);
+    const themeName = theme ? theme.name : 'Unknown';
+    
+    // Send Slack notification for new word
+    slackService.notifyNewWord(newWord, themeName)
+      .catch(err => console.error('Failed to send Slack notification:', err));
+    
     res.status(201).json({
       success: true,
       data: newWord
@@ -173,6 +183,15 @@ router.put('/:id', requireAuth, async (req, res) => {
       });
     }
     
+    // Get the current word details before update
+    const currentWord = await wordService.getWordById(id);
+    if (!currentWord) {
+      return res.status(404).json({
+        success: false,
+        error: 'Word not found'
+      });
+    }
+    
     const updateData = {
       wordEn: word
     };
@@ -185,6 +204,14 @@ router.put('/:id', requireAuth, async (req, res) => {
         error: 'Word not found'
       });
     }
+    
+    // Get theme details for notification
+    const theme = await themeService.getThemeById(currentWord.themeId);
+    const themeName = theme ? theme.name : 'Unknown';
+    
+    // Send Slack notification for word edit
+    slackService.notifyWordEdit(currentWord.word, updatedWord.word, themeName)
+      .catch(err => console.error('Failed to send Slack notification:', err));
     
     res.json({
       success: true,

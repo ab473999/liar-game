@@ -3,6 +3,8 @@
  * Validates password from Authorization header
  */
 
+const slackService = require('../services/slackService');
+
 const requireAuth = (req, res, next) => {
   // Get the admin password from environment variable
   // Default password for development only
@@ -47,7 +49,11 @@ const requireAuth = (req, res, next) => {
     });
   }
   
-  // Password is valid, proceed to the route handler
+  // Password is valid, send Slack notification
+  slackService.notifyAuthSuccess(req)
+    .catch(err => console.error('Failed to send Slack notification:', err));
+  
+  // Proceed to the route handler
   next();
 };
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const themeService = require('../services/themeService');
+const slackService = require('../services/slackService');
 const { requireAuth } = require('../middleware/auth');
 
 /**
@@ -111,6 +112,10 @@ router.post('/', requireAuth, async (req, res) => {
       type,
       nameEn: name
     });
+    
+    // Send Slack notification for new theme
+    slackService.notifyNewTheme(theme)
+      .catch(err => console.error('Failed to send Slack notification:', err));
     
     res.status(201).json({
       success: true,
