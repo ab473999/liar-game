@@ -31,14 +31,17 @@ Build individual theme management page with:
 - [ ] Delete word functionality
 - [ ] Back navigation to /settings
 
-### 3. WordReveal Component - HIGH PRIORITY
+### 3. WordReveal Component - ✅ COMPLETED
 Build the core game mechanic:
-- [ ] Press-and-hold to reveal word/role
-- [ ] Show word for normal players
-- [ ] Show "You are the Liar" for liar
-- [ ] Player counter display
-- [ ] Next player button
-- [ ] Complete game flow
+- [x] Press-and-hold to reveal word/role (1 second hold requirement)
+- [x] Show word for normal players
+- [x] Show "You are the Liar" for liar
+- [x] Player counter display
+- [x] Next player button
+- [x] Complete game flow with automatic advance for last player
+- [x] Separated into modular components (WordRevealText, WordRevealCircle)
+- [x] Custom hook for press-and-hold logic (usePressAndHold)
+- [x] Text reveals only after 1s hold, disappears on player change
 
 ### 4. Skin System - MEDIUM PRIORITY
 Implement theming:
@@ -282,21 +285,21 @@ interface GameState {
 - [x] Game state initialization
 
 #### 4.2 Game Flow
-**Status**: 🔄 PARTIALLY IMPLEMENTED
+**Status**: ✅ COMPLETED
 - [x] Basic game page structure
 - [x] Game state validation (redirect if no state)
 - [x] Display theme and player count
-- [ ] **WordReveal component** (press-hold mechanic) - NEEDS IMPLEMENTATION
-- [ ] Player progression logic
-- [ ] Options after all players revealed
-- [ ] Replay functionality
+- [x] **WordReveal component** (press-hold mechanic) - FULLY IMPLEMENTED
+- [x] Player progression logic
+- [x] Options after all players revealed
+- [x] Replay functionality
 
 **Test Checklist**:
-- [ ] Word reveal for each player
-- [ ] Liar assignment display
-- [ ] Player progression
-- [ ] Replay with same setup
-- [ ] Navigation back to home
+- [x] Word reveal for each player (1s hold requirement)
+- [x] Liar assignment display
+- [x] Player progression (automatic for last player)
+- [x] Replay with same setup
+- [x] Navigation back to home
 
 #### 4.3 Settings Pages
 **Status**: ⏳ NOT STARTED - TOP PRIORITY
@@ -373,6 +376,39 @@ interface GameState {
 - [ ] Monitor for issues
 
 ## Technical Decisions
+
+### WordReveal Component Architecture
+The WordReveal system implements a sophisticated press-and-hold mechanic with clean separation of concerns:
+
+#### Component Structure:
+```
+components/functional/WordReveal/
+├── hooks.ts              # usePressAndHold - reusable press-and-hold logic
+├── index.ts              # Barrel exports
+├── WordRevealCircle.tsx  # Circle button with press-and-hold handlers
+└── WordRevealText.tsx    # Text display (word/liar) with conditional rendering
+```
+
+#### Press-and-Hold Flow:
+1. **Initial State**: Text is hidden, white circle button visible
+2. **Press Start**: User begins holding the circle
+3. **During Hold**: Progress logged every 250ms
+4. **1s Reached**: `revealWord()` called → `isWordRevealed: true` in store → text appears
+5. **Release**: If held for 1s+, `nextPlayer()` called → advances to next player
+6. **Next Player**: `isWordRevealed: false` → text hidden for new player
+
+#### Key Design Patterns:
+- **State Management**: Uses Zustand store for `isWordRevealed` state
+- **Custom Hooks**: `usePressAndHold` encapsulates all press/touch logic
+- **Separation of Concerns**: Visual (Text) separated from interaction (Circle)
+- **Overlapping Components**: Both components use `absolute inset-0` for full overlap
+- **Event Handling**: Supports both mouse and touch events
+
+#### Benefits:
+- **Security**: Word only revealed after deliberate 1s hold
+- **Modularity**: Components can be styled/animated independently
+- **Reusability**: `usePressAndHold` hook can be used elsewhere
+- **Clean State**: Word reveal state managed centrally in game store
 
 ### Smart Sync Strategy for Themes
 The app implements an intelligent sync mechanism between Zustand (local state) and the backend to handle:
@@ -525,15 +561,15 @@ npm run dev  # Port 5173
 
 ## Progress Tracker
 
-### Overall Progress: 55% ✅
+### Overall Progress: 65% ✅
 
 | Phase              | Status          | Progress | Notes                                                    |
 |--------------------|-----------------|----------|----------------------------------------------------------|
 | 1. Setup           | ✅ Completed    | 100%     | Vite, TS, Tailwind v3, nginx configured                  |
 | 2. Infrastructure  | ✅ Completed    | 100%     | TypeScript types, API service, hooks, CORS fixed         |
 | 3. Components      | ✅ Completed    | 100%     | Layout, Router, Zustand, Core components complete        |
-| 4. Pages           | 🔄 In Progress  | 70%      | Home complete, Settings complete, Theme Settings needed  |
-| 5. Features        | 🔄 In Progress  | 20%      | Smart sync implemented, Skins system needed              |
+| 4. Pages           | 🔄 In Progress  | 85%      | Home complete, Game complete, Settings complete, Theme Settings needed |
+| 5. Features        | 🔄 In Progress  | 30%      | Smart sync implemented, WordReveal complete, Skins needed |
 | 6. Testing         | ⏳ Not Started  | 0%       | -                                                        |
 | 7. Validation      | ⏳ Not Started  | 0%       | -                                                        |
 | 8. Cutover         | ⏳ Not Started  | 0%       | -                                                        |
@@ -548,4 +584,5 @@ npm run dev  # Port 5173
 | Dec 2024     | Phase 3  | ✅ All Core Components Complete<br>✅ Layout components (Header, MainContent, MainContentTop/Body)<br>✅ React Router v6 with all routes<br>✅ Zustand store with game state management & persistence<br>✅ PlayerCounter component<br>✅ ThemeGrid with API integration<br>✅ ThemeBox UI component | Full component infrastructure ready |
 | Dec 2024     | Phase 4  | ✅ Home Page Complete<br>✅ Player selection (3-20 players)<br>✅ Theme selection with API<br>✅ Random word and liar assignment<br>✅ Navigation to game with state<br>🔄 Basic Game page structure<br>⏳ Settings pages not started | Need: WordReveal component, Settings pages |
 | Dec 2024     | Phase 4-5 | ✅ Settings Page Complete<br>✅ AddTheme component with validation<br>✅ Refactored AddTheme to use hooks pattern<br>✅ Smart sync strategy implemented<br>✅ Background sync with backend<br>✅ Multi-client sync support<br>✅ Help text for UX | Smart sync prevents stale data issues |
+| Dec 2024     | Phase 4  | ✅ WordReveal System Complete<br>✅ Press-and-hold mechanic (1s requirement)<br>✅ Separated into WordRevealText & WordRevealCircle<br>✅ Custom usePressAndHold hook<br>✅ Text reveals only after hold, hides on player change<br>✅ Auto-advance for last player<br>✅ Replay functionality<br>✅ Debug borders for development | Clean component architecture with separation of concerns |
 `

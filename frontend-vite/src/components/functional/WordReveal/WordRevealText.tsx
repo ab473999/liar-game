@@ -7,7 +7,8 @@ export const WordRevealText = () => {
     currentPlayer, 
     liarPosition, 
     word, 
-    playerNum
+    playerNum,
+    isWordRevealed
   } = useGameStore()
   
   const isLiar = currentPlayer === liarPosition
@@ -34,14 +35,16 @@ export const WordRevealText = () => {
   
   return (
     <div ref={containerRef} className="absolute inset-0 flex flex-col items-center border-4 border-yellow-400 pt-[100px]">
-      {/* Word/Liar Display */}
-      <div className="text-center">
-        {isLiar ? (
-          <h2 className="text-2xl font-light" style={{ color: 'var(--color-revealedtext-font)' }}>You're the liar</h2>
-        ) : (
-          <h2 className="text-2xl font-light" style={{ color: 'var(--color-revealedtext-font)' }}>{word}</h2>
-        )}
-      </div>
+      {/* Word/Liar Display - Only shown after 1s hold */}
+      {isWordRevealed && (
+        <div className="text-center">
+          {isLiar ? (
+            <h2 className="text-2xl font-light" style={{ color: 'var(--color-revealedtext-font)' }}>You're the liar</h2>
+          ) : (
+            <h2 className="text-2xl font-light" style={{ color: 'var(--color-revealedtext-font)' }}>{word}</h2>
+          )}
+        </div>
+      )}
     </div>
   )
 }

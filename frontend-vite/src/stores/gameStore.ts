@@ -11,6 +11,7 @@ interface GameStore {
   stage: 'intro' | 'select' | 'play'
   revealedPlayers: number[]
   hasVisitedHome: boolean  // Track if we've been to home before
+  isWordRevealed: boolean  // Track if current player has seen their word
   
   // Actions
   setPlayerNum: (num: number) => void
@@ -24,6 +25,7 @@ interface GameStore {
   resetGame: () => void
   markHomeVisited: () => void
   initializeHomeState: () => void
+  revealWord: () => void  // Called when 1s hold is reached
 }
 
 // Constants
@@ -44,6 +46,7 @@ export const useGameStore = create<GameStore>()(
         stage: 'intro',
         revealedPlayers: [],
         hasVisitedHome: false,
+        isWordRevealed: false,
       
       // Actions
       setPlayerNum: (num) => {
@@ -100,8 +103,14 @@ export const useGameStore = create<GameStore>()(
         console.log('GameStore: nextPlayer', { from: currentPlayer, to: currentPlayer + 1 })
         set({
           currentPlayer: currentPlayer + 1,
-          revealedPlayers: [...revealedPlayers, currentPlayer]
+          revealedPlayers: [...revealedPlayers, currentPlayer],
+          isWordRevealed: false  // Reset for next player
         })
+      },
+      
+      revealWord: () => {
+        console.log('GameStore: revealWord for player', get().currentPlayer)
+        set({ isWordRevealed: true })
       },
       
       resetGame: () => {
@@ -112,7 +121,8 @@ export const useGameStore = create<GameStore>()(
           liarPosition: -1,
           word: null,
           revealedPlayers: [],
-          theme: null
+          theme: null,
+          isWordRevealed: false
         })
       },
       
@@ -142,7 +152,8 @@ export const useGameStore = create<GameStore>()(
           liarPosition: -1,
           word: null,
           revealedPlayers: [],
-          theme: null  // Reset selected theme when returning to home
+          theme: null,  // Reset selected theme when returning to home
+          isWordRevealed: false  // Reset reveal state
         })
       }
       }),
@@ -171,7 +182,8 @@ if (import.meta.env.DEV) {
       liarPosition: state.liarPosition,
       word: state.word,
       revealedPlayers: state.revealedPlayers,
-      hasVisitedHome: state.hasVisitedHome
+      hasVisitedHome: state.hasVisitedHome,
+      isWordRevealed: state.isWordRevealed
     })
   })
 }

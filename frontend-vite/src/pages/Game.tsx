@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { MainContentTop } from '@/components/layout/MainContentTop'
 import { MainContentBody } from '@/components/layout/MainContentBody'
 import { GamePlayerCounter } from '@/components/functional/GamePlayerCounter'
-import { WordRevealText } from '@/components/functional/WordRevealText'
-import { WordRevealCircle } from '@/components/functional/WordRevealCircle'
+import { WordRevealText, WordRevealCircle } from '@/components/functional/WordReveal'
 import { useGameStore } from '@/stores'
 
 export const Game = () => {
