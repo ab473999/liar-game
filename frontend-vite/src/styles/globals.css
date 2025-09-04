@@ -32,6 +32,7 @@
   --color-buttonicon-bg: transparent;
   --color-buttonicon-line: #3b82f6; /* Same as text-blue-400 */
   --color-buttondelete-line: #ef4444; /* Same as accentDanger */
+  --color-buttonsave-line-inactive: #6b7280; /* Gray-500 for inactive save button */
 }
 
 html {

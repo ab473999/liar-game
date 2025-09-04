@@ -23,7 +23,7 @@ export const ButtonDelete = ({
     <Button
       onClick={disabled ? undefined : onClick}
       ariaLabel={ariaLabel}
-      className={`p-2 rounded-lg ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+      className={`p-1 rounded-lg ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
       style={{
         backgroundColor: 'transparent',
         color: 'var(--color-buttondelete-line)',

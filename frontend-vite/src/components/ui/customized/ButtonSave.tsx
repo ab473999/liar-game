@@ -1,5 +1,5 @@
 import { Save } from 'lucide-react'
-import { ButtonHeader } from './ButtonHeader'
+import { Button } from '../Button'
 
 interface ButtonSaveProps {
   onClick?: () => void
@@ -9,8 +9,9 @@ interface ButtonSaveProps {
 }
 
 /**
- * Save button component using the ButtonHeader base
+ * Save button component
  * Displays a save/checkmark icon
+ * Uses gray color when disabled, blue when active
  */
 export const ButtonSave = ({ 
   onClick, 
@@ -19,12 +20,20 @@ export const ButtonSave = ({
   disabled = false 
 }: ButtonSaveProps) => {
   return (
-    <ButtonHeader
+    <Button
       onClick={disabled ? undefined : onClick}
       ariaLabel={ariaLabel}
-      className={`${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+      className={`p-1 rounded-lg ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+      style={{
+        backgroundColor: 'transparent',
+        color: disabled ? 'var(--color-buttonsave-line-inactive)' : 'var(--color-buttonicon-line)',
+        border: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
     >
       <Save size={20} />
-    </ButtonHeader>
+    </Button>
   )
 }

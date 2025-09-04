@@ -19,7 +19,7 @@ export const ButtonHeader = ({ onClick, children, ariaLabel, className = '' }: B
     <Button
       onClick={onClick}
       ariaLabel={ariaLabel}
-      className={`p-2 rounded-lg ${className}`}
+      className={`p-1 rounded-lg ${className}`}
       style={{
         backgroundColor: 'var(--color-buttonicon-bg)',
         color: 'var(--color-buttonicon-line)',

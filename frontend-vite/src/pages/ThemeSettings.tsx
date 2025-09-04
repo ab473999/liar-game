@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { useParams, useNavigate } from 'react-router-dom'
 import { MainContentTop } from '@/components/layout/MainContentTop'
 import { MainContentBody } from '@/components/layout/MainContentBody'
 import { AddWord } from '@/components/functional/AddWord'
@@ -39,25 +38,11 @@ export const ThemeSettings = () => {
   return (
     <>
       <MainContentTop>
-        <div className="flex flex-col items-center gap-4">
-          <Link 
-            to="/settings" 
-            className="flex items-center gap-2 px-3 py-1 text-sm rounded-lg transition-opacity hover:opacity-80"
-            style={{
-              backgroundColor: 'transparent',
-              color: 'var(--color-textSecondary)',
-              padding: '0.5rem 1rem',
-            }}
-          >
-            <ArrowLeft size={16} />
-            Back to Settings
-          </Link>
-          <AddWord 
-            themeType={currentTheme.type}
-            themeName={currentTheme.name}
-            themeId={currentTheme.id}
-          />
-        </div>
+        <AddWord 
+          themeType={currentTheme.type}
+          themeName={currentTheme.name}
+          themeId={currentTheme.id}
+        />
       </MainContentTop>
       <MainContentBody>
         <WordList 
