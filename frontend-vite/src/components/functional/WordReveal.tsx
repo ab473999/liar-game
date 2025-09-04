@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, RotateCcw } from 'lucide-react'
 import { useGameStore } from '@/stores'
 
 export const WordReveal = () => {
   const navigate = useNavigate()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const circleButtonRef = useRef<HTMLButtonElement>(null)
   const { 
     currentPlayer, 
     liarPosition, 
@@ -16,6 +18,47 @@ export const WordReveal = () => {
   const isLiar = currentPlayer === liarPosition
   const isLastPlayer = currentPlayer === playerNum - 1
   const allPlayersRevealed = currentPlayer > playerNum - 1
+  
+  // Log dimensions whenever container renders/updates
+  useEffect(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect()
+      const parentRect = containerRef.current.parentElement?.getBoundingClientRect()
+      console.log('🟨 WordReveal (YELLOW) dimensions:', {
+        height: rect.height,
+        width: rect.width,
+        top: rect.top,
+        bottom: rect.bottom,
+        state: allPlayersRevealed ? 'all-revealed' : 'player-viewing'
+      })
+      if (parentRect) {
+        console.log('📊 Height comparison:', {
+          yellowHeight: rect.height,
+          pinkHeight: parentRect.height,
+          heightDiff: Math.abs(rect.height - parentRect.height),
+          matchesParent: Math.abs(rect.height - parentRect.height) < 1 ? '✅ YES' : '❌ NO'
+        })
+      }
+    }
+    
+    // Log circle button center position if it exists
+    if (circleButtonRef.current && !isLastPlayer && !allPlayersRevealed) {
+      const buttonRect = circleButtonRef.current.getBoundingClientRect()
+      const containerRect = containerRef.current?.getBoundingClientRect()
+      console.log('🟢 Green Circle Button Center:', {
+        centerX: buttonRect.left + buttonRect.width / 2,
+        centerY: buttonRect.top + buttonRect.height / 2,
+        width: buttonRect.width,
+        height: buttonRect.height,
+        relativeToContainer: containerRect ? {
+          centerXRelative: (buttonRect.left + buttonRect.width / 2) - containerRect.left,
+          centerYRelative: (buttonRect.top + buttonRect.height / 2) - containerRect.top,
+          percentFromTop: ((buttonRect.top + buttonRect.height / 2 - containerRect.top) / containerRect.height * 100).toFixed(1) + '%',
+          percentFromLeft: ((buttonRect.left + buttonRect.width / 2 - containerRect.left) / containerRect.width * 100).toFixed(1) + '%'
+        } : null
+      })
+    }
+  }) // Dependencies handled by React - this runs on every render
   
   // Auto-advance after 1 second for the last player
   useEffect(() => {
@@ -32,7 +75,7 @@ export const WordReveal = () => {
   // If all players have revealed, show the end game options
   if (allPlayersRevealed) {
     return (
-      <div className="relative flex flex-col items-center justify-center border-4 border-yellow-500 p-4 w-full h-full">
+      <div ref={containerRef} className="relative flex flex-col items-center border-4 border-yellow-400 self-stretch w-full pt-[50px]">
         {/* Vertical dashed green line for design purposes */}
         <div 
           className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
@@ -72,7 +115,7 @@ export const WordReveal = () => {
   }
   
   return (
-    <div className="relative flex flex-col items-center justify-center gap-8 border-4 border-yellow-500 p-4 w-full h-full">
+    <div ref={containerRef} className="relative flex flex-col items-center gap-8 border-4 border-yellow-400 self-stretch w-full pt-[50px]">
       {/* Vertical dashed green line for design purposes */}
       <div 
         className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
@@ -85,21 +128,16 @@ export const WordReveal = () => {
       {/* Word/Liar Display */}
       <div className="text-center">
         {isLiar ? (
-          <div>
-            <h2 className="text-3xl font-bold text-red-500 mb-2">You are the Liar!</h2>
-            <p className="text-gray-400">Pretend you know the word</p>
-          </div>
+          <h2 className="text-3xl text-red-500">You're the liar</h2>
         ) : (
-          <div>
-            <p className="text-gray-400 mb-2">The word is:</p>
-            <h2 className="text-3xl font-bold">{word}</h2>
-          </div>
+          <h2 className="text-2xl">{word}</h2>
         )}
       </div>
       
       {/* Next Player Button - Now a circle */}
       {!isLastPlayer && (
         <button
+          ref={circleButtonRef}
           onClick={nextPlayer}
           className="w-20 h-20 bg-green-600 hover:bg-green-500 transition-colors rounded-full flex items-center justify-center"
           aria-label="Next Player"
