@@ -21,7 +21,7 @@ export const MainContentBody = ({ children }: MainContentBodyProps) => {
   })
   
   return (
-    <div ref={containerRef} className="flex-1 flex items-center justify-center border-4 border-pink-500 relative">
+    <div ref={containerRef} className="flex-1 flex items-center justify-center relative">
       {children}
     </div>
   )

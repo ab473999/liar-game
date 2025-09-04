@@ -19,7 +19,7 @@ export const TIMING = {
   
   // Scale factors
   SCALE_MIN: 1.0,             // Starting scale (100%)
-  SCALE_MAX: 2.1,             // Maximum scale (210%)
+  SCALE_MAX: 2.15,             // Maximum scale (210%)
 } as const
 
 // Helper function to calculate scale based on progress

@@ -151,15 +151,7 @@ export const WordRevealCircle = () => {
   // If all players have revealed, show the end game options
   if (allPlayersRevealed) {
     return (
-      <div ref={containerRef} className="absolute inset-0 flex items-center justify-center border-4 border-blue-500">
-        {/* Vertical dashed green line for design purposes */}
-        <div 
-          className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
-          style={{ 
-            zIndex: 9999,
-            pointerEvents: 'none'
-          }}
-        />
+      <div ref={containerRef} className="absolute inset-0 flex items-center justify-center">
         <div className="flex gap-4 z-30">
           <button
             onClick={() => navigate('/')}
@@ -191,18 +183,9 @@ export const WordRevealCircle = () => {
   return (
     <div 
       ref={containerRef} 
-      className="absolute inset-0 flex items-center justify-center border-4 border-blue-500 pt-[100px] z-10"
+      className="absolute inset-0 flex items-center justify-center pt-[100px] z-10"
       style={{ overflow: 'visible' }}  // Allow circle to overflow without clipping
     >
-      {/* Vertical dashed green line for design purposes */}
-      <div 
-        className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
-        style={{ 
-          zIndex: 9999,
-          pointerEvents: 'none'
-        }}
-      />
-      
       {/* Next Player Button - Show for all players including last */}
       <button
         ref={circleButtonRef}
@@ -210,7 +193,7 @@ export const WordRevealCircle = () => {
         className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none transition-transform"
         style={{ 
           backgroundColor: 'var(--color-circle-bg)',
-          border: 'none',
+          border: scale >= TIMING.SCALE_MAX ? '1px solid var(--color-revealedtext-font)' : 'none',
           userSelect: 'none',
           touchAction: 'none',
           transform: `scale(${scale})`,  // Apply the scaling transform
