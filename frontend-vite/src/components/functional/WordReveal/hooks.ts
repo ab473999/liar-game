@@ -7,6 +7,7 @@ interface UsePressAndHoldOptions {
   logInterval?: number        // Interval for progress logs in ms (default: 250)
   onPressStart?: () => void   // Called when press starts
   onPressEnd?: () => void     // Called when press ends (regardless of duration)
+  onProgress?: (progress: number) => void  // Called with progress (0 to 1) during hold
 }
 
 export const usePressAndHold = ({
@@ -15,11 +16,14 @@ export const usePressAndHold = ({
   onHoldReached,
   logInterval = 250,
   onPressStart,
-  onPressEnd
+  onPressEnd,
+  onProgress
 }: UsePressAndHoldOptions) => {
   const pressStartTime = useRef<number | null>(null)
   const intervalRef = useRef<number | null>(null)
+  const animationFrameRef = useRef<number | null>(null)
   const [isPressing, setIsPressing] = useState(false)
+  const [progress, setProgress] = useState(0)  // Track progress from 0 to 1
   const holdReachedRef = useRef(false)  // Track if we've called onHoldReached
   
   const handlePressStart = (e: React.MouseEvent | React.TouchEvent) => {
@@ -34,11 +38,42 @@ export const usePressAndHold = ({
     setIsPressing(true)
     pressStartTime.current = Date.now()
     holdReachedRef.current = false  // Reset the flag
+    setProgress(0)  // Reset progress
     
     // Call the onPressStart callback if provided
     if (onPressStart) {
       onPressStart()
     }
+    
+    // Animation frame loop for smooth progress updates
+    const updateProgress = () => {
+      if (!pressStartTime.current) return
+      
+      const elapsed = Date.now() - pressStartTime.current
+      const currentProgress = Math.min(elapsed / requiredDuration, 1)
+      
+      setProgress(currentProgress)
+      if (onProgress) {
+        onProgress(currentProgress)
+      }
+      
+      // Check if we've reached the required duration
+      if (currentProgress >= 1 && !holdReachedRef.current) {
+        console.log('✅ 1 second reached!')
+        holdReachedRef.current = true
+        if (onHoldReached) {
+          onHoldReached()
+        }
+      }
+      
+      // Continue animation if still pressing and not complete
+      if (currentProgress < 1) {
+        animationFrameRef.current = requestAnimationFrame(updateProgress)
+      }
+    }
+    
+    // Start the animation loop
+    animationFrameRef.current = requestAnimationFrame(updateProgress)
     
     // Log progress at specified intervals
     let elapsedCount = 0
@@ -46,15 +81,6 @@ export const usePressAndHold = ({
       elapsedCount++
       const elapsed = elapsedCount * (logInterval / 1000)
       console.log(`⏱️ Holding... ${elapsed.toFixed(2)}s`)
-      
-      // Check if we've reached the required duration
-      if (elapsed >= requiredDuration / 1000 && !holdReachedRef.current) {
-        console.log('✅ 1 second reached!')
-        holdReachedRef.current = true
-        if (onHoldReached) {
-          onHoldReached()  // Call the callback when duration is reached
-        }
-      }
     }, logInterval)
   }
   
@@ -70,6 +96,12 @@ export const usePressAndHold = ({
       intervalRef.current = null
     }
     
+    // Clear the animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+    
     // Check if held for required duration
     if (holdDuration >= requiredDuration) {
       console.log('✅ Advancing to next player!')
@@ -81,6 +113,7 @@ export const usePressAndHold = ({
     // Reset state
     setIsPressing(false)
     pressStartTime.current = null
+    setProgress(0)  // Reset progress
     
     // Call the onPressEnd callback if provided
     if (onPressEnd) {
@@ -99,9 +132,16 @@ export const usePressAndHold = ({
       intervalRef.current = null
     }
     
+    // Clear the animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = null
+    }
+    
     // Reset state
     setIsPressing(false)
     pressStartTime.current = null
+    setProgress(0)  // Reset progress
     
     // Call the onPressEnd callback if provided (treat cancel as an end)
     if (onPressEnd) {
@@ -115,11 +155,15 @@ export const usePressAndHold = ({
       if (intervalRef.current) {
         window.clearInterval(intervalRef.current)
       }
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
     }
   }, [])
   
   return {
     isPressing,
+    progress,  // Return the progress value
     handlers: {
       onMouseDown: handlePressStart,
       onMouseUp: handlePressEnd,

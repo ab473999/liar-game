@@ -43,7 +43,7 @@ export const WordRevealCircle = () => {
   }
   
   // Use the press-and-hold hook
-  const { handlers } = usePressAndHold({
+  const { handlers, progress } = usePressAndHold({
     requiredDuration: 1000,
     onComplete: nextPlayer,  // Called on release after 1s
     onHoldReached: revealWord,  // Called when 1s is reached
@@ -51,6 +51,9 @@ export const WordRevealCircle = () => {
     onPressStart: handlePressStart,
     onPressEnd: handlePressEnd
   })
+  
+  // Calculate scale: from 1x to 2x based on progress (0 to 1)
+  const scale = 1 + progress  // This will go from 1 to 2
   
   // Log dimensions whenever container renders/updates
   useEffect(() => {
@@ -133,7 +136,11 @@ export const WordRevealCircle = () => {
   }
   
   return (
-    <div ref={containerRef} className="absolute inset-0 flex items-center justify-center border-4 border-blue-500 pt-[100px] z-10">
+    <div 
+      ref={containerRef} 
+      className="absolute inset-0 flex items-center justify-center border-4 border-blue-500 pt-[100px] z-10"
+      style={{ overflow: 'visible' }}  // Allow circle to overflow without clipping
+    >
       {/* Vertical dashed green line for design purposes */}
       <div 
         className="absolute top-0 bottom-0 left-1/2 transform -translate-x-1/2 w-0.5 border-l-2 border-dashed border-green-500"
@@ -147,12 +154,15 @@ export const WordRevealCircle = () => {
       <button
         ref={circleButtonRef}
         {...handlers}
-        className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none"
+        className="w-64 h-64 rounded-full flex items-center justify-center z-30 select-none transition-transform"
         style={{ 
           backgroundColor: 'var(--color-circle-bg)',
           border: 'none',
           userSelect: 'none',
-          touchAction: 'none'
+          touchAction: 'none',
+          transform: `scale(${scale})`,  // Apply the scaling transform
+          transformOrigin: 'center',  // Ensure it scales from center
+          transition: 'none'  // No CSS transition, we're animating via JS
         }}
         aria-label="Next Player - Hold for 1 second"
       >
