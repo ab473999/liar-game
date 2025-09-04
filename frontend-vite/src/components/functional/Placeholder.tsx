@@ -34,18 +34,18 @@ export const Placeholder = () => {
   return (
     <div className="flex-1 flex items-center justify-center p-4">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-blue-400 mb-4">LIAR Game</h1>
-        <p className="text-gray-400">Vite + React + TypeScript</p>
-        <p className="text-sm text-gray-500 mt-4">Check console for API status</p>
+        <h1 className="text-6xl font-bold mb-4" style={{ color: 'var(--color-header-title)' }}>LIAR Game</h1>
+        <p style={{ color: 'var(--color-text-gray-400)' }}>Vite + React + TypeScript</p>
+        <p className="text-sm mt-4" style={{ color: 'var(--color-text-gray-500)' }}>Check console for API status</p>
         
         {/* Optional: Show API status in UI */}
-        <div className="mt-8 text-xs text-gray-600">
+        <div className="mt-8 text-xs" style={{ color: 'var(--color-text-gray-600)' }}>
           {themesLoading ? (
             <p>Loading themes...</p>
           ) : themesError ? (
-            <p className="text-red-500">API Error: {themesError}</p>
+            <p style={{ color: 'var(--color-text-error)' }}>API Error: {themesError}</p>
           ) : (
-            <p className="text-green-500">API Connected: {themes.length} themes loaded</p>
+            <p style={{ color: 'var(--color-text-success)' }}>API Connected: {themes.length} themes loaded</p>
           )}
         </div>
       </div>

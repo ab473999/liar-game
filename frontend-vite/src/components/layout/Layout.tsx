@@ -8,7 +8,13 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900 text-white">
+    <div 
+      className="min-h-screen flex flex-col"
+      style={{
+        backgroundColor: 'var(--color-layout-bg)',
+        color: 'var(--color-layout-text)'
+      }}
+    >
       <Header />
       <MainContent>
         {children}

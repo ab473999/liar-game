@@ -6,7 +6,7 @@ const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const metadata = {
   title: "LIAR",
-  description: "Play the Liar Game online!",
+  description: "Who's the liar?",
 };
 
 export default function RootLayout({ children }) {

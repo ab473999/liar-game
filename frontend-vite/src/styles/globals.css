@@ -38,6 +38,20 @@
   --color-revealedtext-font: #4E937A;
   --color-circle-bg: #ffffff;
   --color-circlehelp-font: #DB5461;
+  
+  /* Additional component colors */
+  --color-header-bg: #030712; /* gray-950 */
+  --color-header-border: #1f2937; /* gray-800 */
+  --color-header-title: #60a5fa; /* blue-400 */
+  --color-layout-bg: #111827; /* gray-900 */
+  --color-layout-text: #ffffff; /* white */
+  --color-button-gameover-bg: #374151; /* gray-700 */
+  --color-button-gameover-hover: #4b5563; /* gray-600 */
+  --color-text-gray-400: #9ca3af; /* gray-400 */
+  --color-text-gray-500: #6b7280; /* gray-500 */
+  --color-text-gray-600: #4b5563; /* gray-600 */
+  --color-text-error: #ef4444; /* red-500 */
+  --color-text-success: #10b981; /* green-500 */
 }
 
 html {

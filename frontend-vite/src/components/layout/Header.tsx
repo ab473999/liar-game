@@ -18,7 +18,13 @@ export const Header = () => {
   }
   
   return (
-    <header className="sticky top-0 z-50 bg-gray-950 border-b border-gray-800">
+    <header 
+      className="sticky top-0 z-50"
+      style={{
+        backgroundColor: 'var(--color-header-bg)',
+        borderBottom: '1px solid var(--color-header-border)'
+      }}
+    >
       {/* Safe area padding for devices with notches */}
       <div className="h-16 pt-safe flex items-center justify-between relative">
         {/* Left side - Back button on Settings page */}
@@ -34,7 +40,12 @@ export const Header = () => {
         </div>
         
         {/* Center - LIAR title */}
-        <h1 className="text-3xl font-normal text-blue-400 absolute left-1/2 transform -translate-x-1/2">LIAR</h1>
+        <h1 
+          className="text-3xl font-normal absolute left-1/2 transform -translate-x-1/2"
+          style={{ color: 'var(--color-header-title)' }}
+        >
+          LIAR
+        </h1>
         
         {/* Right side - Settings button on Home page */}
         <div className="pr-0">

@@ -155,7 +155,12 @@ export const WordRevealCircle = () => {
         <div className="flex gap-4 z-30">
           <button
             onClick={() => navigate('/')}
-            className="p-4 bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg"
+            className="p-4 transition-colors rounded-lg"
+            style={{
+              backgroundColor: 'var(--color-button-gameover-bg)',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-hover)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-bg)'}
             aria-label="Back to Home"
           >
             <ArrowLeft size={24} />
@@ -170,7 +175,12 @@ export const WordRevealCircle = () => {
                 circleScale: 1  // Reset circle scale for replay
               })
             }}
-            className="p-4 bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg"
+            className="p-4 transition-colors rounded-lg"
+            style={{
+              backgroundColor: 'var(--color-button-gameover-bg)',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-hover)'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-button-gameover-bg)'}
             aria-label="Repeat Reveal"
           >
             <RotateCcw size={24} />
