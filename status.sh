@@ -60,28 +60,20 @@ check_tmux_session() {
 # Check backend
 check_tmux_session "backend" 8001
 
-# Check frontend (Next.js)
-check_tmux_session "frontend" 3000
-
 # Check frontend (Vite)
 check_tmux_session "frontend-vite" 5174
 
-# HTTP endpoint checks
-echo -e "${BLUE}--- HTTP Endpoint Checks ---${NC}"
-
-# Test frontend (Next.js)
-check_http_endpoint "https://liar.nyc" "Frontend Next.js (HTTPS)"
-check_http_endpoint "http://liar.nyc" "Frontend Next.js (HTTP)"
+# HTTPS endpoint checks
+echo -e "${BLUE}--- HTTPS Endpoint Checks ---${NC}"
 
 # Test frontend (Vite)
-check_http_endpoint "https://liar.nyc:5173" "Frontend Vite (HTTPS)"
+check_http_endpoint "https://liar.nyc:5173" "Frontend Vite"
 
 # Test backend
-check_http_endpoint "https://liar.nyc:3001/health" "Backend Health (HTTPS)"
-check_http_endpoint "http://liar.nyc:3001/health" "Backend Health (HTTP)"
+check_http_endpoint "https://liar.nyc:3001/health" "Backend Health"
 
 # Test backend API endpoint
-check_http_endpoint "https://liar.nyc:3001/api/themes" "Backend API (HTTPS)"
+check_http_endpoint "https://liar.nyc:3001/api/themes" "Backend API"
 
 echo ""
 
@@ -91,14 +83,12 @@ tmux ls 2>/dev/null || echo -e "${GRAY}No active tmux sessions${NC}"
 
 # Show URLs
 echo -e "\n${YELLOW}Service URLs:${NC}"
-echo -e "Frontend (Next.js): ${GREEN}https://liar.nyc${NC}"
-echo -e "Frontend (Vite):    ${GREEN}https://liar.nyc:5173${NC}"
-echo -e "Backend API:        ${GREEN}https://liar.nyc:3001${NC}"
+echo -e "Frontend (Vite): ${GREEN}https://liar.nyc:5173${NC}"
+echo -e "Backend API:     ${GREEN}https://liar.nyc:3001${NC}"
 
 # Quick commands reminder
 echo -e "\n${YELLOW}Quick Commands:${NC}"
-echo -e "Attach to backend:        ${GREEN}tmux attach -t backend${NC}"
-echo -e "Attach to frontend:       ${GREEN}tmux attach -t frontend${NC}"
-echo -e "Attach to Vite frontend:  ${GREEN}tmux attach -t frontend-vite${NC}"
-echo -e "Restart services:         ${GREEN}./restart.sh${NC}"
-echo -e "Stop services:            ${GREEN}./stop.sh${NC}"
+echo -e "Attach to backend:  ${GREEN}tmux attach -t backend${NC}"
+echo -e "Attach to frontend: ${GREEN}tmux attach -t frontend-vite${NC}"
+echo -e "Restart services:   ${GREEN}./restart.sh${NC}"
+echo -e "Stop services:      ${GREEN}./stop.sh${NC}"

@@ -291,6 +291,54 @@ class SlackService {
   }
 
   /**
+   * Format and send word deletion notification
+   */
+  async notifyWordDelete(word, themeName) {
+    const blocks = [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: '🗑️ Word Deleted',
+          emoji: true
+        }
+      },
+      {
+        type: 'section',
+        text: {
+          type: 'mrkdwn',
+          text: `A word has been deleted from the *${themeName}* theme`
+        },
+        fields: [
+          {
+            type: 'mrkdwn',
+            text: `*Deleted Word:*\n~${word}~`
+          },
+          {
+            type: 'mrkdwn',
+            text: `*Theme:*\n${themeName}`
+          }
+        ]
+      },
+      {
+        type: 'context',
+        elements: [
+          {
+            type: 'plain_text',
+            text: `Deleted: ${new Date().toLocaleString()}`,
+            emoji: true
+          }
+        ]
+      }
+    ];
+
+    return this.sendMessage({
+      text: `Word deleted from ${themeName}: ${word}`,
+      blocks
+    });
+  }
+
+  /**
    * Format and send new game notification
    */
   async notifyNewGame(gameData) {

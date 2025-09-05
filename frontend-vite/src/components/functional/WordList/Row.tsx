@@ -101,13 +101,6 @@ export const Row = ({ word }: RowProps) => {
   }
   
   const handleDelete = async () => {
-    // Show confirmation dialog
-    const confirmed = window.confirm(`Are you sure you want to delete "${word.word}"?`)
-    
-    if (!confirmed) {
-      return
-    }
-    
     try {
       setIsLoading(true)
       

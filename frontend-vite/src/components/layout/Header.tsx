@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { SquarePen, ArrowLeft, Blend, Info } from 'lucide-react'
+import { SquarePen, ArrowLeft, Palette, Info } from 'lucide-react'
 import { ButtonHeader } from '@/components/ui/customized/ButtonHeader'
 import { SkinSelector } from '@/components/functional/SkinSelector'
 import { PasswordDialog } from '@/components/functional/PasswordDialog'
@@ -154,7 +154,7 @@ export const Header = () => {
               }}
               ariaLabel="Open theme selector"
             >
-              <Blend size={24} />
+              <Palette size={24} />
             </ButtonHeader>
           )}
         </div>

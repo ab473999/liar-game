@@ -235,6 +235,21 @@ router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
     
+    // Get word details before deletion for notification
+    const word = await wordService.getWordById(id);
+    
+    if (!word) {
+      return res.status(404).json({
+        success: false,
+        error: 'Word not found'
+      });
+    }
+    
+    // Get theme details for notification
+    const theme = await themeService.getThemeById(word.themeId);
+    const themeName = theme ? theme.name : 'Unknown';
+    
+    // Delete the word
     const success = await wordService.deleteWord(id);
     
     if (!success) {
@@ -243,6 +258,10 @@ router.delete('/:id', requireAuth, async (req, res) => {
         error: 'Word not found'
       });
     }
+    
+    // Send Slack notification for word deletion
+    slackService.notifyWordDelete(word.word, themeName)
+      .catch(err => console.error('Failed to send Slack notification:', err));
     
     res.json({
       success: true,
